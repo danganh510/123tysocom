@@ -1,0 +1,96 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var \Bincg\Models\BinOffice[] $offices
+ */
+$actionindex = false;
+if($this->router->getActionName() == 'index' || $this->router->getActionName() == 'search'){
+    $actionindex = true;
+}
+?>
+<?php
+    $blockSearchBg = 'data-bgset="';
+    if($actionindex) {
+        $blockSearchBg .= $this->url->getStatic('frontend/').'images/bg-search-xs.png'.' [(max-width: 776px)] |'.$this->url->getStatic('frontend/').'images/bg-search.png';
+    }
+    else {
+        $blockSearchBg .= $this->url->getStatic('frontend/').'images/bg-search-xs.png'.' [(max-width: 776px)] |'.$this->url->getStatic('frontend/').'images/bg-search-xs.png';
+    }
+    $blockSearchBg .= '"';
+
+?>
+
+<?php if(isset($offices) && count($offices)>0){ ?>
+    <?php if($actionindex){ ?>
+    <div class="padding-block">
+        <div class="container">
+            <?php } ?>
+            <div <?php echo $blockSearchBg ?> class="lazyload <?php echo $actionindex ? 'block-search' : 'block-search-small box-shadow mb-5'; ?>">
+                <form class="<?php echo $actionindex ? '' : 'm-0'; ?>" id="career-search-form" name="career-search-form" method="post" action="<?php echo $this->url->get($lang_url.'/careers/search'); ?>">
+                    <?php if($actionindex){ ?>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <?php } ?>
+                            <div class="form-group<?php echo $actionindex ? 'mb-lg-0' : ''; ?>">
+                                <select class="form-control slcOffice" id="office" name="office">
+                                    <option value=""><?php echo defined('txt_please_choose_office') ? txt_please_choose_office : ''; ?></option>
+                                    <?php foreach ($offices as $office){ ?>
+                                        <option value="<?php echo $office->getOfficeId(); ?>" <?php echo (isset($formData['office']) && $formData['office']==$office->getOfficeId()) ? ' selected=""' : '' ?>>
+                                            <?php echo $office->getOfficeName(); ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <?php if($actionindex){ ?>
+                        </div>
+                        <?php } ?>
+                        <?php if($actionindex){ ?>
+                        <div class="col-lg-8">
+                            <?php } ?>
+                            <div class="form-group<?php echo $actionindex ? ' mb-lg-0' : ''; ?>">
+                                <?php if($actionindex){ ?>
+                                <div class="d-flex flex-mobile-wrap">
+                                    <?php } ?>
+                                    <input value="<?php echo isset($formData['keyword']) ? $formData['keyword'] : ''; ?>" maxlength="255" type="text" class="form-control txtKeyword" id="keyword" name="keyword" placeholder="<?php echo htmlentities(defined('txt_please_type_keyword') ? txt_please_type_keyword : '') ?>">
+                                    <?php if(!$actionindex){ ?>
+                                    <p class="text-danger mt-2 msg-office"></p>
+                                    <?php } ?>
+                                    <button id="btn-search-office" name="btn-search-office" class="<?php echo $actionindex ? 'btn btn-main ml-lg-2 mt-3 mt-lg-0 text-nowrap btn-shadow w-mobile-100' : 'btn btn-main mt-3 text-nowrap btn-shadow w-100'; ?>">
+                                        <?php echo defined('txt_search_job') ? txt_search_job : ''; ?>
+                                    </button>
+                                    <?php if($actionindex){ ?>
+                                </div>
+                            <?php } ?>
+                            </div>
+                            <?php if($actionindex){ ?>
+                        </div>
+                    </div>
+                <?php if($actionindex){ ?>
+                    <p class="text-danger mt-2 msg-office"></p>
+                <?php } ?>
+                <?php } ?>
+                </form>
+            </div>
+    <?php if($actionindex){ ?>
+        </div>
+    </div>
+    <?php } ?>
+    <script>
+        commands.push(function () {
+            $(document).ready(function () {
+                $('button[name=btn-search-office]').on('click', function (e) {
+                    if(($('select.slcOffice').val() == '') && ($('input.txtKeyword').val() == '') ) {
+                        $('select[name=office]').closest('.form-group').addClass('has-error');
+                        $('input[name=keyword]').closest('.form-group').addClass('has-error');
+                        $('.msg-office').html('<?php echo defined('txt_please_choose_office_or_job') ? txt_please_choose_office_or_job : 'Please choose office or job'; ?>');
+                        e.preventDefault();
+                    }
+                    $('.career-search-form').submit();
+                });
+            });
+        });
+    </script>
+<?php } ?>

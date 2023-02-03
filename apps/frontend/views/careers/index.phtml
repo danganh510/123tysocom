@@ -1,0 +1,59 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var \Bincg\Models\BinCareer[] $articles
+ * @var \Bincg\Models\BinArticle[] $general_articles
+ * @var \Bincg\Models\BinOffice[] $offices
+ */
+?>
+<?php if(!$isMobile){ ?>
+<div class="breadcrumbs">
+    <div class="container">
+        <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+            <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+        </a>
+        <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($menu_bread) ? strip_tags($menu_bread) : '' ?>">
+            <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+        </a>
+    </div>
+</div>
+<?php } ?>
+<?php $this->view->partial('shared/layoutbanner'); ?>
+<?php $this->view->partial('careers/searchform'); ?>
+<?php if(count($articles)>0){ ?>
+    <div class="padding-block">
+        <div class="container">
+            <h2 class="text-center text-uppercase mb-5">
+                <?php echo defined('txt_position_career') ? txt_position_career : ''; ?>
+            </h2>
+            <div class="row">
+                <?php foreach ($articles as $article){ ?>
+                <a class="col-lg-4 col-6 mb-5" href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article->getCareerKeyword()); ?>" target="_self" title="<?php echo strip_tags($article->getCareerName()); ?>">
+                    <div class="media media-item">
+                        <div class="shadow-icon mr-3">
+                            <?php if(strlen($article->getCareerIcon())>0){ ?>
+                            <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article->getCareerIcon(); ?>" alt="<?php echo strip_tags($article->getCareerName()); ?>" title="<?php echo strip_tags($article->getCareerName()); ?>">
+                            <?php } ?>
+                        </div>
+                        <div class="media-body">
+                            <h3><?php echo $article->getCareerName(); ?></h3>
+                            <p class="text-grey text-14 m-0"><?php echo $article->getCareerSummary(); ?></p>
+                        </div>
+                    </div>
+                </a>
+                <?php } ?>
+            </div>
+            <?php  ?>
+            <div class="text-center d-mobile-flex">
+                <button type="button" data-toggle="modal" data-target="#upLoadCV" onclick="updateModalApplyGeneral()" class="btn btn-main btn-large-width w-mobile-100">
+                    <?php echo defined('btn_apply_now') ? btn_apply_now : '' ?>
+                </button>
+            </div>
+            <?php  ?>
+        </div>
+    </div>
+<?php } ?>
+<?php foreach ($general_articles as $general_article){ echo $general_article->getArticleSummary($lang_url_slashed); } ?>

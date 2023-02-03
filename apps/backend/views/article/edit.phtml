@@ -1,0 +1,460 @@
+<script>
+    $(document).ready(function () {
+        $('form[name=article-form]').submit(function (event) {
+            var valid = true;
+            var $emailSupport  = $('input[name=txtEmailSupport]').val();
+            if ($('#slcType').val() == null) {
+                $('.msg-type').text('Type field is required.');
+                $('#slcType').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-type').text('');
+                $('#slcType').removeClass("border-red");
+            }
+            if ($('input[name=txtInsertTime]').val() == '') {
+                $('.msg-time').text('Insert time field is required.');
+                $('#txtInsertTime').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-time').text('');
+                $('#txtInsertTime').removeClass("border-red");
+            }
+            if ($('input[name=txtOrder]').val() == '') {
+                $('.msg-order').text('Order field is required.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else if (isNaN($('input[name=txtOrder]').val())) {
+                $('.msg-order').text('Enter a valid order.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-order').text('');
+                $('#txtOrder').removeClass("border-red");
+            }
+            if ($('input[name=txtKeyword]').val() == 0) {
+                $('.msg-keyword').text('Keyword field is required.');
+                $('#txtKeyword').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-keyword').text('');
+                $('#txtKeyword').removeClass("border-red");
+            }
+            if(($emailSupport.length >0) && (!emailValid($emailSupport) )){
+                valid = false;
+                $('.msg-email-support').text('Enter a valid Email');
+                $('input[name=txtEmailSupport]').parent().addClass("has-error");
+            }else if($emailSupport.length == 0){
+                $('.msg-email-support').text('');
+                $('#txtEmailSupport').removeClass("border-red");
+            }
+            if (!valid) event.preventDefault();
+            if (valid) {
+                $('button[name=sbmArticle]').prop('disabled', true);
+            }
+        });
+        function emailValid(email) {
+            var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(email);
+        };
+
+        var oFCKeditor2;
+        <?php foreach ($formData['arr_language'] as $code => $lang ) { ?>
+        oFCKeditor2 = new FCKeditor('txtContent<?php echo $code ?>');
+        oFCKeditor2.Height = '400';
+        oFCKeditor2.Width = '700';
+        oFCKeditor2.ToolbarSet = "Default";
+        oFCKeditor2.Basepath = '../backend/fckeditor/';
+        oFCKeditor2.ReplaceTextarea();
+        <?php } ?>
+
+    });
+
+</script>
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Article</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<?php if (!empty($messages['message'])) {
+    ?>
+    <div class="clearfix"></div>
+    <p style="font-size:18px;text-align:center" class="alert alert-<?php echo $messages['typeMessage'] ?>">
+        <?php echo $messages['message']; ?>
+    </p>
+<?php } ?>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">Form Edit
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+                <form name="article-form" id="article-form" data-parsley-validate
+                      class="form-horizontal form-label-left" method="post">
+                    <input type="hidden" name="save" id="save"
+                           value="<?php echo \Bincg\Models\BinLanguage::GENERAL; ?>"/>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Type <span
+                                    class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="slcType" name="txtType[]" multiple
+                                    class="form-control col-md-7 col-xs-12 <?php echo isset($messages["type"]) ? $messages["status"] : ""; ?>">=
+                                <?php
+                                echo isset($select_type) ? $select_type : "";
+                                ?>
+                            </select>
+                            <span class="text-danger msg-type"><?php echo isset($messages["type"]) ? $messages["type"] : "" ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtEmailSupport" class="control-label col-md-3 col-sm-3 col-xs-12">Email
+                            Support</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_email_support"]) ? $formData["article_email_support"] : "" ?>"
+                                   id="txtEmailSupport"
+                                   class="form-control col-md-7 col-xs-12 <?php echo isset($messages["email_support"]) ? $messages["status"] : ""; ?>"
+                                   type="text" name="txtEmailSupport">
+                            <span class="text-danger msg-email-support"><?php echo isset($messages["email_support"]) ? $messages["email_support"] : "" ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Keyword <span
+                                    class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_keyword"]) ? $formData["article_keyword"] : "" ?>"
+                                   id="txtKeyword" name="txtKeyword"
+                                   class="form-control col-md-7 col-xs-12 <?php echo isset($messages["keyword"]) ? $messages["status"] : ""; ?>"
+                                   type="text">
+                            <span class="text-danger msg-keyword"><?php echo isset($messages["keyword"]) ? $messages["keyword"] : "" ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Icon Large</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_icon_large"]) ? $formData["article_icon_large"] : "" ?>"
+                                   id="txtIconLarge" name="txtIconLarge" class="form-control col-md-7 col-xs-12 "
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Icon Large Mobile</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_icon_large_mobile"]) ? $formData["article_icon_large_mobile"] : "" ?>"
+                                   id="txtIconLargeMobile" name="txtIconLargeMobile"
+                                   class="form-control col-md-7 col-xs-12 " type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Logo</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_logo"]) ? $formData["article_logo"] : "" ?>"
+                                   id="txtLogo" name="txtLogo" class="form-control col-md-7 col-xs-12 " type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Logo Active</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_logo_active"]) ? $formData["article_logo_active"] : "" ?>"
+                                   id="txtLogoActive" name="txtLogoActive" class="form-control col-md-7 col-xs-12 "
+                                   type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Insert Time <span
+                                    class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input value="<?php echo isset($formData["article_insert_time"]) ? $formData["article_insert_time"] : "" ?>"
+                                   type="text" id="txtInsertTime" name="txtInsertTime"
+                                   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["article_insert_time"])) ? $messages["status"] : ""; ?>"><br>MM/DD/YYYY
+                            H:M:S
+                            <br><span
+                                    class="text-danger msg-time"><?php echo isset($messages["article_insert_time"]) ? $messages["article_insert_time"] : ""; ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Order <span
+                                    class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["article_order"]) ? $formData["article_order"] : "" ?>"
+                                   id="txtOrder" name="txtOrder"
+                                   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["order"])) ? $messages["status"] : ""; ?>"
+                                   type="text">
+                            <span class="text-danger msg-order"><?php echo isset($messages["order"]) ? $messages["order"] : ""; ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Home</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radIsHomeActive"
+                                                                  value="Y" <?php echo (isset($formData["article_is_home"]) && $formData["article_is_home"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                        class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radIsHomeActive"
+                                                                  value="N" <?php echo (isset($formData["article_is_home"]) && $formData["article_is_home"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Header</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radIsHeaderActive"
+                                                                  value="Y" <?php echo (isset($formData["article_is_header"]) && $formData["article_is_header"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                        class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radIsHeaderActive"
+                                                                  value="N" <?php echo (isset($formData["article_is_header"]) && $formData["article_is_header"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Horizontal</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radIsHorizontalActive"
+                                                                  value="Y" <?php echo (isset($formData["article_is_horizontal"]) && $formData["article_is_horizontal"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                        class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radIsHorizontalActive"
+                                                                  value="N" <?php echo (isset($formData["article_is_horizontal"]) && $formData["article_is_horizontal"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Is Footer</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radIsFooterActive"
+                                                                  value="Y" <?php echo (isset($formData["article_is_footer"]) && $formData["article_is_footer"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                        class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radIsFooterActive"
+                                                                  value="N" <?php echo (isset($formData["article_is_footer"]) && $formData["article_is_footer"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Full Style</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radFullStyleActive"
+                                                                  value="Y" <?php echo (isset($formData["article_full_style"]) && $formData["article_full_style"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                        class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radFullStyleActive"
+                                                                  value="N" <?php echo (isset($formData["article_full_style"]) && $formData["article_full_style"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Active</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radActive"
+                                                                  value="Y" <?php echo (isset($formData["article_active"]) && $formData["article_active"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                        class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radActive"
+                                                                  value="N" <?php echo (isset($formData["article_active"]) && $formData["article_active"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button name="sbmArticle" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary" href="<?php echo $this->url->get("/dashboard/list-article"); ?>">Cancel</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <ul class="nav nav-pills" role="tablist">
+                <?php
+                foreach ($formData['arr_language'] as $code => $lang) {
+                    $active = $formData['lang_current'] == $code ? "active" : "";
+                    ?>
+                    <li role="presentation" class="<?php echo $active; ?>"><a href="#<?php echo $code ?>translate"
+                                                                              aria-controls="<?php echo $code ?>translate"
+                                                                              role="tab"
+                                                                              data-toggle="tab"><?php echo $lang; ?></a>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="tab-content">
+                <?php foreach ($formData['arr_language'] as $code => $lang) {
+                    $active = $formData['lang_current'] == $code ? "active" : "";
+                    ?>
+                    <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="<?php echo $code; ?>translate">
+                        <br>
+                        <form name="article-form<?php echo $code; ?>" id="article-form<?php echo $code; ?>" action=""
+                              data-parsley-validate class="form-horizontal form-label-left" method="post">
+                            <input type="hidden" name="save" id="save" value="<?php echo $code; ?>"/>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtName">Name <span
+                                            class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input maxlength="255"
+                                           value="<?php echo isset($formData['arr_translate'][$code]["article_name"]) ? $formData['arr_translate'][$code]["article_name"] : "" ?>"
+                                           type="text" id="txtName<?php echo $code; ?>" name="txtName"
+                                           class="form-control col-md-7 col-xs-12 <?php echo isset($messages[$code]["name"]) ? $messages["status"] : ""; ?>">
+                                    <span class="text-danger msg-name-<?php echo $code; ?>"><?php echo isset($messages[$code]["name"]) ? $messages[$code]["name"] : "" ?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtTitle" class="control-label col-md-3 col-sm-3 col-xs-12">Title <span
+                                            class="text-danger">*</span></label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input maxlength="255"
+                                           value="<?php echo isset($formData['arr_translate'][$code]["article_title"]) ? $formData['arr_translate'][$code]["article_title"] : "" ?>"
+                                           id="txtTitle<?php echo $code; ?>"
+                                           class="form-control col-md-7 col-xs-12 <?php echo isset($messages[$code]["title"]) ? $messages["status"] : ""; ?>"
+                                           type="text" name="txtTitle">
+                                    <span class="text-danger msg-title-<?php echo $code; ?>"><?php echo isset($messages[$code]["title"]) ? $messages[$code]["title"] : "" ?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Icon</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input maxlength="255"
+                                           value="<?php echo isset($formData['arr_translate'][$code]["article_icon"]) ? $formData['arr_translate'][$code]["article_icon"] : "" ?>"
+                                           id="txtIcon<?php echo $code; ?>" name="txtIcon"
+                                           class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Meta Image</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input placeholder="1920 x 960" maxlength="255"
+                                           value="<?php echo isset($formData['arr_translate'][$code]["article_meta_image"]) ? $formData['arr_translate'][$code]["article_meta_image"] : "" ?>"
+                                           id="txtMetaImage<?php echo $code; ?>" name="txtMetaImage"
+                                           class="form-control col-md-7 col-xs-12" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Meta keyword <span
+                                            class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input maxlength="255"
+                                           value="<?php echo isset($formData['arr_translate'][$code]["article_meta_keyword"]) ? $formData['arr_translate'][$code]["article_meta_keyword"] : "" ?>"
+                                           id="txtMetaKeyword<?php echo $code; ?>" name="txtMetaKeyword"
+                                           class="form-control col-md-7 col-xs-12 <?php echo isset($messages[$code]["meta_keyword"]) ? $messages["status"] : ""; ?>"
+                                           type="text">
+                                    <span class="text-danger msg-metakeyword-<?php echo $code; ?>"><?php echo isset($messages[$code]["meta_keyword"]) ? $messages[$code]["meta_keyword"] : "" ?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Meta description <span
+                                            class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input maxlength="255"
+                                           value="<?php echo isset($formData['arr_translate'][$code]["article_meta_description"]) ? $formData['arr_translate'][$code]["article_meta_description"] : "" ?>"
+                                           id="txtMetaDescription<?php echo $code; ?>" name="txtMetaDescription"
+                                           class="form-control col-md-7 col-xs-12 <?php echo isset($messages[$code]["meta_description"]) ? $messages["status"] : ""; ?>"
+                                           type="text">
+                                    <span class="text-danger msg-metadescription-<?php echo $code; ?>"><?php echo isset($messages[$code]["meta_description"]) ? $messages[$code]["meta_description"] : "" ?></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       for="txtSummary">Summary </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12 control-bg">
+                                    <textarea class="form-control" id="txtSummary<?php echo $code; ?>" name="txtSummary"
+                                              style="width:699px;height: 212px;"><?php echo isset($formData['arr_translate'][$code]["article_summary"]) ? $formData['arr_translate'][$code]["article_summary"] : ""; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12"
+                                       for="txtContent">Content</label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <textarea class="form-control" id="txtContent<?php echo $code; ?>" name="txtContent"
+                                              style="width: 750px;height: 212px;"><?php echo isset($formData['arr_translate'][$code]["article_content"]) ? $formData['arr_translate'][$code]["article_content"] : ""; ?></textarea>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <button name="sbmArticle<?php echo $code; ?>" type="submit" class="btn btn-success">
+                                        Save change
+                                    </button>
+                                </div>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    $('#txtName<?php echo $code; ?>').on('input', function () {
+                                        var id = <?php echo isset($formData['arr_translate'][$code]["article_id"]) ? $formData['arr_translate'][$code]["article_id"] : -1;?>;
+                                        if (id < 0) {
+                                            var str = $(this).val();
+                                            var str_slug = slugify(str);
+                                            $('#txtTitle<?php echo $code; ?>').val(str);
+                                            $('#txtMetaKeyword<?php echo $code; ?>').val(str);
+                                            $('#txtMetaDescription<?php echo $code; ?>').val(str);
+                                        }
+                                    });
+                                    if ($('#txtMetaImage<?php echo $code; ?>').val() == '') {
+                                        $('#txtIcon<?php echo $code; ?>').on('input', function () {
+                                            var str = $(this).val();
+                                            $('#txtMetaImage<?php echo $code; ?>').val(str);
+
+                                        });
+                                    }
+                                    $('form[name=article-form<?php echo $code; ?>]').submit(function (event) {
+                                        valid = true;
+                                        if ($('#txtName<?php echo $code; ?>').val() == '') {
+                                            valid = false;
+                                            $('.msg-name-<?php echo $code;?>').text("Name field is required.");
+                                            $('#txtName<?php echo $code; ?>').addClass("border-red");
+                                        } else {
+                                            $('.msg-name-<?php echo $code;?>').text('');
+                                            $('#txtName<?php echo $code; ?>').removeClass("border-red");
+                                        }
+                                        if ($('#txtTitle<?php echo $code; ?>').val() == '') {
+                                            $('.msg-title-<?php echo $code; ?>').text('Title field is required.');
+                                            $('#txtTitle<?php echo $code; ?>').addClass("border-red");
+                                            valid = false;
+                                        } else {
+                                            $('.msg-title-<?php echo $code; ?>').text('');
+                                            $('#txtTitle<?php echo $code; ?>').removeClass("border-red");
+                                        }
+                                        if ($('#txtMetaKeyword<?php echo $code; ?>').val() == '') {
+                                            $('.msg-metakeyword-<?php echo $code; ?>').text('Meta keyword field is required.');
+                                            $('#txtMetaKeyword<?php echo $code; ?>').addClass("border-red");
+                                            valid = false;
+                                        } else {
+                                            $('.msg-metakeyword-<?php echo $code; ?>').text('');
+                                            $('#txtMetaKeyword<?php echo $code; ?>').removeClass("border-red");
+                                        }
+                                        if ($('#txtMetaDescription<?php echo $code; ?>').val() == '') {
+                                            $('.msg-metadescription-<?php echo $code; ?>').text('Meta description field is required.');
+                                            $('#txtMetaDescription<?php echo $code; ?>').addClass("border-red");
+                                            valid = false;
+                                        } else {
+                                            $('.msg-metadescription-<?php echo $code; ?>').text('');
+                                            $('#txtMetaDescription<?php echo $code; ?>').removeClass("border-red");
+                                        }
+                                        if (!valid) event.preventDefault();
+                                        if (valid) {
+                                            $('#sbmArticle<?php echo $code; ?>').prop('disabled', true);
+                                        }
+                                    });
+                                });
+                            </script>
+                        </form>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>

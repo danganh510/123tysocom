@@ -1,0 +1,445 @@
+<div id="upLoadCV" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-center text-main" id="uploadCVModalTitle"><?php echo defined('txt_apply') ? txt_apply : '' ;?></h2>
+                <button type="button" class="close" data-dismiss="modal">
+                    <img src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-close-black.svg" alt="<?php echo htmlentities(defined('txt_close') ? txt_close : ''); ?>" title="<?php echo htmlentities(defined('txt_close') ? txt_close : ''); ?>">
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-modal" name="formApplyCV" id="formApplyCV" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label><?php echo defined('lbl_full_name') ? lbl_full_name : ''; ?><span class="text-danger"> *</span></label>
+                        <input maxlength="255" name="txtName" id="txtName" type="text" class="form-control" placeholder="<?php echo defined('txt_description_type_full_name') ? txt_description_type_full_name : '' ;?>" value="<?php echo isset($userData['user_name']) ? $userData['user_name'] : '' ; ?>">
+                        <span class="text-danger msg-name"></span>
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo defined('lbl_email_address') ? lbl_email_address : ''; ?><span class="text-danger"> *</span></label>
+                        <input maxlength="255" name="txtEmail" id="txtEmail" type="text" class="form-control" placeholder="<?php echo defined('txt_description_type_email_address') ? txt_description_type_email_address : '' ;?>" value="<?php echo isset($userData['user_email']) ? $userData['user_email'] : '' ; ?>">
+                        <span class="text-danger msg-email"></span>
+                    </div>
+                    <div class="form-group">
+                        <label><?php echo defined('lbl_phone_number') ? lbl_phone_number : ''; ?><span class="text-danger"> *</span></label>
+                        <input maxlength="20" name="txtPhone" id="txtPhone" type="text" class="form-control" placeholder="<?php echo defined('txt_description_type_phone_number') ? txt_description_type_phone_number : '' ;?>">
+                        <input type="hidden" name="txt_iso2" id="txt_iso2" value="<?php echo isset($userData['user_country_id']) ? $userData['user_country_id'] : '' ; ?>">
+                        <input type="hidden" name="txt_phone_number" id="txt_phone_number" value="<?php echo isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : '' ; ?>">
+                        <span class="text-danger msg-phone"></span>
+                    </div>
+                    <?php if(!isset($checkCareer) || !$checkCareer){ ?>
+                        <div class="form-group">
+                            <label><?php echo defined('txt_role_you_interested') ? txt_role_you_interested : ''; ?><span class="text-danger"> *</span></label>
+                            <select name="slcRole" id="slcRole" class="form-control">
+                                <option value=0><?php echo defined('txt_role_you_interested') ? txt_role_you_interested : '' ;?></option>
+                                <?php $repoCareer = new \Bincg\Repositories\Career();
+                                echo $combo = $repoCareer->getComboboxCareerById('',$lang_code); ?>
+                            </select>
+                            <span class="text-danger msg-career"></span>
+                        </div>
+                    <?php }else{ ?>
+                        <div class="form-group" style="position: absolute;visibility: hidden; ">
+                            <select name="slcRole" id="slcRole" class="form-control">
+                                <option value=0><?php echo defined('txt_role_you_interested') ? txt_role_you_interested : '' ;?></option>
+                            </select>
+                            <span class="text-danger msg-career"></span>
+                        </div>
+                    <?php } ?>
+                    <div class="form-group">
+                        <label>
+                            <?php echo defined('lbl_communication_channel') ? lbl_communication_channel : '' ?>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div>
+                            <input type="text" name="txtCommunicationChannelHidden" class="form-control input-select2-label-before">
+                            <select class="form-control" id="communication_chanel" name="communication_chanel">
+                                <option value="" data-communication-channel-type="">
+                                    <?php echo defined('txt_please_select') ? txt_please_select : '' ?>
+                                </option>
+                                <?php echo isset($selectCommunicationChannel) ? $selectCommunicationChannel : "" ?>
+                            </select>
+                            <input type="hidden" name="txtCommunicationChannelType" id="txtCommunicationChannelType">
+                        </div>
+                        <span class="text-danger msg-communication-channel">
+                            <?php echo isset($message['communicationChannel']) ? $message['communicationChannel'] : "" ?>
+                        </span>
+                    </div>
+                    <div data-bind="visible: typeOfCommunicationChannel() != ''">
+                        <div class="form-group" data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>'">
+                            <input type="text" maxlength="255" name="txtCommunicationChannelOther"
+                                   id="txtCommunicationChannelOther" class="form-control" placeholder="<?php echo defined('txt_other_channel') ? txt_other_channel : '' ?>"
+                                   value="<?php echo isset($formData['contact_communication_channel_other']) ? $formData['contact_communication_channel_other'] : '' ?>">
+                            <span class="text-danger msg-communication-channel-other">
+                                <?php echo isset($message['communicationChannelOther']) ? $message['communicationChannelOther'] : "" ?>
+                            </span>
+                        </div>
+                        <div class="form-group">
+                            <div data-bind="visible: typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                                <input type="text" maxlength="255" name="txtCommunicationChannelID" id="txtCommunicationChannelID"
+                                       class="form-control" placeholder="<?php echo defined('lbl_ID') ? lbl_ID : '' ?>"
+                                       value="<?php echo isset($formData['contact_communication_channel_id']) ? $formData['contact_communication_channel_id'] : '' ?>">
+                            </div>
+                            <div data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                                <input maxlength="20" id="txtCommunicationChannelNumber"
+                                       name="txtCommunicationChannelNumber" type="text" class="form-control" placeholder="<?php echo defined('txt_description_type_phone_number') ? txt_description_type_phone_number : ''; ?>">
+                                <input type="hidden" name="txtPhoneIso2CommunicationChannel" id="txtPhoneIso2CommunicationChannel"
+                                       value="<?php echo isset($formData['contact_country_code']) ? $formData['contact_country_code'] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : ''); ?>">
+                                <input type="hidden" name="txtPhoneNumberCommunicationChannel" id="txtPhoneNumberCommunicationChannel"
+                                       value="<?php echo isset($formData['contact_communication_channel_telapi_number']) ? $formData['contact_communication_channel_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>">
+                            </div>
+                            <span class="text-danger msg-phone-communication">
+                                <?php echo isset($message['communicationChannelNumber']) ? $message['communicationChannelNumber'] : "" ?>
+                            </span>
+                            <span class="text-danger msg-communication-id">
+                                <?php echo isset($message['communicationChannelId']) ? $message['communicationChannelId'] : "" ?>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group custom-file">
+                        <label class="d-block"><?php echo defined('lbl_upload_file') ? lbl_upload_file : '' ;?><span class="text-danger"> *</span>: </label>
+                        <label for="txtAttachFile" class="custom-file-upload">
+                            <span class="choose-file"><?php echo defined('lbl_choose_file') ? lbl_choose_file : '' ;?></span>
+                            <span id="textChoosen" class="text-grey"><?php echo defined('lbl_no_file_chosen') ? lbl_no_file_chosen : '' ;?></span>
+                        </label>
+                        <input type="file" id="txtAttachFile" name="txtAttachFile[]" accept="
+                        <?php
+                        $index = 0;
+                        foreach($this->globalVariable->acceptUploadCV as $key => $value)
+                        {
+                            $index++;
+                            echo $key;
+                            if($index != count($this->globalVariable->acceptUploadCV)) {
+                                echo ',';
+                            }
+                        }
+                        ?>" style="display: none" multiple>
+                        <p id="nameFiles" class="text-14" style="font-weight: bold"></p>
+                        <span class="text-danger msg-file"></span>
+                        <p class="text-grey text-14 mgtop-10"><?php echo defined('txt_we_accept_cv_file') ? txt_we_accept_cv_file : '' ;?></p>
+                    </div>
+                    <div class="form-group text-center text-uppercase mt-4">
+                        <button name="btnApply" id="btnApply" type="button" class="btn btn-main btn-shadow"><?php echo defined('btn_apply_now') ? btn_apply_now : '' ;?></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var acceptUploadCVExts = <?php echo json_encode($this->globalVariable->acceptUploadCVExts); ?>;
+    commands.push(function () {
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            return $('<span><img src="' + state.element.getAttribute('data-img-src') + '" class="img-flag" alt="' + state.text + '"/>' + state.text + '</span>');
+        }
+        $(document).ready(function(){
+            $('#communication_chanel').select2({
+                templateResult: formatState,
+                templateSelection: formatState,
+                dropdownCssClass: "communication-dropdown"
+            });
+            var profileTel = $('input[name=txtPhone]');
+            profileTel.intlTelInput({
+                autoPlaceholder: "off",
+                initialCountry: "<?php echo isset($userData['user_country_id']) ? $userData['user_country_id'] : strtolower($ipCountryCode); ?>",
+                preferredCountries: ["<?php echo isset($userData['user_country_id']) ? $userData['user_country_id'] : strtolower($ipCountryCode); ?>"],
+                formatOnDisplay: true,
+                utilsScript: "<?php echo $this->url->getStatic('shared/'); ?>js/utils.js"
+            });
+            profileTel.intlTelInput('setNumber','');
+            var isValidNumber = true;
+            profileTel.blur(function() {
+                var phone_number = profileTel.intlTelInput('getNumber');
+                $('input[name=txt_phone_number]').val(phone_number);
+                isValidNumber = profileTel.intlTelInput('isValidNumber');
+                var country_data = profileTel.intlTelInput('getSelectedCountryData');
+                $('input[name=txt_iso2]').val(country_data.iso2);
+                $('input[name=txtCommunicationChannelNumber]').val(profileTel.val());
+                $('input[name=txtPhoneNumberCommunicationChannel]').val(phone_number);
+                $('input[name=txtPhoneIso2CommunicationChannel]').val(country_data.iso2);
+                communicationChannelNumber.intlTelInput('destroy').intlTelInput({
+                    initialCountry: country_data.iso2,
+                    formatOnDisplay: false
+                });
+            });
+            var communicationChannelNumber = $('input[name=txtCommunicationChannelNumber]');
+            communicationChannelNumber.intlTelInput({
+                autoPlaceholder: "off",
+                initialCountry: "<?php echo isset($formData["contact_communication_channel_country_code"]) ? $formData["contact_communication_channel_country_code"] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : strtolower($ipCountryCode)); ?>",
+                preferredCountries: ["<?php echo isset($formData["contact_communication_channel_country_code"]) ? $formData["contact_communication_channel_country_code"] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : strtolower($ipCountryCode)); ?>"],
+                formatOnDisplay: true,
+                utilsScript: "<?php echo $this->url->getStatic('shared/'); ?>js/utils.js"
+            });
+            communicationChannelNumber.intlTelInput('setNumber', '<?php echo isset($formData['contact_communication_channel_telapi_number']) ? $formData['contact_communication_channel_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>');
+            var isValidCommunicationChannelNumber = true;
+            communicationChannelNumber.blur(function () {
+                if (formVM.typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                    return;
+                }
+                var phone_number = communicationChannelNumber.intlTelInput('getNumber');
+                $('input[name=txtPhoneNumberCommunicationChannel]').val(phone_number);
+                isValidCommunicationChannelNumber = communicationChannelNumber.intlTelInput('isValidNumber');
+                var country_data = communicationChannelNumber.intlTelInput('getSelectedCountryData');
+                $('input[name=txtPhoneIso2CommunicationChannel]').val(country_data.iso2);
+            });
+            var arrayFileUpload = [];
+            $("input[id='txtAttachFile']").change(function (e) {
+                arrayFileUpload = [];
+                $('#nameFiles').empty();
+                $('#textChoosen').text('<?php echo defined('lbl_no_file_chosen') ? lbl_no_file_chosen : '';?>');
+                var files = e.target.files;
+                if (files.length > 0) {
+                    $('#textChoosen').text('');
+                    for (var i = 0; i < files.length; i++) {
+                        var name = files[i].name;
+                        var ext = name.split('.').pop().toLowerCase();
+                        var size = files[i].size;
+                        arrayFileUpload.push([name, ext, size]);
+                        $('#nameFiles').append((i+1)+'. '+name+'<br>');
+                    }
+                }
+            });
+            $('button[name=btnApply]').click(function (event) {
+                var valid = true;
+                if ($('#communication_chanel').val() == 0) {
+                    valid = false;
+                    $('.msg-communication-channel').text('<?php echo defined('txt_please_select_communication_channel') ? txt_please_select_communication_channel : '';?>');
+                    $('#communication_chanel').parent().addClass("has-error");
+                } else {
+                    $('.msg-communication-channel').text('');
+                    $('#communication_chanel').parent().removeClass("has-error");
+                }
+
+
+                if($('input[name=txtName]').val() == ''){
+                    valid = false;
+                    $('.msg-name').text('<?php echo defined('txt_enter_full_name') ? txt_enter_full_name : '' ;?>');
+                    $('input[name=txtName]').parent().addClass("has-error");
+                } else{
+                    $('.msg-name').text('');
+                    $('input[name=txtName]').parent().removeClass("has-error");
+                }
+                if($('input[name=txtEmail]').val() == ''){
+                    valid = false;
+                    $('.msg-email').text('<?php echo defined('txt_enter_email') ? txt_enter_email : '' ;?>');
+                    $('input[name=txtEmail]').parent().addClass("has-error");
+                }else if( !emailValid($('input[name=txtEmail]').val()) ){
+                    valid = false;
+                    $('.msg-email').text('<?php echo defined('txt_enter_valid_email') ? txt_enter_valid_email : '' ;?>');
+                    $('input[name=txtEmail]').parent().addClass("has-error");
+                }
+                else{
+                    $('.msg-email').text('');
+                    $('input[name=txtEmail]').parent().removeClass("has-error");
+                }
+                if ($('input[name=txtPhone]').val() == ''){
+                    valid = false;
+                    $('.msg-phone').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '' ;?>');
+                    $('input[name=txtPhone]').parent().addClass("has-error");
+                } else if (!isValidNumber){
+                    valid = false;
+                    $('.msg-phone').text('<?php echo defined('txt_enter_valid_phone_number') ? txt_enter_valid_phone_number : '' ;?>');
+                    $('input[name=txtPhone]').parent().addClass("has-error");
+                }
+                else {
+                    $('.msg-phone').text('');
+                    $('input[name=txtPhone]').parent().removeClass("has-error");
+                }
+                if ($('select[name=slcRole]').val() == 0) {
+                    $('.msg-career').text('<?php echo defined('txt_select_option') ? txt_select_option : ''; ?>');
+                    $('#slcRole').parent().addClass("has-error");
+                    valid = false;
+                } else {
+                    $('.msg-career').text('');
+                    $('#slcRole').parent().removeClass("has-error");
+                }
+                if(arrayFileUpload.length>0) {
+                    $.each(arrayFileUpload, function(key, val) {
+                        if(arrayFileUpload.length>3) {
+                            valid = false;
+                            $('.msg-file').text('<?php echo defined('txt_select_file_limit') ? txt_select_file_limit : '' ;?>');
+                        } else if(val[2] > <?php echo $this->globalVariable->maximumSizeUploadFile ?>) {
+                            valid = false;
+                            $('.msg-file').text('<?php echo defined('txt_select_file_size_limit') ? txt_select_file_size_limit : '' ;?>');
+                        } else if ($.inArray(val[1], acceptUploadCVExts) === -1) {
+                            valid = false;
+                            $('.msg-file').text('<?php echo defined('txt_select_correct_file_format') ? txt_select_correct_file_format : '' ;?>');
+                        } else {
+                            $('.msg-file').text('');
+                        }
+                    });
+                } else {
+                    valid = false;
+                    $('.msg-file').text('<?php echo defined('txt_select_file_required') ? txt_select_file_required : '' ;?>');
+                }
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                    if ($('input[name=txtCommunicationChannelNumber]').val() == '') {
+                        valid = false;
+                        $('.msg-phone-communication').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '';?>');
+                        $('input[name=txtCommunicationChannelNumber]').parent().addClass("has-error");
+                    } else if (!isValidCommunicationChannelNumber) {
+                        valid = false;
+                        $('.msg-phone-communication').text('<?php echo defined('txt_please_enter_valid_number') ? txt_please_enter_valid_number : '';?>');
+                        $('input[name=txtCommunicationChannelNumber]').parent().addClass("has-error");
+                    }
+                    else {
+                        $('.msg-phone-communication').text('');
+                        $('input[name=txtCommunicationChannelNumber]').parent().removeClass("has-error");
+                    }
+                }
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_TEXT ?>') {
+                    if ($('input[name=txtCommunicationChannelID]').val() == '') {
+                        valid = false;
+                        $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
+                        $('input[name=txtCommunicationChannelID]').parent().addClass("has-error");
+                    } else {
+                        $('.msg-communication-id').text('');
+                        $('input[name=txtCommunicationChannelID]').parent().removeClass("has-error");
+                    }
+                }
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>') {
+                    if ($('input[name=txtCommunicationChannelID]').val() == '') {
+                        valid = false;
+                        $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
+                        $('input[name=txtCommunicationChannelID]').parent().addClass("has-error");
+                    } else {
+                        $('.msg-communication-id').text('');
+                        $('input[name=txtCommunicationChannelID]').parent().removeClass("has-error");
+                    }
+
+                    if ($('input[name=txtCommunicationChannelOther]').val() == '') {
+                        valid = false;
+                        $('.msg-communication-channel-other').text('<?php echo defined('txt_please_enter_other_channel') ? txt_please_enter_other_channel : '';?>');
+                        $('input[name=txtCommunicationChannelOther]').parent().addClass("has-error");
+                    } else {
+                        $('.msg-communication-channel-other').text('');
+                        $('input[name=txtCommunicationChannelOther]').parent().removeClass("has-error");
+                    }
+                }
+                if (!valid){
+                    event.preventDefault();
+                }
+                if(valid) {
+                    var url = "<?php echo $this->url->get($lang_url.'/apply-cv') ; ?>";
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: new FormData($('form[name=formApplyCV]')[0]),
+                        contentType: false,
+                        cache: false,
+                        processData:false,
+                        beforeSend: function() {
+                            $('#l-loading').show();
+                            $('button[name=btnApply]').prop('disabled', true);
+                        },
+                        success: function(dataJS){
+                            var data = JSON.parse(dataJS);
+                            $(".apply-box").remove();
+                            if(data['status'] !== undefined && data['status']==="success"){
+                                $('form[name=formApplyCV]').hide();
+                                $('#l-loading').hide();
+                                $( ".modal-body" ).append("<div class=\"form-group text-center\">\n" +
+                                    "                        <button name=\"btnClose\" id=\"btnClose\" type=\"button\" data-dismiss=\"modal\" class=\"btn btn-default\"><?php echo defined('btn_close') ? strtoupper(btn_close) : '' ;?></button>\n" +
+                                    "                    </div>");
+                                $( ".modal-body" ).prepend( "<div class=\"alert alert-success alert-dismissible fade in apply-box show\" role=\"alert\"><?php echo defined('txt_contact_us_success') ? txt_contact_us_success : '' ;?></div>" );
+                            } else if (data['status'] !== undefined && data['status']==="error") {
+                                $('form[name=formApplyCV]').hide();
+                                $('#l-loading').hide();
+                                $( ".modal-body" ).prepend( "<div class=\"alert alert-danger alert-dismissible fade in apply-box show\" role=\"alert\"><?php echo defined('txt_contact_us_fail') ? txt_contact_us_fail : '' ;?></div>" );
+                            }
+                            if(data['name'] !== undefined) {
+                                $('.msg-name').text('<?php echo defined('txt_enter_full_name') ? txt_enter_full_name : '' ;?>');
+                                $('input[name=txtName]').parent().addClass("has-error");
+                            } else {
+                                $('.msg-name').text('');
+                                $('input[name=txtName]').parent().removeClass("has-error");
+                            }
+                            if(data['email'] !== undefined && data['email'] === "txt_enter_email"){
+                                $('.msg-email').text('<?php echo defined('txt_enter_email') ? txt_enter_email : '' ;?>');
+                                $('input[name=txtEmail]').parent().addClass("has-error");
+                            } else if(data['email'] === "txt_enter_valid_email"){
+                                $('.msg-email').text('<?php echo defined('txt_enter_valid_email') ? txt_enter_valid_email : '' ;?>');
+                                $('input[name=txtEmail]').parent().addClass("has-error");
+                            } else {
+                                $('.msg-email').text('');
+                                $('input[name=txtEmail]').parent().removeClass("has-error");
+                            }
+                            if (data['phone'] !== undefined && data['phone'] === "txt_enter_phone_number"){
+                                $('.msg-phone').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '' ;?>');
+                                $('input[name=txtPhone]').parent().addClass("has-error");
+                            } else if (!isValidNumber || data['phone'] === "txt_enter_valid_phone_number"){
+                                $('.msg-phone').text('<?php echo defined('txt_enter_valid_phone_number') ? txt_enter_valid_phone_number : '' ;?>');
+                                $('input[name=txtPhone]').parent().addClass("has-error");
+                            }
+                            else {
+                                $('.msg-phone').text('');
+                                $('input[name=txtPhone]').parent().removeClass("has-error");
+                            }
+                            if (data['career'] !== undefined) {
+                                $('.msg-career').text('<?php echo defined('txt_select_option') ? txt_select_option : ''; ?>');
+                                $('#slcRole').parent().addClass("has-error");
+                            } else {
+                                $('.msg-career').text('');
+                                $('#slcRole').parent().removeClass("has-error");
+                            }
+                            if (data['file'] !== undefined && data['file'] === "txt_select_file_limit"){
+                                $('.msg-file').text('<?php echo defined('txt_select_file_limit') ? txt_select_file_limit : '' ;?>');
+                            } else if (data['file'] === "txt_select_correct_file_format"){
+                                $('.msg-file').text('<?php echo defined('txt_select_correct_file_format') ? txt_select_correct_file_format : '' ;?>');
+                            } else if (data['file'] === "txt_select_file_size_limit"){
+                                $('.msg-file').text('<?php echo defined('txt_select_file_size_limit') ? txt_select_file_size_limit : '' ;?>');
+                            }
+                            else {
+                                $('.msg-file').text('');
+                            }
+                        },
+                    });
+                }
+            });
+            function emailValid(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+            var communicationChannel = $('#communication_chanel');
+            communicationChannel.on("change", function () {
+                var self = $(this);
+                var cur = self.find("option:selected");
+                var type = cur.attr("data-communication-channel-type");
+                $('#txtCommunicationChannelType').val(type);
+                formVM.typeOfCommunicationChannel(type);
+                $('input[name=txtCommunicationChannelID]').val('').parent().removeClass("has-error");
+                $('input[name=txtCommunicationChannelNumber]').parent().removeClass("has-error");
+                $('input[name=txtCommunicationChannelOther]').val('').parent().removeClass("has-error");
+                $('.msg-communication-channel-other').text('');
+                $('.msg-communication-id').text('');
+                $('.msg-phone-communication').text('');
+            });
+
+            function AppViewModel() {
+                this.typeOfCommunicationChannel = ko.observable('');
+            }
+
+            var formVM = new AppViewModel();
+            ko.applyBindings(formVM);
+
+
+            var communicationSlc = communicationChannel;
+            var cur = communicationSlc.find("option:selected");
+            var type = cur.attr("data-communication-channel-type");
+            $('#txtCommunicationChannelType').val(type);
+            formVM.typeOfCommunicationChannel(type);
+            $('#upLoadCV').on('hidden.bs.modal', function () {
+                location.reload();
+            })
+        });
+    });
+    function updateModalTitle(title,id) {
+        $('#uploadCVModalTitle').text('<?php echo defined('txt_apply') ? txt_apply : '' ;?> ' +title);
+        $('#slcRole option:first').text(title);
+        $('#slcRole option:first').val(id);
+    }
+    function updateModalApplyGeneral() {
+        $('#uploadCVModalTitle').text('<?php echo defined('txt_apply') ? txt_apply : '' ;?>');
+    }
+</script>

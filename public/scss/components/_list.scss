@@ -1,0 +1,149 @@
+.outer-list-anchor {
+  width: 100%;
+  overflow-x: auto;
+  text-align: center;
+}
+.list-anchor {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style-type: none;
+  display: inline-flex;
+  justify-content: center;
+  min-width: 680px;
+  text-transform: uppercase;
+  margin-top: 50px;
+  color: $caret-color;
+  @include media-breakpoint-down(md) {
+    overflow-x: auto;
+  }
+  .item-anchor {
+    padding: 0 20px 15px;
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    &.active,
+    &:hover {
+      color: $primary-color;
+      border-color: $blue-color;
+    }
+  }
+}
+.anchorlink {
+  scroll-margin: 200px 0 0 0;
+}
+
+$list-border: #e3e3e3;
+$list-bg-mobile: #f6f6f6;
+.simple-list {
+  display: block;
+  border-bottom: 1px solid $list-border;
+
+  // background: url(../images/icon-carret-list.svg) $list-bg-mobile no-repeat center right 10px;
+  font-size: 16px;
+  padding: 15px 0;
+  h3 {
+    font-size: 16px;
+  }
+  a {
+    transition: none;
+    &:hover {
+      color: white !important;
+      @include media-breakpoint-down(md) {
+        color: $text-primary !important;
+      }
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+  }
+  @include media-breakpoint-up(lg) {
+    background-color: transparent;
+    background-image: none;
+    
+    h3 {
+      font-size: 18px;
+    }
+  }
+}
+
+.parent-simple-list {
+  margin-top: 10px;
+  box-shadow: $shadow;
+  background-color: $list-bg-mobile;
+  margin-bottom: 10px;
+  .simple-list {
+    background-image: none;
+    h3 {
+      color: $secondary-color;
+      font-size: 18px;
+    }
+    &:hover {
+      background-color: none;
+      h3 {
+        color: $secondary-color !important;
+      }
+      p {
+        color: $base-black !important;
+      }
+    }
+  }
+}
+
+.list-job {
+  padding: 20px 30px;
+  background-color: $background-body;
+  margin-bottom: 10px;
+  &:first-child {
+    @include media-breakpoint-down(md) {
+      margin-top: 40px;
+    }
+  }
+  &:hover {
+    box-shadow: $shadow;
+    background-color: white;
+    @include media-breakpoint-down(md) {
+      background-color: $background-body;
+      box-shadow: none;
+    }
+  }
+
+  .float-right {
+    @include media-breakpoint-down(md) {
+      display: block;
+      float: none !important;
+      margin-top: 20px;
+    }
+  }
+}
+
+
+.list-dot {
+  list-style: none;
+  padding: 0;
+  &-item {
+    position: relative;
+    padding-left: 20px;
+    &:before {
+      content: '';
+      border-radius: 4px;
+      position: absolute;
+      top: 10px;
+      left: 0px;
+      width: 8px;
+      height: 8px;
+      background-color: $base-black;
+    }
+  }
+  &.theme-primary {
+    .list-dot-item {
+      &:before {
+        background-color: $primary-color;
+      }
+    }
+  }
+}

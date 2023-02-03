@@ -1,0 +1,112 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var $type_keyword;
+ * @var \Bincg\Models\BinType $type
+ * @var \Bincg\Models\BinArticle[] $articles
+ */
+?>
+<?php if(!$isMobile){ ?>
+    <div class="breadcrumbs black position-static">
+        <div class="container">
+            <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($parent_bread) ? strip_tags($parent_bread) : '' ?>">
+                <?php echo isset($parent_bread) ? $parent_bread : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$type_keyword); ?>" target="_self" title="<?php echo isset($menu_bread) ? strip_tags($menu_bread) : '' ?>">
+                <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+<div class="padding-block-no-banner">
+    <div class="container">
+        <h1 class="text-center text-main title-mark mt-3 mt-lg-0"><?php echo isset($menu_bread) ? $menu_bread : '' ?></h1>
+        <?php if(count($articles)>0){ ?>
+        <div class="row">
+            <?php foreach ($articles as $key=>$article){
+                if($key==0){
+                ?>
+                    <div class="col-lg-7">
+                        <a class="box-decor-content-wrapper" href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article['article_keyword']); ?>" target="_self" title="<?php echo strip_tags($article['article_name']); ?>">
+                            <?php if(!$isMobile){ ?>
+                                <img class="full" src="<?php echo $article['article_meta_image']; ?>" alt="<?php echo strip_tags($article['article_name']); ?>" title="<?php echo strip_tags($article['article_name']); ?>">
+                            <?php }else{ ?>
+                                <img class="full" src="<?php echo $article['article_meta_image']; ?>" alt="<?php echo strip_tags($article['article_name']); ?>" title="<?php echo strip_tags($article['article_name']); ?>">
+                            <?php } ?>
+                            <div class="box-decor-content w-100">
+                                <p class="text-14"><?php echo $this->my->formatTimeAr($article['article_insert_time']); ?></p>
+                                <h3 class="text-normal text-white">
+                                    <?php echo $article['article_name']; ?>
+                                </h3>
+                                <p><u><?php echo defined('btn_read_more') ? btn_read_more : ''; ?></u></p>
+                            </div>
+                        </a>
+                    </div>
+            <?php }} ?>
+            <?php if(count($articles)>1){ ?>
+                <div class="col-lg-5">
+                    <div class="list-bg h-100">
+
+                        <?php foreach ($articles as $key => $article){
+                            if($key>0 && $key<5){
+                                ?>
+                                <div class="media mb-3">
+                                    <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article['article_keyword']); ?>" class="mr-3" target="_self" title="<?php echo strip_tags($article['article_name']); ?>">
+                                        <img width="130" class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article['article_icon']; ?>" alt="<?php echo strip_tags($article['article_name']); ?>" title="<?php echo strip_tags($article['article_name']); ?>">
+                                    </a>
+                                    <div class="media-body">
+
+                                        <h3 class="text-black text-16">
+                                            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article['article_keyword']); ?>" target="_self" title="<?php echo strip_tags($article['article_name']); ?>">
+                                                <?php echo $article['article_name']; ?>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+        <?php } ?>
+    </div>
+</div>
+<?php if(count($articles)>5){ ?>
+    <div class="padding-block">
+        <div class="container">
+            <div class="row">
+                <?php foreach ($articles as $key => $article){
+                    if($key>4){?>
+                    <div class="col-lg-4 mb-4">
+                        <div class="text-center text-lg-left">
+                            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article['article_keyword']); ?>" title="<?php echo strip_tags($article['article_name']); ?>" target="_self">
+                                <img class="full mb-3 lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article['article_icon']; ?>" alt="<?php echo strip_tags($article['article_name']); ?>" title="<?php echo strip_tags($article['article_name']); ?>">
+                            </a>
+                        </div>
+                        <h3 class="text-black">
+                            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article['article_keyword']); ?>" target="_self" title="<?php echo strip_tags($article['article_name']); ?>">
+                                <?php echo $article['article_name']; ?>
+                            </a>
+                        </h3>
+                        <p class="text-gray-date"><?php echo $this->my->formatTimeAr($article['article_insert_time']); ?></p>
+                        <p><?php echo $article['article_summary']; ?></p>
+                    </div>
+                <?php }} ?>
+            </div>
+        </div>
+    </div>
+<?php }else{ ?>
+    <div class="pt-5"></div>
+    <?php } ?>
+<?php if(isset($htmlPaginator) && strlen($htmlPaginator)>0){ ?>
+    <div class="mb-5">
+        <?php echo $htmlPaginator; ?>
+    </div>
+<?php } ?>

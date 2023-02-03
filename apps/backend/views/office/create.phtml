@@ -1,0 +1,183 @@
+<script>
+    $( document ).ready(function() {
+
+        $('form[name=partner-form]').submit(function(event) {
+            var valid = true;
+            if($('input[name=txtName]').val() == '') {
+                valid = false;
+                $('.msg-name').text("Name field is required.");
+                $('#txtName').addClass("border-red");
+            } else {
+                $('.msg-name').text('');
+                $('#txtName').removeClass("border-red");
+            }
+            if($('select[name=slcCountryCode]').val() == '') {
+                valid = false;
+                $('.msg-country-code').text("Country field is required.");
+                $('#slcCountryCode').addClass("border-red");
+            } else {
+                $('.msg-country-code').text('');
+                $('#slcCountryCode').removeClass("border-red");
+            }
+            if ($('input[name=txtPositionX]').val() == '') {
+                $('.msg-positionX').text('Latitude field is required.');
+                $('#txtPositionX').addClass("border-red");
+                valid = false;
+            }else if (isNaN($('input[name=txtPositionX]').val())) {
+                $('.msg-positionX').text('Enter a valid latitude.');
+                $('#txtPositionX').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-positionX').text('');
+                $('#txtPositionX').removeClass("border-red");
+            }
+            if ($('input[name=txtPositionY]').val() == '') {
+                $('.msg-positionY').text('Longitude field is required.');
+                $('#txtPositionY').addClass("border-red");
+                valid = false;
+            }else if (isNaN($('input[name=txtPositionY]').val())) {
+                $('.msg-positionY').text('Enter a valid longitude.');
+                $('#txtPositionY').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-positionY').text('');
+                $('#txtPositionY').removeClass("border-red");
+            }
+            if ($('input[name=txtOrder]').val() == '') {
+                $('.msg-order').text('Order field is required.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else if (isNaN($('input[name=txtOrder]').val())) {
+                $('.msg-order').text('Enter a valid order.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-order').text('');
+                $('#txtOrder').removeClass("border-red");
+            }
+            if( ! valid ) event.preventDefault();
+            if( valid ) {
+                $('button[name=sbmOffice]').prop('disabled', true);
+            }
+        });
+    });
+</script>
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Office</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">Form Create
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form name="partner-form" id="partner-form" data-parsley-validate class="form-horizontal form-label-left" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtName">Name <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["name"]) ? $oldinput["name"] : "" ?>" type="text" id="txtName" name="txtName" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["name"]) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-name"><?php echo isset($messages["name"]) ? $messages["name"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="slcCountryCode">Country <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select class="form-control <?php echo isset($messages["countryCode"]) ? $messages["status"] : ""; ?>" name="slcCountryCode" id="slcCountryCode">
+                                <option value="">Select Country. . . </option>
+                                <?php
+                                $country_code = isset($oldinput["countryCode"])?strtoupper($oldinput["countryCode"]):'';
+                                echo \Bincg\Repositories\CountryGeneral::getCountryCombobox($country_code);
+                                ?>
+                            </select>
+                            <span class="text-danger msg-country-code"><?php echo isset($messages["countryCode"]) ? $messages["countryCode"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtName">Image
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["image"]) ? $oldinput["image"] : "" ?>" type="text" id="txtImage" name="txtImage" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["image"]) ? $messages["status"] : ""; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtPositionX">Latitude  <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["positionX"]) ? $oldinput["positionX"] : "" ?>" type="text" id="txtPositionX" name="txtPositionX" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["positionX"]) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-positionX"><?php echo isset($messages["positionX"]) ? $messages["positionX"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtPositionY">Longitude <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["positionY"]) ? $oldinput["positionY"] : "" ?>" type="text" id="txtPositionY" name="txtPositionY" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["positionY"]) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-positionY"><?php echo isset($messages["positionY"]) ? $messages["positionY"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Address </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["address"]) ? $oldinput["address"] : "" ?>" id="txtAddress" name="txtAddress" class="form-control col-md-7 col-xs-12 ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtEmail">Email
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["email"]) ? $oldinput["email"] : "" ?>" type="text" id="txtEmail" name="txtEmail" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["email"]) ? $messages["status"] : ""; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtPhone">Phone
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["phone"]) ? $oldinput["phone"] : "" ?>" type="text" id="txtPhone" name="txtPhone" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["phone"]) ? $messages["status"] : ""; ?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Fax </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["fax"]) ? $oldinput["fax"] : "" ?>" id="txtFax" name="txtFax" class="form-control col-md-7 col-xs-12 ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Working Time </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["workingTime"]) ? $oldinput["workingTime"] : "" ?>" id="txtWorkingTime" name="txtWorkingTime" class="form-control col-md-7 col-xs-12 ">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Order <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["order"]) ? $oldinput["order"] : "" ?>" id="txtOrder" name="txtOrder" class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["order"])) ? $messages["status"] : ""; ?>" type="text">
+                            <span class="text-danger msg-order"><?php echo isset($messages["order"]) ? $messages["order"] : ""; ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Active</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radActive" value="Y" <?php echo (isset($oldinput["active"]) && $oldinput["active"]=="Y" )  ? "checked" : '' ; ?>>Yes<span class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radActive" value="N" <?php echo (isset($oldinput["active"]) && $oldinput["active"]=="N" )  ? "checked" : '' ; ?>>No<span class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button name="sbmOffice" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary" href="<?php echo $this->url->get("/dashboard/list-office"); ?>">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,100 @@
+@mixin thumbImageHover {
+    img {
+        transition: $transition;
+    }
+    &:hover {
+        img {
+            transform: scale(1.08);
+        }
+    }
+}
+
+.thumb-box-full-img {
+    text-align: center;
+    position: relative;
+    display: block;
+    img {
+        width: 100%;
+    }
+
+    &:hover {
+        color: white !important;
+        .title {
+            &:hover {
+                color: white !important;
+            }
+        }
+        .thumb-box-content {
+            &::before {
+                opacity: 1;
+                visibility: visible;
+            }
+        }
+    }
+    .thumb-box-content {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+
+        .title {
+            font-size: 24px;
+            color: white !important;
+            &:hover {
+                color: white !important;
+            }
+        }
+        a,
+        u {
+            color: white !important;
+        }
+
+        &::before {
+            content: "";
+            background-color: rgba($color: #000000, $alpha: 0.2);
+            transition: $transition;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+        }
+    }
+}
+
+
+.thumb-absolute {
+    color: white;
+    position: relative;
+    overflow: hidden;
+    .thumb-absolute-content {
+        color: white!important;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 20px;
+        z-index: 1;
+        h2 {
+            font-size: 18px;
+            color: white;
+        }
+    }
+    @include thumbImageHover();
+}
+
+.gallery-thumb {
+    display: inline-block;
+    overflow: hidden;
+    @include thumbImageHover();
+}
+

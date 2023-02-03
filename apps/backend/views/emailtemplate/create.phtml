@@ -1,0 +1,73 @@
+<script>
+    $( document ).ready(function() {
+        $('form[name=emailtemplate-form]').submit(function(event) {
+            var valid = true;
+            if($('input[name=txtType]').val() == '') {
+                $('.msg-type').text('Type field is required.');
+                $('#txtType').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-type').text('');
+                $('#txtType').removeClass("border-red");
+            }
+            if( ! valid ) event.preventDefault();
+            if( valid ) {
+                $('button[name=sbmEmailtemplate]').prop('disabled', true);
+            }
+        });
+    });
+</script>
+
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="emailtemplate-title">Email Template </h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">Form Create</div>
+            <div class="x_content">
+                <br />
+                <form name="emailtemplate-form" id="emailtemplate-form" action="<?php echo $this->url->get('/dashboard/create-emailtemplate'); ?>" data-parsley-validate class="form-horizontal form-label-left" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtType">Type <span class="red">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($formData["email_type"]) ? $formData["email_type"] : "" ?>" type="text" id="txtType" name="txtType" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["type"]) ? $messages["status"] : ""; ?>" />
+                            <span class="text-danger msg-type"><?php echo isset($messages["type"]) ? $messages["type"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtSubject">Subject</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($formData["email_subject"]) ? $formData["email_subject"] : "" ?>" type="text" id="txtSubject" name="txtSubject" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["subject"]) ? $messages["status"] : ""; ?>" />
+                            <span class="text-danger"><?php echo isset($messages["subject"]) ? $messages["subject"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtContent">Content</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <textarea class="form-control"  id="txtContent" name ="txtContent" style="width: 750px;height: 212px;"><?php echo isset($formData["email_content"]) ? $formData["email_content"] : ""; ?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radStatus" value="Y" <?php echo (isset($formData["email_status"]) && $formData["email_status"]=="Y" )  ? "checked" : '' ; ?>>Yes<span class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radStatus" value="N" <?php echo (isset($formData["email_status"]) && $formData["email_status"]=="N" )  ? "checked" : '' ; ?>>No<span class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button name="sbmEmailtemplate" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary" href="list-emailtemplate">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

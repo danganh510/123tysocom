@@ -1,0 +1,35 @@
+<?php
+/**
+ * @var Bincg\Models\BinArticle[] $articles
+ * @var Bincg\Models\BinArticle $article
+ */
+    if(count($articles) > 0) {?>
+    <script type="application/ld+json">
+        {
+             "@context": "http://schema.org/",
+             "@type": "BreadcrumbList",
+             "itemListElement":
+             [
+             <?php
+                $key_schema = 0;
+                foreach ($articles as $article){
+                    $key_schema++;
+                    $href_jurist_schema = '';
+                    if (defined('URL_SITE')) {
+                        $href_jurist_schema = URL_SITE.'/'.$lang_url.'/'.$parent_keyword.'/'.$article->getArticleKeyword();
+
+                    }
+                    ?>
+                    <?php echo $key_schema==1 ? '' : ','; ?>{
+                               "@type": "ListItem",
+                               "position": "<?php echo $key_schema; ?>",
+                               "item": {
+                                   "@id": "<?php echo $href_jurist_schema; ?>",
+                                   "name": "<?php echo $this->my->replaceQuotes($article->getArticleName()); ?>"
+                               }
+                            }
+                <?php } ?>
+             ]
+        }
+    </script>
+<?php } ?>

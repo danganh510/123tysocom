@@ -1,0 +1,121 @@
+<script>
+    $( document ).ready(function() {
+        $('form[name=newspaper-article-form]').submit(function(event) {
+            var valid = true;
+            if($('select[name=slcNewspaper]').val() == 0) {
+                $('.msg-newspaper').text('Newspaper field is required.');
+                $('#slcNewspaper').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-newspaper').text('');
+                $('#slcNewspaper').removeClass("border-red");
+            }
+            if($('input[name=txtName]').val() == '') {
+                $('.msg-name').text('Name field is required.');
+                $('#txtName').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-name').text('');
+                $('#txtName').removeClass("border-red");
+            }
+            if($('input[name=txtLink]').val() == '') {
+                $('.msg-link').text('Link field is required.');
+                $('#txtLink').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-link').text('');
+                $('#txtLink').removeClass("border-red");
+            }
+            if($('input[name=txtOrder]').val() == '') {
+                $('.msg-order').text('Order field is required.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else if (isNaN($('input[name=txtOrder]').val())) {
+                $('.msg-order').text('Enter a valid order.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-order').text('');
+                $('#txtOrder').removeClass("border-red");
+            }
+            if( ! valid ) event.preventDefault();
+            if( valid ) {
+                $('button[name=sbmType]').prop('disabled', true);
+            }
+        });
+    });
+</script>
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Newspaper Article</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">Form Create
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form name="newspaper-article-form" id="newspaper-article-form" data-parsley-validate class="form-horizontal form-label-left" method="post">
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Newspaper <span class="text-danger">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="slcNewspaper" name="slcNewspaper" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["newspaper"]) ? $messages["status"] : ""; ?>" required>
+                                <option value=0>Select Newspaper...</option>
+                                <?php echo isset($select_newspaper) ? $select_newspaper : ""; ?>
+                            </select>
+                            <span class="text-danger msg-newspaper"><?php echo isset($messages["newspaper"]) ? $messages["newspaper"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtName">Name <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["name"]) ? $oldinput["name"] : "" ?>" type="text" id="txtName" name="txtName" class="form-control col-md-7 col-xs-12 <?php echo isset($messages["name"]) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-name"><?php echo isset($messages["name"]) ? $messages["name"] : ""?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Link <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["link"]) ? $oldinput["link"] : "" ?>" id="txtLink" name="txtLink" class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["link"])) ? $messages["status"] : ""; ?>" type="text">
+                            <span class="text-danger msg-link"><?php echo isset($messages["link"]) ? $messages["link"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtTitle" class="control-label col-md-3 col-sm-3 col-xs-12">Icon</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($oldinput["icon"]) ? $oldinput["icon"] : "" ?>" id="txtIcon" class="form-control col-md-7 col-xs-12" type="text" name="txtIcon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="txtOrder">Order <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="10" value="<?php echo isset($oldinput["order"]) ? $oldinput["order"] : "" ?>" type="text" id="txtOrder" name="txtOrder"  class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["order"])) ? $messages['status'] : ""; ?>">
+                            <span class="text-danger msg-order"><?php echo isset($messages["order"]) ? $messages["order"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Active </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radioActive" value="Y" <?php echo (isset($oldinput["active"]) && $oldinput["active"]=="Y" )  ? "checked" : '' ; ?>>Yes<span class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radioActive" value="N" <?php echo (isset($oldinput["active"]) && $oldinput["active"]=="N" )  ? "checked" : '' ; ?>>No<span class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button name="sbmType" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary" href="<?php echo $this->url->get("/dashboard/list-newspaper-article"); ?>">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

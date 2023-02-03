@@ -1,0 +1,98 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var $type_keyword;
+ * @var $keyword;
+ * @var $ar_time;
+ * @var \Bincg\Models\BinType[] $related_types
+ * @var \Bincg\Models\BinType $type_child
+ * @var \Bincg\Models\BinArticle $article
+ * @var \Bincg\Models\BinArticle[] $related_articles
+ * @var \Bincg\Models\BinArticle[] $articles_by_type
+ */
+$repoArticle = new \Bincg\Repositories\Article();
+?>
+<?php if(!$isMobile){ ?>
+    <div class="breadcrumbs black position-static">
+        <div class="container">
+            <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($parent_bread) ? strip_tags($parent_bread) : '' ?>">
+                <?php echo isset($parent_bread) ? $parent_bread : '' ?>
+            </a>
+            <strong>
+
+                <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$type_keyword); ?>" target="_self" title="<?php echo strip_tags($type_child->getTypeName()); ?>">
+                    <?php echo $type_child->getTypeName(); ?>
+                </a>
+            </strong>
+
+        </div>
+    </div>
+<?php } ?>
+<div class="padding-block-no-banner mb-4 mb-lg-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mt-3 mt-lg-0 line-height-h1"><?php echo isset($menu_bread) ? $menu_bread : '' ?></h1>
+                <p class="text-gray-date"><?php echo $this->my->formatTimeArDetail($ar_time); ?></p>
+                <div class="content-format">
+                    <?php echo isset($ar_content) ? $ar_content : ''; ?>
+                </div>
+                <?php if(count($related_articles)>0){ ?>
+                    <div class="mb-4 wrapper-list-ar-text">
+                        <h2 class="text-18-medium mb-2"><?php echo defined('txt_related_news') ? txt_related_news : ''; ?></h2>
+                        <?php } ?>
+                        <ul class="list-ar-text">
+                            <?php foreach ($related_articles as $key => $related_article){ ?>
+                            <li>
+                                <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$related_article->getArticleKeyword()); ?>" target="_self" title="<?php echo strip_tags($related_article->getArticleName()); ?>">
+                                    <?php echo $related_article->getArticleName(); ?>
+                                </a>
+                            </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+
+
+            </div>
+
+            <div class="col-lg-4">
+
+                <?php foreach ($related_types as $related_type){
+                    $articles_by_type = $repoArticle->getByTypeAndInsertTime($related_type->getTypeId(),$lang_code,3);
+                    if(count($articles_by_type) > 0) { ?>
+
+                        <div class="list-bg-small pr-md-0 mb-2">
+                            <h2 class="text-18-medium mb-3">
+
+                                <a target="_self" title="<?php echo strip_tags($related_type->getTypeName()); ?>" href="<?php echo $this->url->get($lang_url.'/news/'.$related_type->getTypeKeyword()); ?>">
+                                    <?php echo $related_type->getTypeName(); ?>
+                                </a>
+                            </h2>
+                            <?php foreach ($articles_by_type as $key => $article_by_type){ ?>
+                                <div class="media <?php echo ($key+1)!=count($articles_by_type) ? 'mb-3' : '' ?>">
+                                    <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article_by_type->getArticleKeyword()); ?>" class="mr-3" target="_self" title="<?php echo strip_tags($article_by_type->getArticleName()); ?>">
+                                        <img class="lazyload" width="130" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article_by_type->getArticleIcon(); ?>" alt="<?php echo strip_tags($article_by_type->getArticleName()); ?>" title="<?php echo strip_tags($article_by_type->getArticleName()); ?>">
+                                    </a>
+                                    <div class="media-body">
+                                        <h3 class="text-black text-16">
+                                            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article_by_type->getArticleKeyword()); ?>" target="_self" title="<?php echo strip_tags($article_by_type->getArticleName()); ?>">
+                                                <?php echo $article_by_type->getArticleName(); ?>
+                                            </a>
+                                        </h3>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        </div>
+                    <?php }
+                    ?>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>

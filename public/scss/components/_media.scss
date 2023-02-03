@@ -1,0 +1,18 @@
+.media-item {
+    align-items: top;
+    padding: 14px 18px;
+    // transition: $transition;
+    @include media-breakpoint-down(md) {
+        flex-flow: column;
+        align-items: flex-start;
+        .shadow-icon {
+            margin-bottom: 20px;
+        }
+    }
+    &:hover {
+        background-color: $green-color;
+        h3,p {
+            color: white!important;
+        }
+    }
+}

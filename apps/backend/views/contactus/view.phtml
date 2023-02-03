@@ -1,0 +1,234 @@
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Contact us Detail #<?php echo $this->my->formatContactID($arr_contactus['contactus']->contact_insert_time, $arr_contactus['contactus']->contact_id); ?></h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <h3>User Information:</h3>
+                <table class="table table-hover table-striped table-responsive table-bordered table-activity">
+                    <tbody>
+                    <tr>
+                        <td>Topics</td>
+                        <td><?php echo $arr_contactus['contactus']->contact_topics; ?></td>
+                    </tr>
+                    <tr>
+                        <td style="width: 250px" >User Name</td>
+                        <td><?php echo $arr_contactus['contactus']->contact_name; ?></td>
+                    </tr>
+                    <tr>
+                        <td>User Email</td>
+                        <td><?php echo $arr_contactus['contactus']->contact_email; ?></td>
+                    </tr>
+                    <tr>
+                        <td>User Telephone</td>
+                        <td><?php echo $arr_contactus['contactus']->contact_number; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Subject</td>
+                        <td><?php echo $arr_contactus['contactus']->contact_subject; ?></td>
+                    </tr>
+                    <?php if ($arr_contactus['contactus']->contact_communication_channel_id != '') { ?>
+                        <tr>
+                            <td>Community Channel</td>
+                            <td><?php echo $arr_contactus['contactus']->contact_communication_channel_name; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Community Number</td>
+                            <td><?php echo $arr_contactus['contactus']->contactcommunication_channel_number; ?></td>
+                        </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>Message</td>
+                        <td><?php echo $arr_contactus['contactus']->contact_content; ?></td>
+                    </tr>
+                    <?php if ($arr_contactus['contactus']->contact_file != '') { ?>
+                        <tr>
+                            <td>File Attached</td>
+                            <td><?php echo $arr_contactus['contactus']->contact_file; ?></td>
+                        </tr>
+                    <?php } ?>
+                    <tr>
+                        <td>Insert Time</td>
+                        <td><?php echo $this->my->formatDateTime($arr_contactus['contactus']->contact_insert_time,false); ?></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <?php if (count($arr_contactus['location_info']) > 0) { ?>
+                    <h3>Location Information:</h3>
+                    <table class="table table-hover table-striped table-responsive table-bordered table-activity">
+                        <tbody>
+                        <tr>
+                            <td style="width: 250px" >IP Address</td>
+                            <td><?php echo $arr_contactus['location_info']['ip_address']; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td><?php echo $arr_contactus['location_info']['location']; ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                <?php } ?>
+
+                <?php if (count($arr_contactus['user_agent']) > 0) { ?>
+                    <h3>Device Information:</h3>
+                    <table class="table table-hover table-striped table-responsive table-bordered table-activity">
+                        <tbody>
+                        <tr>
+                            <td style="width: 250px" >Checked</td>
+                            <td>
+                                <?php $class_checked = ($arr_contactus['user_agent']->getAgentChecked() == 'Y') ? 'success' : 'danger' ; ?>
+                                <span class="badge badge-<?php echo $class_checked; ?>"><?php echo $arr_contactus['user_agent']->getAgentChecked(); ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Hardware Type</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentHardwareType(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System Name</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystemName(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Software Sub Type</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSoftwareSubType(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Sub Description</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSimpleSubDescriptionString(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Browser</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSimpleBrowserString(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Browser Version</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentBrowserVersion(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Software Type</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSoftwareType(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Extra Info</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentExtraInfo(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating Platform</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingPlatform(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Extra Info Table</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentExtraInfoTable(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Layout Engine Name</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentLayoutEngineName(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System Flavour Code</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystemFlavourCode(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Detected Addons</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentDetectedAddons(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System Flavour</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystemFlavour(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System Frameworks</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystemFrameworks(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Browser Name Code</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentBrowserNameCode(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Minor</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSimpleMinor(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Operating Platform</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSimpleOperatingPlatformString(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Abusive</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentIsAbusive(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Medium</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSimpleMedium(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Layout Engine Version</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentLayoutEngineVersion(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Browser Capabilities</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentBrowserCapabilities(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating Platform Vendor Name</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingPlatformVendorName(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystem(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Hardware Architecture</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentHardwareArchitecture(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System Version Full</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystemVersionFull(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating Platform Code</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingPlatformCode(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Browser Name</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentBrowserName(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Operating System Name Code</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentOperatingSystemNameCode(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>User Agent</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentUserAgent(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Simple Major</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentSimpleMajor(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Browser Version Full</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentBrowserVersionFull(); ?></td>
+                        </tr>
+                        <tr>
+                            <td>Browser</td>
+                            <td><?php echo $arr_contactus['user_agent']->getAgentBrowser(); ?></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                <?php } ?>
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-1">
+                    <a class="btn btn-primary" href="<?php echo $this->url->get("/dashboard/list-contactus"); ?>">Back List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

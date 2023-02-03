@@ -1,0 +1,118 @@
+<?php
+$urlPage = "?";
+if(strlen($this->dispatcher->getParam("txtSearch"))> 0){
+    if($urlPage != "?") $urlPage .= "&";
+    $urlPage .= http_build_query(array("txtSearch" => $this->dispatcher->getParam("txtSearch")));
+}
+if($this->dispatcher->getParam("slType") != ""){
+    if($urlPage != "?") $urlPage .= "&";
+    $urlPage .= http_build_query(array("slType" => $this->dispatcher->getParam("slType")));
+}
+
+?>
+<div class="page-title">
+    <div class="title_left">
+        <h3>Article</h3>
+    </div>
+</div>
+<?php if(isset($msg_result['status'])) { ?>
+    <div class="clearfix"></div>
+    <div  class="alert alert-<?php echo $msg_result['status'] ?> alert-dismissible fade in" role="alert">
+        <?php echo $msg_result['msg']; ?>
+    </div>
+<?php } ?>
+<?php if(isset($msg_delete['success']) && !empty($msg_delete['success'])) { ?>
+    <div class="clearfix"></div>
+    <div  class="alert alert-success alert-dismissible fade in" role="alert">
+        <?php echo $msg_delete['success']; ?>
+    </div>
+<?php } ?>
+<div class="clearfix"></div>
+<form class="searchForm" name="form-type" method="post">
+    <?php $keyword = $this->dispatcher->getParam("txtSearch"); ?>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <div class="row ">
+                        <div class="col-md-1">
+                            <h2>Keyword</h2>
+                        </div>
+                        <div class="col-md-3">
+                            <input class="form-control" type="text" name="txtSearch" maxlength="255" placeholder="ID, Name" value="<?php echo isset($keyword) ? $keyword : ""; ?>">
+                        </div>
+                        <h2>Type</h2>
+                        <div class="col-md-3">
+                            <select class="form-control" name="slType" id="slType">
+                                <option value="0">All Type</option>
+                                <?php
+                                echo isset($select_type) ? $select_type : "";
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="col-md-1">
+                            <button type="button" name="search" class="btn btn-success">Search</button>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Total</strong>
+                        <?php echo count($page); ?> records
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                            <?php foreach ($page as $item ) {
+                                /** @var \Binfcom\Models\BinfArticle $item */
+
+                                echo "<p class='text-uppercase'><strong><u>[name]</u></strong></p>";
+                                echo "<p>".$item->getArticleName()."</p>";
+
+                                echo "<p class='text-uppercase'><strong><u>[title]</u></strong></p>";
+                                echo "<p>".$item->getArticleTitle()."</p>";
+
+                                echo "<p class='text-uppercase'><strong><u>[meta keyword]</u></strong></p>";
+                                echo "<p>".$item->getArticleMetaKeyword()."</p>";
+
+                                echo "<p class='text-uppercase'><strong><u>[meta description]</u></strong></p>";
+                                echo "<p>".$item->getArticleMetaDescription()."</p>";
+
+                                echo "<p class='text-uppercase'><strong><u>[summary]</u></strong></p>";
+                                echo "<p>".$item->getArticleSummary() . "</p>";
+
+                                echo "<p class='text-uppercase'><strong><u>[content]</u></strong></p>";
+                                $content = $item->getArticleContent();
+                                $strReplace = str_replace(
+                                    array(
+                                        "row d-flex d-xs-block",
+                                        "col-lg-offset-6 col-lg-6",
+                                    ),
+                                    array(
+                                        'row d-flex d-xs-block block-full-child',
+                                        'col-lg-offset-6 col-lg-6 remove-offset',
+                                ),
+                                $content);
+
+
+                                echo "<p>".$strReplace . "</p>";
+
+                                echo "<hr style='border-top: 3px solid #8c8b8b;'>";
+                            }?>
+
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(document).ready(function(){
+        $('button[name=search]').click(function() {
+            $('form[name=form-type]').prop('action','<?php echo $this->url->get('/dashboard/list-article-export'); ?>');
+            $('form[name=form-type]').submit();
+        });
+
+
+    });
+</script>

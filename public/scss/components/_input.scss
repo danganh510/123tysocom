@@ -1,0 +1,72 @@
+.form-control {
+    min-height: 44px;
+}
+select.form-control {
+    min-height: 44px;
+    padding: 4px 24px 4px 12px;
+    background: #fff url(../images/icon-select.svg) no-repeat calc(100% - 10px) center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.has-error .form-control {
+    border-color: $primary-color;
+}
+
+.intl-tel-input .selected-flag .iti-flag {
+    top: 4px !important;
+}
+.custom-file-upload {
+    font-weight: 400;
+}
+.custom-file-upload .choose-file {
+    background: #fff;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    padding: 5px 14px;
+    margin-right: 7px;
+    cursor: pointer;
+}
+
+.custom-select {
+    min-height: 44px;
+}
+.input-file-group {
+    display: flex;
+    .input-file {
+        background-color: white;
+        width: calc(100% - 44px);
+        min-width: 100px;
+        border-radius: 6px 0px 0px 6px;
+        background-image: url(../images/about-us-business/icon-pdf.svg);
+        background-repeat: no-repeat;
+        background-position: left 10px center;
+        padding-left: 40px;
+        padding-right: 20px;
+        z-index: 2;
+        border: 1px solid #ced4da;  
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        line-height: 44px;
+        height: 44px;
+        color: #545454;
+    }
+    .input-icon {
+        width: 44px;
+        height: 44px;
+        left: 207px;
+        top: 0px;
+        background: #FFFFFF;
+        border-radius: 0px 6px 6px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ced4da;
+        border-left: 0px;
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}

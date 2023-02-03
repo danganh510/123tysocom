@@ -1,0 +1,173 @@
+<script>
+    $( document ).ready(function() {
+        var id = <?php echo $formData["country_id"]; ?>;
+        $('#txtName').on('input', function() {
+            var str = $(this).val();
+            if(id == -1) {
+                var str_slug = slugify(str);
+                $('#txtKeyword').val(str_slug);
+            }
+        });
+        $('form[name=country-form]').submit(function(event) {
+            var valid = true;
+            if ($("select#slcArea option:checked" ).val()==0) {
+                $('.msg-area').text('Area is required.');
+                $('#slcArea').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-area').text('');
+                $('#slcArea').removeClass("border-red");
+            }
+            if($('input[name=txtName]').val() == '') {
+                $('.msg-name').text('Name field is required.');
+                $('#txtName').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-name').text('');
+                $('#txtName').removeClass("border-red");
+            }
+            if($('input[name=txtKeyword]').val() == '') {
+                $('.msg-keyword').text('Keyword field is required.');
+                $('#txtKeyword').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-keyword').text('');
+                $('#txtKeyword').removeClass("border-red");
+            }
+            if($('input[name=txtIsoAlpha2]').val() == '') {
+                $('.msg-isoalpha2').text('Iso Alpha 2 field is required.');
+                $('#txtIsoAlpha2').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-isoalpha2').text('');
+                $('#txtIsoAlpha2').removeClass("border-red");
+            }
+            if($('input[name=txtOrder]').val() == '') {
+                $('.msg-order').text('Order field is required.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else if (isNaN($('input[name=txtOrder]').val())) {
+                $('.msg-order').text('Enter a valid order.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-order').text('');
+                $('#txtOrder').removeClass("border-red");
+            }
+            if( ! valid ) event.preventDefault();
+            if( valid ) {
+                $('button[name=submit]').prop('disabled', true);
+            }
+        });
+    });
+
+</script>
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Country</h3>
+    </div>
+</div>
+<?php if(!empty($messages['message']))
+{
+    ?>
+    <div class="clearfix"></div>
+    <p style="font-size:18px;text-align:center" class="alert alert-<?php echo $messages['countryMessage']?>">
+        <?php echo $messages['message']; ?>
+    </p>
+<?php }	?>
+<div class="clearfix"></div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2 class="form_title"></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br />
+                <form name="country-form" id="country-form" data-parsley-validate class="form-horizontal form-label-left" method="post">
+                    <input type="hidden" name="save" id="save" value="<?php echo \Bincg\Models\BinLanguage::GENERAL ;?>" />
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Area <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <select id="slcArea" name="slcArea" class="form-control col-md-7 col-xs-12  <?php echo (isset($messages["area"])) ? $messages["status"] : ""; ?>" required>
+                                <option value=0>Select Area...</option>
+                                <?php echo isset($strArea)? $strArea : ''?>
+                            </select>
+                            <span class="text-danger msg-area"><?php echo isset($messages["area"]) ? $messages["area"] : "";?></span>
+                        </div>
+                    </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Name <span class="text-danger">*</span>
+                            </label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input maxlength="255" value="<?php echo isset($formData["country_name"]) ? $formData["country_name"] : "" ?>" type="text" id="txtName" name="txtName"   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["name"])) ? $messages["status"] : ""; ?>">
+                                <span class="text-danger msg-name"><?php echo isset($messages["name"]) ? $messages["name"] : "";?></span>
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Keyword <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255" value="<?php echo isset($formData["country_keyword"]) ? $formData["country_keyword"] : "" ?>" type="text" id="txtKeyword" name="txtKeyword"   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["keyword"])) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-keyword"><?php echo isset($messages["keyword"]) ? $messages["keyword"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Iso Alphal 2 <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="2" value="<?php echo isset($formData["country_iso_alpha2"]) ? $formData["country_iso_alpha2"] : "" ?>" type="text" id="txtIsoAlpha2" name="txtIsoAlpha2"   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["isoalpha2"])) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-isoalpha2"><?php echo isset($messages["isoalpha2"]) ? $messages["isoalpha2"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Iso Alphal 3</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="3" value="<?php echo isset($formData["country_iso_alpha3"]) ? $formData["country_iso_alpha3"] : "" ?>" type="text" id="txtIsoAlpha3" name="txtIsoAlpha3"   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["isoalpha3"])) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-isoalpha3"><?php echo isset($messages["isoalpha3"]) ? $messages["isoalpha3"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Iso Numeric</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input  maxlength="10" value="<?php echo isset($formData["country_iso_numeric"]) ? $formData["country_iso_numeric"] : "" ?>" type="text" id="txtIsoNumeric" name="txtIsoNumeric"   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["numeric"])) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-numeric"><?php echo isset($messages["numeric"]) ? $messages["numeric"] : "";?></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Phone Code</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="6" value="<?php echo isset($formData["country_phone_code"]) ? $formData["country_phone_code"] : "" ?>" type="text" id="txtPhoneCode" name="txtPhoneCode"  class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["phonecode"])) ? $messages["status"] : ""; ?>">
+                            <span class="text-danger msg-phonecode"><?php echo isset($messages["phonecode"]) ? $messages["phonecode"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Order <span class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="10" value="<?php echo isset($formData["country_order"]) ? $formData["country_order"] : "" ?>" id="txtOrder" name="txtOrder"   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["order"])) ? $messages["status"] : ""; ?>"   type="text">
+                            <span class="text-danger msg-order"><?php echo isset($messages["order"]) ? $messages["order"] : "";?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Active</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radActive" value="Y" <?php echo (isset($formData["country_active"]) && $formData["country_active"]=="Y" )  ? "checked" : '' ; ?>>Yes<span class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radActive" value="N" <?php echo (isset($formData["country_active"]) && $formData["country_active"]=="N" )  ? "checked" : '' ; ?>>No<span class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button name="submit" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary" href="list-country">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

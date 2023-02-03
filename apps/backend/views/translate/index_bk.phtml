@@ -1,0 +1,148 @@
+<?php
+/**
+ * @var \Bincg\Models\BinTableTranslate[] $list_translate
+ * @var \General\Models\LanguageSupportTranslate[] $list_lang
+ */
+?>
+
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Translate</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<?php if(isset($msg_result['status'])) { ?>
+    <div class="clearfix"></div>
+    <div  class="alert alert-<?php echo $msg_result['status'] ?> alert-dismissible fade in" role="alert">
+        <?php echo $msg_result['msg']; ?>
+    </div>
+<?php } ?>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <form name="translate-form" id="translate-form" data-parsley-validate class="form-horizontal form-label-left" method="post">
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-2 col-sm-2 col-xs-12">Language <span class="text-danger">*</span></label>
+                        <div class="col-md-10 col-sm-10 col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <select class="form-control slcLanguage" id="slcLanguage" name="slcLanguage">
+                                        <option value="" selected>Please choose language</option>
+                                        <?php foreach ($list_lang as $item) { ?>
+                                            <option value="<?php echo $item->getLanguageCode() ?>"><?php echo $item->getLanguageName() ?></option>
+                                        <?php } ?>
+                                    </select>
+                                    <span class="text-danger msg-select-language"><?php echo isset($messages["language"]) ? $messages["language"] : ""; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-2 col-sm-2 col-xs-12">List
+                            Translate</label>
+                        <div class="col-sm-10 col-xs-12 form-check">
+                            <div class="row">
+                                <div class="role_block col-md-12">
+                                    <div class="well pdtop-10 real-boostrap">
+                                        <div class="row">
+                                            <?php foreach ($list_translate as $item) { ?>
+                                                <div class="col-md-6">
+                                                    <label class="container_checkbox">
+                                                        <?php echo $item ?>
+                                                        <input type="checkbox" class="form-control check"
+                                                               name="backendtranslate[]" id="<?php echo $item ?>" value="<?php echo $item ?>">
+                                                        <span class="checkmark_checkbox"></span>
+                                                    </label>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="middle-name" class="control-label col-md-2 col-sm-2 col-xs-12">Order <span class="text-danger">*</span></label>
+                        <div class="col-md-10 col-sm-10 col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6">
+                                    <input maxlength="255"
+                                           value="<?php echo isset($formData["order"]) ? $formData["order"] : '' ?>"
+                                           id="txtOrder" name="txtOrder"
+                                           class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["order"])) ? $messages["status"] : ""; ?>"
+                                           type="text">
+                                    <span class="text-danger msg-order"><?php echo isset($messages["order"]) ? $messages["order"] : ""; ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12">Active</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-check">
+                            <label class="container_radio"><input type="radio" name="radActive"
+                                                                  value="Y" <?php echo (isset($formData["active"]) && $formData["active"] == "Y") ? "checked" : ''; ?>>Yes<span
+                                    class="checkmark"></span></label>
+                            <label class="container_radio"><input type="radio" name="radActive"
+                                                                  value="N" <?php echo (isset($formData["active"]) && $formData["active"] == "N") ? "checked" : ''; ?>>No<span
+                                        class="checkmark"></span></label>
+                        </div>
+                    </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button type="button" class="btn btn-warning" name="btnUncheck">Uncheck</button>
+                            <button type="button" class="btn btn-info" name="btnCheckAll">Check All</button>
+                            <button name="submit" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary" href="<?php echo $this->url->get("/dashboard/"); ?>">Cancel</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('button[name=btnUncheck]').click(function () {
+            $('.check').prop('checked', false);
+        });
+        $('button[name=btnCheckAll]').click(function () {
+            $('.check').prop('checked', true);
+        });
+        $('form[name=translate-form]').submit(function (event) {
+            var valid = true;
+            if ($('#slcLanguage').val() == 0) {
+                valid = false;
+                $('.msg-select-language').text('Please choose language');
+                $('#slcLanguage').parent().addClass("has-error");
+            } else {
+                $('.msg-select-language').text('');
+                $('#slcLanguage').parent().removeClass("has-error");
+            }
+
+            if ($('input[name=txtOrder]').val() == '') {
+                $('.msg-order').text('Order field is required.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else if (isNaN($('input[name=txtOrder]').val())) {
+                $('.msg-order').text('Enter a valid order.');
+                $('#txtOrder').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-order').text('');
+                $('#txtOrder').removeClass("border-red");
+            }
+
+            if (!valid) {
+                event.preventDefault();
+            }
+            if (valid) {
+                $('#l-loading').show();
+                $('button[name=btnSubmit]').prop('disabled', true);
+            }
+        })
+    });
+
+</script>

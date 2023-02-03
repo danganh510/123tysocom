@@ -1,0 +1,26 @@
+$border-support: #ddd;
+$shadow-support: 0 2px 7px rgba($color: black, $alpha: 0.3);
+.support-session {
+    position: fixed;
+    right: 0;
+    top: 50%;
+    background: white;
+    border-top-left-radius: $radius;
+    border-bottom-left-radius: $radius;
+    box-shadow: $shadow-support;
+    z-index: 10;
+    > a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 48px;
+        height: 48px;
+        border-bottom: 1px solid $border-support;
+        &:last-child {
+            border-bottom: none;
+        }
+        &:first-child {
+            border-top-left-radius: $radius;
+        }
+    }
+}

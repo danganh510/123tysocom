@@ -1,0 +1,49 @@
+<?php
+    if(in_array($this->router->getControllerName(), array('index'))) {
+        $this->view->partial('index/schema');
+    }
+    if(in_array($this->router->getControllerName(), array('aboutus'))) {
+        if(in_array($this->router->getActionName(), array('index'))) {
+            $this->view->partial('aboutus/schemaaboutus');
+        }
+    }
+    if(in_array($this->router->getControllerName(), array('services'))){
+        if(in_array($this->router->getActionName(), array('index'))) {
+            $this->view->partial('services/schemaservices');
+        }
+        if(in_array($this->router->getActionName(), array('detail'))) {
+            $this->view->partial('services/schemaservicesdetail');
+        }
+    }
+    if(in_array($this->router->getControllerName(), array('corporatesocialresponsibility'))){
+        if(in_array($this->router->getActionName(), array('index'))) {
+            $this->view->partial('corporatesocialresponsibility/schemacorporatesocialresponsibility');
+        }
+    }
+    if(in_array($this->router->getControllerName(), array('careers'))){
+        if(in_array($this->router->getActionName(), array('index'))) {
+            $this->view->partial('careers/schemacareers');
+        }
+        if(in_array($this->router->getActionName(), array('detail'))) {
+            $this->view->partial('careers/schemacareersdetail');
+        }
+    }
+    if(in_array($this->router->getControllerName(), array('news'))){
+        if(in_array($this->router->getActionName(), array('index'))) {
+            $this->view->partial('news/schemanews');
+        }
+        if(in_array($this->router->getActionName(), array('type'))) {
+            $repoType = new \Bincg\Repositories\Type();
+            $type_keyword = $this->dispatcher->getParam("type-key");
+            if($type_keyword){
+                $type_child = $repoType->getTypeByKeyword($type_keyword,$lang_code);
+                if($type_child){
+                    $this->view->partial('news/schemanewstype');
+                } else{
+                    $this->view->partial('news/schemanewsdetail');
+                }
+            }
+
+        }
+    }
+?>

@@ -1,0 +1,100 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var \Bincg\Models\BinNewspaper[] $newspapers
+ */
+?>
+<?php if(!$isMobile){ ?>
+    <div class="breadcrumbs black position-static">
+        <div class="container">
+            <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($menu_bread) ? strip_tags($menu_bread) : '' ?>">
+                <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+<div class="padding-block-small">
+    <div class="container">
+        <h1 class="text-center text-blue mt-3 mb-3"><?php echo isset($menu_bread) ? $menu_bread : '' ?></h1>
+        <?php $itemPerBlock=6; if(count($newspapers) >0) { ?>
+            <div class="box-gray-1">
+                <ul class="list-white-normal item-lg-6 text-center mt-4 mb-4">
+                    <?php foreach ($newspapers as $newspaperKey => $newspaper){
+                        if($newspaperKey>$itemPerBlock){break;}
+                        ?>
+                        <li>
+                            <a href="<?php echo $this->url->get($lang_url."/newspapers/".$newspaper->getNewspaperKeyword())?>" target="_self" title="<?php echo $newspaper->getNewspaperName(); ?>">
+                                <img src="<?php echo $newspaper->getNewspaperLogo(); ?>" alt="<?php echo $newspaper->getNewspaperName(); ?>" title="<?php echo $newspaper->getNewspaperName(); ?>">
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+                <ul class="list-white-normal text-center mt-4 toggle-content" style="display: none">
+                    <?php foreach ($newspapers as $newspaperKey => $newspaper){
+                        if($newspaperKey>$itemPerBlock){
+                        ?>
+                        <li>
+                            <img src="<?php echo $newspaper->getNewspaperLogo(); ?>" alt="<?php echo $newspaper->getNewspaperName(); ?>" title="<?php echo $newspaper->getNewspaperName(); ?>">
+                        </li>
+                    <?php }} ?>
+                </ul>
+                <?php if(count($newspapers)>$itemPerBlock){ ?>
+                <div class="text-center mt-3 mb-3">
+                    <a href="javascript:void(0)" class="text-blue show-more" target="_self" title="<?php echo defined('btn_show_more') ? btn_show_more : '' ?>"><strong><?php echo defined('btn_show_more') ? btn_show_more : '' ?></strong></a>
+                    <a href="javascript:void(0)" class="text-blue show-less" style="display: none" target="_self" title="<?php echo defined('btn_show_less') ? btn_show_less : '' ?>"><strong><?php echo defined('btn_show_less') ? btn_show_less : '' ?></strong></a>
+                </div>
+                <script>
+                    commands.push(function () {
+                        $('.show-more').on("click", function () {
+                            $('.toggle-content').show();
+                            $('.show-more').hide();
+                            $('.show-less').show();
+                        });
+                        $('.show-less').on("click", function () {
+                            $('.toggle-content').hide();
+                            $('.show-more').show();
+                            $('.show-less').hide();
+                        });
+                    });
+                </script>
+                <?php } ?>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+<div class="padding-block">
+    <div class="container">
+        <?php foreach ($newspapers as $newspaperKey => $newspaper){ ?>
+        <a href="<?php echo $this->url->get($lang_url."/newspapers/".$newspaper->getNewspaperKeyword())?>" target="_self" title="<?php echo $newspaper->getNewspaperName(); ?>" class="title-line-grey <?php echo $newspaperKey==0 ? '' : ' mt-5' ?>">
+            <img width="108" src="<?php echo $newspaper->getNewspaperLogo(); ?>" alt="<?php echo $newspaper->getNewspaperName(); ?>" title="<?php echo $newspaper->getNewspaperName(); ?>">
+            <strong class="pos-bottom-right text-main">
+                <?php echo defined('btn_view_all') ? strtoupper(btn_view_all) : 'VIEW ALL' ?>
+                <img src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-caret-right-main.svg" alt="<?php echo defined('btn_view_all') ? strtoupper(btn_view_all) : '' ?>" title="<?php echo defined('btn_view_all') ? strtoupper(btn_view_all) : '' ?>" class="v-unset ml-1">
+            </strong>
+        </a>
+        <?php
+            $repoNewspaperArticle = new \Bincg\Repositories\NewspaperArticle();
+            $newspaperArticleByIds = $repoNewspaperArticle->getByNewspaperIdAndInsertTime($newspaper->getNewspaperId(),$lang_code,$isMobile ? 3 : 6);
+            if(count($newspaperArticleByIds)>0){ ?>
+                <div class="row">
+                    <?php foreach ($newspaperArticleByIds as $newspaperArticleById){ ?>
+                        <div class="col-lg-4 <?php echo $isMobile ? ' mt-20' : ' mt-30' ?>">
+                            <a href="<?php echo $newspaperArticleById->getArticleLink() ?>" target="_blank" title="<?php echo $newspaperArticleById->getArticleName() ?>" class="media">
+                                <img width="80" src="<?php echo $newspaperArticleById->getArticleIcon() ?>" alt="<?php echo $newspaperArticleById->getArticleName() ?>" title="<?php echo $newspaperArticleById->getArticleName() ?>" class="mr-10">
+                                <div class="media-body">
+                                    <h3 class="text-black text-16 text-normal"><?php echo $newspaperArticleById->getArticleName() ?></h3>
+                                </div>
+                            </a>
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+        <?php } ?>
+    </div>
+</div>

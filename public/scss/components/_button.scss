@@ -1,0 +1,126 @@
+.btn-reset {
+  outline: none;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.btn.focus,
+.btn:focus {
+  box-shadow: none;
+}
+.btn-main {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  color: $white;
+  font-size: $font-size;
+  font-weight: 500;
+  padding: 9px 34px;
+  min-width: 180px;
+  &:hover{
+    color: $primary-color;
+    border-color: $primary-color;
+    background-color: $white;
+  }
+  &:focus {
+    color: white!important;
+    &:hover {
+      color: $primary-color!important;
+    }
+  }
+  @include media-breakpoint-down(md) {
+    &.big-xs {
+      min-width: 265px;
+    }
+    min-width: auto;
+  }
+}
+.btn-only-icon {
+  padding: 0;
+  width: 44px;
+}
+
+.btn-large-width {
+  min-width: 244px;
+}
+
+.btn-base {
+  background-color: $base-button-color;
+  border-color: $base-button-color;
+  color: $white;
+  font-size: $font-size;
+  font-weight: 500;
+  padding: 9px 34px;
+  min-width: 160px;
+  &:hover {
+    color: $base-button-color;
+    border-color: $base-button-color;
+    background-color: $white;
+  }
+  @include media-breakpoint-down(md) {
+    min-width: auto;
+  }
+}
+.btn-white {
+  color: $text-primary;
+  border-color: $border-header;
+  img {
+    vertical-align: text-top;
+  }
+}
+.btn-arrow-right {
+  &:after {
+    content: "";
+    background-image: url("../images/icon-arrow-right.svg");
+    width: 17px;
+    height: 12px;
+    display: inline-block;
+    margin-left: 10px;
+  }
+  &:hover {
+    &:after {
+      background-image: url("../images/icon-arrow-right-red.svg");
+    }
+  }
+  &.no-hover {
+    &:hover {
+      &:after {
+        background-image: url("../images/icon-arrow-right.svg");
+      }
+    }
+  }
+}
+
+.btn-earth {
+  &:before {
+    content: "";
+    background-image: url("../images/icon-earth.svg");
+    width: 24px;
+    height: 22px;
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: text-bottom;
+  }
+  &:hover {
+    &:before {
+      background-image: url("../images/icon-earth-red.svg");
+    }
+  }
+}
+
+.btn-icon-search {
+  .search-default-icon {
+    display: inline-block;
+  }
+  .search-red-icon {
+    display: none;
+  }
+  &:hover {
+    .search-red-icon {
+      display: inline-block;
+    }
+    .search-default-icon {
+      display: none;
+    }
+  }
+}

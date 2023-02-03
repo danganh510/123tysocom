@@ -1,0 +1,119 @@
+<?php
+use Bincg\Models\BinUser;
+use Bincg\Repositories\User;
+use Bincg\Repositories\ContactUs AS ContactUs;
+use Bincg\Models\BinContactus AS BinContactus;
+use Bincg\Repositories\Apply AS Apply;
+use Bincg\Models\BinApply AS BinApply;
+
+?>
+<div class="row top_tiles">
+    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+            <div class="icon"><i class="fa fa-user"></i></div>
+            <div class="count">
+                <?php echo BinUser::count(); ?></div>
+            <h3>Total User</h3>
+        </div>
+    </div>
+    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+            <div class="icon"><i class="fa fa-envelope-o"></i></div>
+            <div class="count"><?php echo BinContactus::count();?></div>
+            <h3>Total Contact us</h3>
+        </div>
+    </div>
+    <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="tile-stats">
+            <div class="icon"><i class="fa fa-envelope-square"></i></div>
+            <div class="count"><?php echo BinApply::count();?></div>
+            <h3>Total Apply</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>New User  </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <?php $list_user = User::getByLimit(10);
+                /**
+                 * @var SwUser $user
+                 */
+
+                foreach ($list_user as $user){ ?>
+                    <article class="media event">
+                        <a class="pull-left date">
+                            <p class="month"><?php echo date("M",$user->getUserInsertTime()); ?></p>
+                            <p class="day"><?php echo date("d",$user->getUserInsertTime()); ?></p>
+                        </a>
+                        <div class="media-body">
+                            <strong>Name: </strong><a class="title" href="<?php echo $this->url->get("/dashboard/view-user?id=".$user->getUserId()); ?>"><?php echo $user->getUserName(); ?></a>
+                            <p><strong>Email: </strong><?php echo $user->getUserEmail() ;?></p>
+                        </div>
+                    </article>
+                <?php  }?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>New Contact us </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <?php $list_contactus = Contactus::getByLimit(10);
+                /**
+                 * @var \Bincg\Models\BinContactus $contactus
+                 */
+
+                foreach ($list_contactus as $contactus){?>
+                    <article class="media event">
+                        <a class="pull-left date">
+                            <p class="month"><?php echo date("M",$contactus->getContactInsertTime()); ?></p>
+                            <p class="day"><?php echo date("d",$contactus->getContactInsertTime()); ?></p>
+                        </a>
+                        <div class="media-body">
+                            <strong>Name: </strong><a class="title" href="<?php echo $this->url->get("/dashboard/view-contactus?id=".$contactus->getContactId()); ?>">#<?php echo $this->my->formatContactID($contactus->getContactInsertTime(),$contactus->getContactId());?></a>
+                            <p><strong>Email: </strong><?php echo $contactus->getContactEmail() ;?></p>
+
+                        </div>
+                    </article>
+                <?php  }?>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>New Apply </h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <?php $list_apply = Apply::getByLimit(10);
+                /**
+                 * @var \Bincg\Models\BinApply $apply
+                 */
+
+                foreach ($list_apply as $apply){?>
+                    <article class="media event">
+                        <a class="pull-left date">
+                            <p class="month"><?php echo date("M",$apply->getApplyInsertTime()); ?></p>
+                            <p class="day"><?php echo date("d",$apply->getApplyInsertTime()); ?></p>
+                        </a>
+                        <div class="media-body">
+                            <strong>Name: </strong>#<?php echo $this->my->formatApplyID($apply->getApplyInsertTime(),$apply->getApplyId());?>
+                            <p><strong>Email: </strong><?php echo $apply->getApplyEmail() ;?></p>
+
+                        </div>
+                    </article>
+                <?php  }?>
+            </div>
+        </div>
+    </div>
+</div>

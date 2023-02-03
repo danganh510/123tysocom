@@ -1,0 +1,100 @@
+<?php
+/**
+ * @var $location_code
+ * @var $lang_code
+ * @var $lang_url
+ * @var Bincg\Models\BinArticle $article
+ */
+?>
+<?php
+$url_site_schema = defined('URL_SITE') ? URL_SITE.'/'.$lang_url : '';
+$name_site_schema = defined('txt_brand_name') ? str_replace('"',"'",txt_brand_name) : '';
+$logo_site_schema = defined('schema_logo_png') ? schema_logo_png : '';
+$text_schema_social = defined('txt_schema_global_social') ? txt_schema_global_social : '';
+if(isset($locationByLoAndLa)) {
+    if($locationByLoAndLa){
+        if(strlen($locationByLoAndLa->getLocationSchemaSocial()) > 0){
+            $text_schema_social = $locationByLoAndLa->getLocationSchemaSocial();
+        }
+    }
+}
+$href_jurist_schema = '';
+$name_jurist_schema = '';
+if(isset($article)){
+    $name_jurist_schema = $this->my->replaceQuotes($article->getArticleName());
+    $href_jurist_schema = URL_SITE.'/'.$lang_url.'/'.$parent_keyword;
+
+?>
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+	    "@graph": [
+	        {
+                "@type": "Organization",
+                "@id": "<?php echo $href_jurist_schema; ?>",
+                "name": "<?php echo $name_site_schema; ?>",
+                "url": "<?php echo $url_site_schema; ?>",
+                <?php if(strlen($text_schema_social)>0){ ?>
+                    "sameAs": [
+                        <?php echo $text_schema_social; ?>
+                    ],
+                <?php } ?>
+                "logo": {
+                    "@type": "ImageObject",
+                    "@id": "<?php echo $url_site_schema; ?>/#logo",
+                    "inLanguage": "<?php echo $lang_code; ?>",
+                    "url": "<?php echo $logo_site_schema; ?>",
+                    "width": 122,
+                    "height": 42,
+                    "caption": "<?php echo $name_site_schema; ?>"
+                },
+                "image": {
+                    "@id": "<?php echo $url_site_schema; ?>/#logo"
+                }
+            }, {
+                "@type": "WebSite",
+                "@id": "<?php echo $url_site_schema; ?>/#website",
+                "url": "<?php echo $url_site_schema; ?>/",
+                "name": "<?php echo $name_site_schema; ?>",
+                "inLanguage": "<?php echo $lang_code; ?>",
+                "description": "<?php if(isset($meta_descript)) {echo $meta_descript;} ?>",
+                "publisher": {
+                    "@id": "<?php echo $url_site_schema; ?>/#organization"
+                }
+                <?php /*
+                "potentialAction": {
+                    "@type": "SearchAction",
+                    "target": "<?php echo $url_site_schema; ?>/?s={search_term_string}",
+                    "query-input": "required name=search_term_string"
+                }
+                */ ?>
+            }, {
+                "@type": "ImageObject",
+                "@id": "<?php echo $href_jurist_schema; ?>/#primaryimage",
+                "inLanguage": "<?php echo $lang_code; ?>",
+                "url": "<?php if(isset($meta_social_image)) {echo $meta_social_image;} ?>",
+                "width": 1920,
+                "height": 960,
+                "caption": "<?php echo $name_jurist_schema; ?>"
+            }, {
+                "@type": "WebPage",
+                "@id": "<?php echo $href_jurist_schema; ?>/#webpage",
+                "url": "<?php echo $href_jurist_schema; ?>",
+                "name": "<?php echo $name_jurist_schema; ?>",
+                "isPartOf": {
+                    "@id": "<?php echo $url_site_schema; ?>/#website"
+                },
+                "inLanguage": "<?php echo $lang_code; ?>",
+                "primaryImageOfPage": {
+                    "@id": "<?php echo $href_jurist_schema; ?>/#primaryimage"
+                },
+                <?php /*
+                    "datePublished": "2018-09-13T16:06:21+00:00",
+                    "dateModified": "2019-10-07T10:01:52+00:00",
+                */ ?>
+                "description": "<?php if(isset($meta_descript)) {echo $meta_descript;} ?>"
+            }
+        ]
+    }
+</script>
+<?php } ?>

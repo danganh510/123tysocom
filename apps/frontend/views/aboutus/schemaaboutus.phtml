@@ -1,0 +1,34 @@
+<?php
+    if (count($articles)>0) { ?>
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            "name": "<?php echo $this->my->replaceQuotes(isset($menu_bread) ? $menu_bread : '') ?>",
+            "description": "<?php echo isset($meta_descript) ? $this->my->replaceQuotes($meta_descript) : '' ?>",
+            "url": "<?php echo defined('URL_SITE') ? URL_SITE.'/'.$lang_url . '/' .$parent_keyword : '' ?>",
+            "itemListOrder": "Unordered",
+            "numberOfItems": <?php echo count($articles) ?>,
+            "itemListElement":
+            [
+                <?php
+                    $keyIndex=0;
+                    foreach ($articles as $key => $ar){ ?>
+                    {
+                        "@type": "ListItem",
+                        "position": <?php echo $key+1 ?>,
+                        "item":
+                        {
+                            "@type": "Thing",
+                            "name": "<?php echo $ar->getArticleName()?>",
+                            "url": "<?php echo defined('URL_SITE') ? URL_SITE.'/'.$lang_url.'/'.$parent_keyword.'#'.$ar->getArticleKeyword(): '' ?>",
+                            "description": "<?php echo $this->my->replaceQuotes($ar->getArticleContent($lang_url_slashed)) ?>"
+                        }
+                    }
+                    <?php
+                        echo count($articles) == $key+1 ? '' : ',';
+                    } ?>
+            ]
+        }
+    </script>
+<?php } ?>

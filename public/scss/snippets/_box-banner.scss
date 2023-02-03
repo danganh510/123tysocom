@@ -1,0 +1,110 @@
+.box-cover-banner {
+    padding: 35px 65px 35px 15px;
+    background-color: rgba($color: $blue-color, $alpha: 0.8);
+    color: white;
+    font-size: 20px;
+    max-width: 500px;
+    .caption-mark{
+        position: relative;
+        margin-bottom: 30px;
+        &::after {
+            content: "";
+            position: absolute;
+            height: 3px;
+            width: 60px;
+            background-color: white;
+            bottom: -10px;
+            left: 0;
+            z-index: 1;
+        }
+    }
+    @include media-breakpoint-down(lg) {
+        font-size: 18px;
+        padding: 35px 15px;
+        p {
+            position: relative;
+            margin-bottom: 30px;
+            &::after {
+                content: "";
+                position: absolute;
+                height: 3px;
+                width: 60px;
+                background-color: white;
+                bottom: -10px;
+                left: 0;
+                z-index: 1;
+            }
+        }
+    }
+}
+
+.position-cover-banner {
+    position: absolute;
+    left: 15px;
+    bottom: 60px;
+    z-index: 1;
+}
+
+.box-sm-cover-banner {
+    @include media-breakpoint-down(md) {
+        position: absolute !important;
+        max-width: initial;
+        padding: 0;
+        bottom: 0;
+        z-index: 2;
+        .position-cover-banner {
+            position: static;
+            left: 0;
+            bottom: 60px;
+            width: 100%;
+            max-width: initial;
+            padding-bottom: 60px;
+        }
+    }
+}
+
+// Close home
+
+.caption-banner{
+    position: absolute;
+    left: 0;
+    right: auto;
+    width: 100%;
+    bottom: 50px;
+    @include media-breakpoint-down(lg){
+        bottom:30px;
+    }
+    .caption-title,.caption-description{
+        color: $white;
+    }
+    .caption-description{
+        font-size:$font-size-lg;
+    }
+    .caption-title{
+        margin-bottom: 20px;
+        padding-bottom:10px;
+        position: relative;
+        font-size:32px;
+        @include media-breakpoint-down(lg){
+            font-size:28px;
+        }
+        &:before{
+            content: '';
+            position: absolute;
+            bottom:0;
+            left:calc(50% - 30px);
+            width: 60px;
+            height:3px;
+            background-color: $white;
+        }
+    }
+}
+
+.box-cover{
+    padding: 30px 40px;
+    background-color: rgba($color: $blue-color, $alpha: 0.8);
+    color: $white;
+    h2{
+        color: $white;
+    }
+}

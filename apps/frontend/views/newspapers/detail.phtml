@@ -1,0 +1,97 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var $type_keyword;
+ * @var $keyword;
+ * @var $ar_time;
+ * @var \Bincg\Models\BinNewspaperArticle[] $newspaperArticles
+ */
+?>
+<?php if(!$isMobile){ ?>
+    <div class="breadcrumbs black position-static">
+        <div class="container">
+            <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($parent_bread) ? strip_tags($parent_bread) : '' ?>">
+                <?php echo isset($parent_bread) ? $parent_bread : '' ?>
+            </a>
+            <strong>
+                <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$keyword); ?>" target="_self" title="<?php echo isset($menu_bread) ? $menu_bread : '' ?>">
+                    <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+                </a>
+            </strong>
+
+        </div>
+    </div>
+<?php } ?>
+<div class="padding-block pt-3">
+    <div class="container">
+        <div class="<?php echo $isMobile ? '' : 'd-flex align-items-center' ?> mt-3 mb-3 text-lg-left text-center">
+            <img width="108" class="<?php echo $isMobile ? 'mb-3' : 'mr-4' ?>" src="<?php echo $newspaper->getNewspaperLogo(); ?>" alt="<?php echo isset($menu_bread) ? $menu_bread : '' ?>" title="<?php echo isset($menu_bread) ? $menu_bread : '' ?>">
+            <h1 class="m-0 text-blue"><?php echo isset($menu_bread) ? $menu_bread : '' ?></h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-8 mt-lg-40">
+                <?php foreach ($newspaperArticles as $newspaperArticleById){ ?>
+                    <a href="<?php echo $newspaperArticleById->getArticleLink() ?>" target="_blank" title="<?php echo $newspaperArticleById->getArticleName() ?>" class="media">
+                        <img width="120" src="<?php echo $newspaperArticleById->getArticleIcon() ?>" alt="<?php echo $newspaperArticleById->getArticleName() ?>" title="<?php echo $newspaperArticleById->getArticleName() ?>" class="mr-10">
+                        <div class="media-body">
+                            <h3 class="text-black text-16 text-normal"><?php echo $newspaperArticleById->getArticleName() ?></h3>
+                        </div>
+                    </a>
+                    <hr class="mt-20 mb-20">
+                <?php } ?>
+            </div>
+            <div class="col-lg-4">
+                <?php $itemPerBlock=6; if(count($relatedNewspapers) >0) { ?>
+                    <div class="box-gray-1">
+                        <ul class="list-white-normal item-lg-2 text-center mt-2">
+                            <?php foreach ($relatedNewspapers as $newspaperKey => $newspaper){
+                                if($newspaperKey>$itemPerBlock){break;}
+                                ?>
+                                <li>
+                                    <a href="<?php echo $this->url->get($lang_url."/newspapers/".$newspaper->getNewspaperKeyword())?>" target="_self" title="<?php echo $newspaper->getNewspaperName(); ?>">
+                                        <img src="<?php echo $newspaper->getNewspaperLogo(); ?>" alt="<?php echo $newspaper->getNewspaperName(); ?>" title="<?php echo $newspaper->getNewspaperName(); ?>">
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                        <ul class="list-white-normal item-lg-2 mb-4 text-center toggle-content" style="display: none">
+                            <?php foreach ($relatedNewspapers as $newspaperKey => $newspaper){
+                                if($newspaperKey>$itemPerBlock){
+                                    ?>
+                                    <li>
+                                        <img src="<?php echo $newspaper->getNewspaperLogo(); ?>" alt="<?php echo $newspaper->getNewspaperName(); ?>" title="<?php echo $newspaper->getNewspaperName(); ?>">
+                                    </li>
+                                <?php }} ?>
+                        </ul>
+                        <?php if(count($relatedNewspapers)>$itemPerBlock){ ?>
+                            <div class="text-center mt-3 mb-3">
+                                <a href="javascript:void(0)" class="text-blue show-more" target="_self" title="<?php echo defined('btn_show_more') ? btn_show_more : '' ?>"><strong><?php echo defined('btn_show_more') ? btn_show_more : '' ?></strong></a>
+                                <a href="javascript:void(0)" class="text-blue show-less" style="display: none" target="_self" title="<?php echo defined('btn_show_less') ? btn_show_less : '' ?>"><strong><?php echo defined('btn_show_less') ? btn_show_less : '' ?></strong></a>
+                            </div>
+                            <script>
+                                commands.push(function () {
+                                    $('.show-more').on("click", function () {
+                                        $('.toggle-content').show();
+                                        $('.show-more').hide();
+                                        $('.show-less').show();
+                                    });
+                                    $('.show-less').on("click", function () {
+                                        $('.toggle-content').hide();
+                                        $('.show-more').show();
+                                        $('.show-less').hide();
+                                    });
+                                });
+                            </script>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>

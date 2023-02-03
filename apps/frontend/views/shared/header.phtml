@@ -1,0 +1,506 @@
+<?php
+/**
+ * Local variables
+ * @var \Phalcon\Mvc\View\Engine $this
+ * @var string $lang_code
+ * @var string $lang_url
+ * @var \Bincg\Models\BinArticle[] $menu_services
+ * @var \Bincg\Models\BinArticle[] $menu_corporate_social_responsibility
+ * @var \Bincg\Models\BinArticle[] $menu_abouts
+ * @var \Bincg\Models\BinType[] $news_subtypes
+ */
+header("X-Frame-Options: SAMEORIGIN");
+?>
+<!DOCTYPE html>
+<html lang="<?php echo $lang_code; ?>">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="theme-color" content="#e60000"/>
+    <?php echo $this->tag->getTitle(); ?>
+    <meta name="description" content='<?php if (isset($meta_descript)) {
+        echo $meta_descript;
+    } ?>'>
+    <meta name="keywords" content='<?php if (isset($meta_key)) {
+        echo $meta_key;
+    } ?>'>
+    <?php if (!in_array($this->router->getControllerName(), array('notfound'))) { ?>
+        <meta name="robots" content="index, follow"/>
+    <?php } else { ?>
+        <meta name="robots" content="noindex, follow"/>
+    <?php } ?>
+    <meta name="author" content='<?php echo defined('txt_brand_name') ? txt_brand_name : ''; ?>'/>
+    <meta name="copyright" content='<?php echo defined('txt_brand_name') ? txt_brand_name : ''; ?>'/>
+    <?php if (defined('URL_SITE')) {
+        if ($location_code == $this->globalVariable->defaultLocation && $lang_code == $this->globalVariable->defaultLanguage) {
+            $href_seo_tag = URL_SITE . '/' . $lang_url . $current_url;
+        } else {
+            $href_seo_tag = URL_SITE . '/' . $lang_url . $current_url;
+        }
+    } else {
+        $href_seo_tag = '';
+    } ?>
+    <?php
+    $meta_social_title = $this->tag->getTitle(false);
+    ?>
+    <meta property="og:title" content='<?php echo isset($meta_social_title) ? $meta_social_title : ''; ?>'/>
+    <meta property="og:description" content='<?php if (isset($meta_descript)) {
+        echo $meta_descript;
+    } ?>'/>
+    <meta property="og:url" content='<?php echo isset($href_seo_tag) ? $href_seo_tag : ''; ?>'/>
+    <meta property="og:site_name" content='<?php echo defined('txt_brand_name') ? txt_brand_name : ''; ?>'/>
+    <meta property="og:image" content='<?php if (isset($meta_social_image)) {
+        echo $meta_social_image;
+    } ?>'/>
+    <meta property="og:image:secure_url" content="<?php if (isset($meta_social_image)) {
+        echo $meta_social_image;
+    } ?>"/>
+    <meta property="og:image:width" content="1920"/>
+    <meta property="og:image:height" content="960"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:description" content='<?php if (isset($meta_descript)) {
+        echo $meta_descript;
+    } ?>'/>
+    <meta name="twitter:title" content='<?php echo isset($meta_social_title) ? $meta_social_title : ''; ?>'/>
+    <meta name="twitter:image" content="<?php if (isset($meta_social_image)) {
+        echo $meta_social_image;
+    } ?>"/>
+    <?php
+    $href_alternate_tag = str_replace('/?', '?', $href_seo_tag);
+    $array_alternate_tag = explode('?', $href_alternate_tag);
+    $href_alternate_tag = $array_alternate_tag[0];
+    ?>
+    <link rel="alternate" href="<?php echo $href_alternate_tag ?>"
+          hreflang="<?php echo ($location_code == $this->globalVariable->defaultLocation && $lang_code == $this->globalVariable->defaultLanguage) ? 'x-default' : ($lang_code) ?>"/>
+    <?php
+    if (defined('URL_SITE')) {
+        if (isset($canonical_tag)) {
+            if ($lang_code == $this->globalVariable->defaultLanguage) {
+                $canonical_tag = URL_SITE . '/' . $canonical_tag;
+            } elseif ($lang_code != $this->globalVariable->defaultLanguage) {
+                $canonical_tag = URL_SITE . '/' . $lang_url . '/' . $canonical_tag;
+            }
+        } else {
+            $canonical_tag = '';
+            if ($lang_code == $this->globalVariable->defaultLanguage) {
+                $canonical_tag = URL_SITE . $current_url;
+            } elseif ($lang_code != $this->globalVariable->defaultLanguage) {
+                $canonical_tag = URL_SITE . '/' . $lang_url . $current_url;
+            }
+        }
+    } else {
+        $canonical_tag = '';
+    }
+    $canonical_tag = str_replace('/?', '?', $canonical_tag);
+    $array_canonical_tag = explode('?', $canonical_tag);
+    $href_canonical_tag = $array_canonical_tag[0];
+    ?>
+    <?php /* ?>
+    <link rel="canonical" href="<?php echo $href_canonical_tag; ?>">*/ ?>
+    <link rel="shortcut icon" href="<?php echo $this->url->getStatic('favicon.ico'); ?>">
+    <?php
+    if (isset($page_style)) {
+        if (strlen($page_style) > 0) {
+            echo $page_style;
+        } else {
+            echo defined('txt_style_css') ? txt_style_css : '';
+        }
+    } else {
+        echo defined('txt_style_css') ? txt_style_css : '';
+    }
+    ?>
+    <?php $this->view->partial('shared/schema_global'); ?>
+    <script>
+        var commands = [];
+        var WEB_URL = "<?php echo $this->url->get($lang_url . '/'); ?>";
+        var txt_please_enter_keyword = '<?php echo defined("txt_please_enter_keyword") ? txt_please_enter_keyword : "" ?>';
+    </script>
+    <?php if (!in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', "::1")) && defined('google_task_manager_head')) {
+        echo google_task_manager_head;
+    } else { ?>
+        <script>dataLayer = [];</script>
+    <?php } ?>
+</head>
+<body>
+<?php if (!in_array($_SERVER['REMOTE_ADDR'], array('127.0.0.1', "::1")) && defined('google_task_manager_body')) {
+    echo google_task_manager_body;
+} else { ?>
+    <script>dataLayer = [];</script>
+<?php } ?>
+<?php $controller_name = $this->router->getControllerName(); ?>
+<header>
+    <div class="header-top">
+        <div class="container">
+            <ul class="list-inline ul-top">
+                <?php $curLang = \Bincg\Repositories\Language::getLanguageByCode($lang_code); ?>
+                <li class="no-hover">
+                    <?php echo defined('txt_language') ? txt_language : ''; ?>
+                    :<strong> <?php echo (count($languages) == 0 && $curLang) ? $curLang->getLanguageName() : ''; ?></strong>
+                </li>
+                <?php if (count($languages) > 0) { ?>
+                    <li>
+                        <div class="option-btn">
+                            <div class="dropdown multi-lang">
+                                <?php
+                                if ($curLang) {
+                                    ?>
+                                    <button class="btn-flag dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <strong><?php echo $curLang->getLanguageName(); ?></strong>
+                                        <span class="caret"></span>
+                                    </button>
+                                <?php } ?>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <?php foreach ($languages as $lang) { ?>
+                                        <?php
+                                        if ($location_code == $this->globalVariable->defaultLocation && $lang->getLanguageCode() == $this->globalVariable->defaultLanguage) {
+                                            $link_flag = $this->url->get($current_url);
+                                        } else {
+                                            $link_flag = $this->url->get($location_code . '/' . $lang->getLanguageCode() . $current_url);
+                                        }
+                                        ?>
+                                        <li>
+                                            <a href="<?php echo $link_flag; ?>" target="_self"
+                                               title="<?php echo $lang->getLanguageName(); ?>">
+                                                <strong><?php echo $lang->getLanguageName(); ?></strong>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                <?php } ?>
+            </ul>
+        </div>
+    </div>
+    <div class="header-navigation">
+        <div class="container">
+            <div class="navigation-wrap">
+                <a class="logo" href="<?php echo $this->url->get($lang_url); ?>" target="_self"
+                   title="<?php echo htmlentities(defined('txt_brand_name') ? txt_brand_name : ''); ?>">
+                    <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                         data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/logo.svg"
+                         alt="<?php echo htmlentities(defined('txt_brand_name') ? txt_brand_name : ''); ?>"
+                         title="<?php echo htmlentities(defined('txt_brand_name') ? txt_brand_name : ''); ?>">
+                </a>
+                <?php if (!$isMobile) {
+                    if (defined('PROGRAMMABLE_SEARCH_ENGINE') && PROGRAMMABLE_SEARCH_ENGINE) { ?>
+                        <?php if (!in_array($this->router->getControllerName(), array('search'))){ ?>
+                            <script>
+                                commands.push(function () {
+                                    $('.search-form .btn-search').on('click', function () {
+                                        if ($('script#search-bar').length == 0) {
+                                            var cx = '<?php echo $this->globalVariable->programmableSearchEngineCxKey ?>';
+                                            var gcse = document.createElement('script');
+                                            gcse.type = 'text/javascript';
+                                            gcse.async = true;
+                                            gcse.setAttribute('id', 'search-bar');
+                                            gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                                '//www.google.com/cse/cse.js?cx=' + cx;
+                                            var s = document.getElementsByTagName('script')[0];
+                                            s.parentNode.insertBefore(gcse, s);
+                                        }
+                                        let watchCss = setInterval(function() {
+                                            let inputHeaderSearch = $('.search-form input.gsc-input');
+                                            if (inputHeaderSearch.length > 0) {
+                                                inputHeaderSearch.attr('placeholder', '<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : "Please type keyword" ?>');
+                                                clearInterval(watchCss);
+                                            }
+                                        }, 100);
+                                    });
+                                });
+                            </script>
+                        <?php }else{ ?>
+                            <script>
+                                commands.push(function () {
+                                    if ($('script#search-bar').length == 0) {
+                                        var cx = '<?php echo $this->globalVariable->programmableSearchEngineCxKey ?>';
+                                        var gcse = document.createElement('script');
+                                        gcse.type = 'text/javascript';
+                                        gcse.async = true;
+                                        gcse.setAttribute('id', 'search-bar');
+                                        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                            '//www.google.com/cse/cse.js?cx=' + cx;
+                                        var s = document.getElementsByTagName('script')[0];
+                                        s.parentNode.insertBefore(gcse, s);
+                                    }
+                                    let watchHeaderSearch = setInterval(function() {
+                                        let inputHeaderSearch = $('.search-form input.gsc-input');
+                                        if (inputHeaderSearch.length > 0) {
+                                            inputHeaderSearch.attr('placeholder', '<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : "Please type keyword" ?>');
+                                            clearInterval(watchHeaderSearch);
+                                        }
+                                    }, 100);
+                                    let watchMenuSearch = setInterval(function() {
+                                        let inputMenuSearch = $('.group-search-google input.gsc-input');
+                                        if (inputMenuSearch.length > 0) {
+                                            inputMenuSearch.attr('placeholder', '<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : "Please type keyword" ?>');
+                                            clearInterval(watchMenuSearch);
+                                        }
+                                    }, 100);
+                                });
+                            </script>
+                        <?php } ?>
+                        <div class="dropdown search-form">
+                            <button class="btn-search dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                            <ul class="dropdown-menu dropdown-style3">
+                                <li>
+                                    <div class="gcse-searchbox-only" data-cr="country<?php echo strtoupper($location_code) ?>" data-enableAutoComplete="true" data-queryParameterName="q" data-autoCompleteValidLanguages="<?php echo $lang_code; ?>" data-resultsUrl="<?php echo URL_SITE.$lang_url_slashed ?>/search"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php } else { ?>
+                        <div class="dropdown search-form">
+                            <button class="btn-search dropdown-toggle" type="button" data-toggle="dropdown"></button>
+                            <ul class="dropdown-menu dropdown-style3">
+                                <li>
+                                    <form action="<?php echo $this->url->get($lang_url . '/search'); ?>">
+                                        <input type="search" maxlength="255" id="txtSearchHeader" name="keyword"
+                                               class="form-control searchsuggest"
+                                               placeholder="<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : '' ?>">
+                                        <div class="input-group-append">
+                                            <button class="btn text-uppercase" type="submit"
+                                                    onclick="return checkformheader()">
+                                                <img src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-search-white.svg"
+                                                     alt="<?php echo htmlentities(defined('btn_search') ? btn_search : ''); ?>"
+                                                     title="<?php echo htmlentities(defined('btn_search') ? btn_search : ''); ?>"/>
+                                                <?php echo defined('btn_search') ? btn_search : ''; ?>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                <?php }} ?>
+                <ul id="menu-bar" class="list-inline menu-bar">
+                    <li class="menu d-lg-none d-block">
+                        <?php echo defined('txt_menu') ? strtoupper(txt_menu) : ''; ?>
+                        <span class="menu-cancel"></span>
+                    </li>
+                    <?php if ($isMobile) {
+                    if (defined('PROGRAMMABLE_SEARCH_ENGINE') && PROGRAMMABLE_SEARCH_ENGINE) { ?>
+                        <?php if (!in_array($this->router->getControllerName(), array('search'))){ ?>
+                            <script>
+                                commands.push(function () {
+                                    $('.icon-bar').on('click', function () {
+                                        if ($('script#search-bar').length == 0) {
+                                            var cx = '<?php echo $this->globalVariable->programmableSearchEngineCxKey ?>';
+                                            var gcse = document.createElement('script');
+                                            gcse.type = 'text/javascript';
+                                            gcse.async = true;
+                                            gcse.setAttribute('id', 'search-bar');
+                                            gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                                '//www.google.com/cse/cse.js?cx=' + cx;
+                                            var s = document.getElementsByTagName('script')[0];
+                                            s.parentNode.insertBefore(gcse, s);
+                                        }
+                                        let watchCss = setInterval(function() {
+                                            let inputHeaderSearch = $('.search-mobile input.gsc-input');
+                                            if (inputHeaderSearch.length > 0) {
+                                                inputHeaderSearch.attr('placeholder', '<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : "Please type keyword" ?>');
+                                                clearInterval(watchCss);
+                                            }
+                                        }, 100);
+                                    });
+                                });
+                            </script>
+                        <?php }else{ ?>
+                        <script>
+                            commands.push(function () {
+                                if ($('script#search-bar').length == 0) {
+                                    var cx = '<?php echo $this->globalVariable->programmableSearchEngineCxKey ?>';
+                                    var gcse = document.createElement('script');
+                                    gcse.type = 'text/javascript';
+                                    gcse.async = true;
+                                    gcse.setAttribute('id', 'search-bar');
+                                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                        '//www.google.com/cse/cse.js?cx=' + cx;
+                                    var s = document.getElementsByTagName('script')[0];
+                                    s.parentNode.insertBefore(gcse, s);
+                                }
+                                let watchHeaderSearch = setInterval(function() {
+                                    let inputHeaderSearch = $('.search-mobile input.gsc-input');
+                                    if (inputHeaderSearch.length > 0) {
+                                        inputHeaderSearch.attr('placeholder', '<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : "Please type keyword" ?>');
+                                        clearInterval(watchHeaderSearch);
+                                    }
+                                }, 100);
+                                let watchMenuSearch = setInterval(function() {
+                                    let inputMenuSearch = $('.group-search-google input.gsc-input');
+                                    if (inputMenuSearch.length > 0) {
+                                        inputMenuSearch.attr('placeholder', '<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : "Please type keyword" ?>');
+                                        clearInterval(watchMenuSearch);
+                                    }
+                                }, 100);
+                            });
+                        </script>
+                        <?php } ?>
+                        <li class="search-mobile d-lg-none d-block">
+                            <div class="gcse-searchbox-only" data-cr="country<?php echo strtoupper($location_code) ?>" data-enableAutoComplete="true" data-queryParameterName="q" data-autoCompleteValidLanguages="<?php echo $lang_code; ?>" data-resultsUrl="<?php echo URL_SITE.$lang_url_slashed ?>/search"></div>
+                        </li>
+                    <?php } else { ?>
+                        <li class="search-mobile d-lg-none d-block">
+                            <form action="<?php echo $this->url->get($lang_url . '/search'); ?>">
+                                <div class="input-button-group">
+                                    <input type="search" maxlength="255" id="txtSearchHeader" name="keyword"
+                                           class="form-control searchsuggest"
+                                           placeholder="<?php echo defined('txt_please_type_keyword') ? txt_please_type_keyword : '' ?>">
+                                    <button class="btn btn-main btn-only-icon" type="submit"
+                                            onclick="return checkformheader()">
+                                        <img src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-search-white.svg"
+                                             alt="<?php echo htmlentities(defined('btn_search') ? btn_search : ''); ?>"
+                                             title="<?php echo htmlentities(defined('btn_search') ? btn_search : ''); ?>"/>
+                                    </button>
+                                </div>
+                            </form>
+                        </li>
+                    <?php }} ?>
+                    <li<?php echo ($controller_name == 'index') ? ' class="active"' : ''; ?>>
+                        <a href="<?php echo $this->url->get($lang_url); ?>" target="_self"
+                           title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                            <?php echo defined('txt_menu_home') ? txt_menu_home : ''; ?>
+                        </a>
+                    </li>
+                    <li<?php echo ($controller_name == 'aboutus') ? ' class="active has-dropdown"' : ''; ?>>
+
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <?php echo defined('txt_who_we_are') ? txt_who_we_are : ''; ?>
+                            </button>
+                            <ul class="dropdown-menu dropdown-style3">
+                                <li class="title-navigation">
+                                    <a href="<?php echo $this->url->get($lang_url . '/about-us'); ?>" target="_self"
+                                       title="<?php echo htmlentities(defined('txt_who_we_are') ? txt_who_we_are : ''); ?>">
+                                        <?php echo defined('txt_who_we_are') ? txt_who_we_are : ''; ?>
+                                    </a>
+                                </li>
+                                <?php foreach ($menu_abouts as $menu_aboutus_item) { ?>
+                                    <li>
+                                        <a tabindex="-1"
+                                           href="<?php echo $this->url->get($lang_url . '/about-us/' . $menu_aboutus_item->getArticleKeyword()); ?>"
+                                           target="_self"
+                                           title="<?php echo strip_tags($menu_aboutus_item->getArticleName()); ?>">
+                                            <?php echo $menu_aboutus_item->getArticleName(); ?>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li<?php echo ($controller_name == 'services') ? ' class="active has-dropdown"' : ''; ?>>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <?php echo defined('txt_what_we_do') ? txt_what_we_do : ''; ?>
+                            </button>
+                            <ul class="dropdown-menu dropdown-style3">
+                                <li class="title-navigation">
+                                    <a href="<?php echo $this->url->get($lang_url . '/services'); ?>" target="_self"
+                                       title="<?php echo htmlentities(defined('txt_what_we_do') ? txt_what_we_do : ''); ?>">
+                                        <?php echo defined('txt_what_we_do') ? txt_what_we_do : ''; ?>
+                                    </a>
+                                </li>
+                                <?php foreach ($menu_services as $menu_service) { ?>
+                                    <li>
+                                        <a tabindex="-1"
+                                           href="<?php echo $this->url->get($lang_url . '/services/' . $menu_service->getArticleKeyword()); ?>"
+                                           target="_self"
+                                           title="<?php echo strip_tags($menu_service->getArticleName()); ?>">
+                                            <?php echo $menu_service->getArticleName(); ?>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li<?php echo ($controller_name == 'corporatesocialresponsibility') ? ' class="active has-dropdown"' : ''; ?>>
+
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <?php echo defined('txt_corporate_social_responsibility') ? txt_corporate_social_responsibility : ''; ?>
+                            </button>
+                            <ul class="dropdown-menu dropdown-style3">
+                                <li class="title-navigation">
+                                    <a href="<?php echo $this->url->get($lang_url . '/corporate-social-responsibility'); ?>"
+                                       target="_self"
+                                       title="<?php echo htmlentities(defined('txt_corporate_social_responsibility') ? txt_corporate_social_responsibility : ''); ?>">
+                                        <?php echo defined('txt_corporate_social_responsibility') ? txt_corporate_social_responsibility : ''; ?>
+                                    </a>
+                                </li>
+                                <?php foreach ($menu_corporate_social_responsibility as $responsibility_item) { ?>
+                                    <li>
+                                        <a tabindex="-1"
+                                           href="<?php echo $this->url->get($lang_url . '/corporate-social-responsibility/' . $responsibility_item->getArticleKeyword()); ?>"
+                                           target="_self"
+                                           title="<?php echo strip_tags($responsibility_item->getArticleName()); ?>">
+                                            <?php echo $responsibility_item->getArticleName(); ?>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+
+                                <li>
+                                    <a tabindex="-1"
+                                       href="<?php echo $this->url->get($lang_url.'/newsroom')?>"
+                                       target="_self"
+                                       title="<?php echo strip_tags(defined('txt_news_room') ? txt_news_room : '') ?>">
+                                        <?php echo defined('txt_news_room') ? txt_news_room : '' ?>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li<?php echo ($controller_name == 'careers') ? ' class="active"' : ''; ?>>
+                        <a href="<?php echo $this->url->get($lang_url . '/careers'); ?>" target="_self"
+                           title="<?php echo htmlentities(defined('txt_careers') ? txt_careers : ''); ?>">
+                            <?php echo defined('txt_careers') ? txt_careers : ''; ?>
+                        </a>
+                    </li>
+                    <li<?php echo ($controller_name == 'news') ? ' class="active has-dropdown"' : ''; ?>>
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <?php echo defined('txt_news') ? txt_news : ''; ?>
+                            </button>
+                            <ul class="dropdown-menu dropdown-style3">
+                                <li class="title-navigation">
+                                    <a href="<?php echo $this->url->get($lang_url . '/news'); ?>" target="_self"
+                                       title="<?php echo htmlentities(defined('txt_news') ? txt_news : ''); ?>">
+                                        <?php echo defined('txt_news') ? txt_news : ''; ?>
+                                    </a>
+                                </li>
+                                <?php foreach ($news_subtypes as $news_subtype) { ?>
+                                    <li>
+                                        <a tabindex="-1"
+                                           href="<?php echo $this->url->get($lang_url . '/news/' . $news_subtype->getTypeKeyword()); ?>"
+                                           target="_self"
+                                           title="<?php echo strip_tags($news_subtype->getTypeName()); ?>">
+                                            <?php echo $news_subtype->getTypeName(); ?>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </li>
+                    <li<?php echo ($controller_name == 'contactus') ? ' class="active"' : ''; ?>>
+                        <a href="<?php echo $this->url->get($lang_url . '/contact-us'); ?>" target="_self"
+                           title="<?php echo htmlentities(defined('txt_contact_us') ? txt_contact_us : ''); ?>">
+                            <?php echo defined('txt_contact_us') ? txt_contact_us : ''; ?>
+                        </a>
+                    </li>
+                    <li class="list-social-menu d-lg-none d-block">
+                        <?php echo defined('txt_social') ? txt_social : ''; ?>
+                    </li>
+                </ul>
+                <a href="javascript:void(0)" target="_self" id="icon-bar" class="icon-bar"
+                   title="<?php echo htmlentities(defined('txt_menu') ? txt_menu : ''); ?>"></a>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="icon-gotop">
+    <img src="<?php echo $this->url->getStatic('frontend/'); ?>images/scroll-top.png"
+         alt="<?php echo htmlentities(defined('txt_scroll_top') ? txt_scroll_top : ''); ?>"
+         title="<?php echo htmlentities(defined('txt_scroll_top') ? txt_scroll_top : ''); ?>">
+</div>

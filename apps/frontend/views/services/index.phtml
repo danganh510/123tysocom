@@ -1,0 +1,58 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var \Bincg\Models\BinArticle[] $articles
+ */
+?>
+<?php if(!$isMobile){ ?>
+<div class="breadcrumbs black">
+    <div class="container">
+        <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+            <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+        </a>
+        <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($menu_bread) ? strip_tags($menu_bread) : '' ?>">
+            <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+        </a>
+    </div>
+</div>
+<?php } ?>
+<?php $this->view->partial('shared/layoutbanner'); ?>
+<?php if(count($articles)>0){ ?>
+    <div class="padding-block">
+        <div class="container">
+            <h1 class="text-center text-main title-mark"><?php echo isset($menu_bread) ? $menu_bread : '' ?></h1>
+            <div class="row">
+                <?php foreach ($articles as $key => $article){
+                    $style_id = $key%3+1;
+                    ?>
+                <div class="col-md-4">
+                    <a class="special-hover-card style-<?php echo $style_id; ?>" href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article->getArticleKeyword()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>" target="_self">
+                        <div class="image">
+                            <img class="full lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article->getArticleIcon(); ?>" alt="<?php echo strip_tags($article->getArticleName()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>" />
+                            <div class="hover-title">
+                                <p>
+                                    <?php echo $article->getArticleSummary(); ?>
+                                </p>
+                                <span>
+                                    <?php echo defined('btn_learn_more') ? btn_learn_more : ''; ?>
+                                    <img class="pl-1 lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-arrow-right.svg" alt="<?php echo strip_tags($article->getArticleName()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>" />
+                                </span>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="content-img">
+                                <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article->getArticleLogo(); ?>" alt="<?php echo strip_tags($article->getArticleName()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>" />
+                                <img class="hover-image lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article->getArticleLogoActive(); ?>" alt="<?php echo strip_tags($article->getArticleName()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>" />
+                            </div>
+                            <h3><?php echo $article->getArticleName(); ?></h3>
+                        </div>
+                    </a>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>

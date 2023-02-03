@@ -1,0 +1,86 @@
+
+#lcl_thumbs_nav span {
+    width: auto;
+    height: auto;
+    top: calc(50% - 9px);
+}
+
+.lcl_tn_prev:before {
+    content: "";
+    background: url(../images/arrow-slider-gallery-pre.svg) no-repeat;
+    height: 50px;
+    width: 50px;
+}
+
+.lcl_tn_next:before {
+    content: "";
+    background: url(../images/arrow-slider-gallery-next.svg) no-repeat;
+    height: 50px;
+    width: 50px;
+}
+
+.lcl_prev:before {
+    content: "";
+    background: url(../images/lcl_prev.svg) no-repeat center center;
+    height: 30px;
+}
+
+.lcl_next:before {
+    content: "";
+    background: url(../images/lcl_next.svg) no-repeat center center;
+    height: 30px;
+}
+
+.lcl_play:before {
+    content: "";
+    background: url(../images/lcl_play.svg) no-repeat center center;
+    height: 30px;
+}
+
+.lcl_thumbs_toggle:before {
+    content: "";
+    background: url(../images/lcl_thumbs_toggle.svg) no-repeat center center;
+    height: 30px;
+}
+
+.lcl_close:before, #lcl_corner_close:before {
+    content: "";
+    background: url(../images/lcl_close.svg) no-repeat center center;
+    height: 30px;
+}
+
+.lcl_is_playing .lcl_play:before {
+    content: "";
+    background: url(../images/lcl_close.svg) no-repeat center center;
+    height: 30px;
+}
+
+.lcl_icon {
+    &:hover {
+        &.lcl_prev:before {
+            background: url(../images/lcl_prev-white.svg) no-repeat center center;
+        }
+        &.lcl_next:before {
+            background: url(../images/lcl_next-white.svg) no-repeat center center;
+        }
+        &.lcl_play:before {
+            content: "";
+            background: url(../images/lcl_play_white.svg) no-repeat center center;
+        }
+        &.lcl_thumbs_toggle:before {
+            content: "";
+            background: url(../images/lcl_thumbs_toggle_white.svg) no-repeat center center;
+        }
+        &.lcl_close:before, &#lcl_corner_close:before {
+            content: "";
+            background: url(../images/lcl_close_white.svg) no-repeat center center;
+        }
+    }
+}
+
+
+#lcl_thumbs_nav .lcl_tn_inner {
+    left: 50px;
+    right: 50px;
+    padding-left: 0;
+}

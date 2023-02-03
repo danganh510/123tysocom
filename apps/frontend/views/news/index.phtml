@@ -1,0 +1,129 @@
+<?php
+/**
+ * @var $lang_url;
+ * @var $lang_code;
+ * @var $lang_url_slashed;
+ * @var $parent_keyword;
+ * @var $arr_recent_article_id;
+ * @var \Bincg\Models\BinType[] $types
+ * @var \Bincg\Models\BinArticle[] $recent_articles
+ * @var \Bincg\Models\BinArticle[] $articles
+ */
+$repoType = new \Bincg\Repositories\Type();
+$repoArticle = new \Bincg\Repositories\Article();
+?>
+<?php if(!$isMobile){ ?>
+    <div class="breadcrumbs black position-static">
+        <div class="container">
+            <a href="<?php echo $this->url->get($lang_url); ?>" target="_self" title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword); ?>" target="_self" title="<?php echo isset($menu_bread) ? strip_tags($menu_bread) : '' ?>">
+                <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+<div class="padding-block-small mt-lg-0 mt-3">
+
+    <div class="container text-center">
+        <h1 class="text-center text-main title-mark mt-3 mt-lg-0"><?php echo defined('txt_insights') ? txt_insights : '' ?></h1>
+    </div>
+</div>
+<?php if(count($recent_articles)>0){ ?>
+    <div class="padding-block-no-banner">
+        <div class="container">
+            <div class="row">
+                <?php foreach ($recent_articles as $key_recent => $recent_article){
+                    $type_by_id = $repoType->getTypeById($recent_article->getArticleTypeId(),$lang_code);
+                    $type_key_by_id = $type_by_id ? $type_by_id->getTypeKeyword() : '';
+                    if($key_recent==0){
+                    ?>
+                        <div class="col-lg-7<?php echo $isMobile ? ' p-0' : ''; ?>">
+                            <a class="box-decor-content-wrapper" href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$recent_article->getArticleKeyword()); ?>" target="_self" title="<?php echo strip_tags($recent_article->getArticleName()); ?>">
+                                <?php if(!$isMobile){ ?>
+                                    <img class="full" src="<?php echo $recent_article->getArticleMetaImage(); ?>" alt="<?php echo strip_tags($recent_article->getArticleName()); ?>" title="<?php echo strip_tags($recent_article->getArticleName()); ?>">
+                                <?php }else{ ?>
+                                    <img class="full" src="<?php echo $recent_article->getArticleMetaImage(); ?>" alt="<?php echo strip_tags($recent_article->getArticleName()); ?>" title="<?php echo strip_tags($recent_article->getArticleName()); ?>">
+                                <?php } ?>
+                                <div class="box-decor-content w-100">
+                                    <p class="text-14"><?php echo $this->my->formatTimeAr($recent_article->getArticleInsertTime()); ?></p>
+                                    <h3 class="text-normal text-white">
+                                        <?php echo $recent_article->getArticleName(); ?>
+                                    </h3>
+                                    <p><u><?php echo defined('btn_read_more') ? btn_read_more : ''; ?></u></p>
+                                </div>
+                            </a>
+                        </div>
+                    <?php } ?>
+                <?php } ?>
+                <?php if(count($recent_articles)>1){ ?>
+                    <div class="col-lg-5">
+                        <div class="list-bg h-100">
+
+                            <?php foreach ($recent_articles as $key_recent => $recent_article){
+                                $type_by_id = $repoType->getTypeById($recent_article->getArticleTypeId(),$lang_code);
+                                $type_key_by_id = $type_by_id ? $type_by_id->getTypeKeyword() : '';
+                                if($key_recent!=0){
+                                    ?>
+                                    <div class="media mb-3">
+                                        <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$recent_article->getArticleKeyword()); ?>" class="mr-3" target="_self" title="<?php echo strip_tags($recent_article->getArticleName()); ?>">
+                                            <img width="130" class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $recent_article->getArticleIcon(); ?>" alt="<?php echo strip_tags($recent_article->getArticleName()); ?>" title="<?php echo strip_tags($recent_article->getArticleName()); ?>">
+                                        </a>
+                                        <div class="media-body">
+
+                                            <h3 class="text-black text-16">
+                                                <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$recent_article->getArticleKeyword()); ?>" target="_self" title="<?php echo strip_tags($recent_article->getArticleName()); ?>">
+                                                    <?php echo $recent_article->getArticleName(); ?>
+                                                </a>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+<?php } ?>
+<?php foreach ($types as $type){
+
+    $articles = $repoArticle->getByTypeAndArrIdAndInsertTime($type->getTypeId(), $arr_recent_article_id, $lang_code,3);
+    if(count($articles) > 0) { ?>
+
+        <div class="padding-block">
+            <div class="container">
+                <h2 class="text-center text-main title-mark">
+                    <a target="_self" href="<?php echo $this->url->get($lang_url.'/news/'.$type->getTypeKeyword()); ?>"
+                       title="<?php echo strip_tags($type->getTypeName());  ?>">
+                        <?php echo $type->getTypeName(); ?>
+                    </a>
+                </h2>
+                <?php if(count($articles)>0){ ?>
+                    <div class="row">
+                        <?php foreach ($articles as $article){ ?>
+                            <div class="col-lg-4 mb-4 m-lg-0">
+                                <div class="text-center text-lg-left">
+                                    <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article->getArticleKeyword()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>" target="_self">
+                                        <img class="full lazyload mb-2" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $article->getArticleIcon(); ?>" alt="<?php echo strip_tags($article->getArticleName()); ?>" title="<?php echo strip_tags($article->getArticleName()); ?>">
+                                    </a>
+                                </div>
+                                <h3 class="text-black">
+                                    <a href="<?php echo $this->url->get($lang_url.'/'.$parent_keyword.'/'.$article->getArticleKeyword()); ?>" target="_self" title="<?php echo strip_tags($article->getArticleName()); ?>">
+                                        <?php echo $article->getArticleName(); ?>
+                                    </a>
+                                </h3>
+                                <p class="text-gray-date"><?php echo $this->my->formatTimeAr($article->getArticleInsertTime()); ?></p>
+                                <p><?php echo $article->getArticleSummary(); ?></p>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+
+            </div>
+        </div>
+    <?php }
+    ?>
+<?php } ?>

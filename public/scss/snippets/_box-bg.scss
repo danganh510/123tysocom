@@ -1,0 +1,32 @@
+@mixin boxBgColor($color) {
+    padding: 42px 40px;
+    background-color: $color;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-flow: column;
+    color: white;
+    @include media-breakpoint-down(md) {
+        padding: 30px 15px;
+    }
+    p {
+        color: white;
+    }
+    ul {
+        color: white;
+        li {
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.box-bg-blue {
+    @include boxBgColor($blue-color);
+}
+.box-bg-green {
+    @include boxBgColor($green-color);
+}
+.box-bg-primary {
+    @include boxBgColor($primary-color);
+}

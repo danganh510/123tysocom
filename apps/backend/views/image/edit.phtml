@@ -1,0 +1,166 @@
+<script>
+    $(document).ready(function () {
+        $('form[name=album-form]').submit(function (event) {
+            var valid = true;
+            if ($('input[name=txtInsertTime]').val() == '') {
+                $('.msg-time').text('Insert time field is required.');
+                $('#txtInsertTime').addClass("border-red");
+                valid = false;
+            } else {
+                $('.msg-time').text('');
+                $('#txtInsertTime').removeClass("border-red");
+            }
+
+            if (!valid) event.preventDefault();
+            if (valid) {
+                $('button[name=sbmImage]').prop('disabled', true);
+            }
+        });
+    });
+
+</script>
+<div class="page-title">
+    <div class="title_left">
+        <h3 class="type-title">Album Image <?php echo \Bincg\Repositories\Album::getNameByID($album_id) ;?></h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+<?php if (!empty($messages['message'])) {
+    ?>
+    <div class="clearfix"></div>
+    <p style="font-size:18px;text-align:center" class="alert alert-<?php echo $messages['typeMessage'] ?>">
+        <?php echo $messages['message']; ?>
+    </p>
+<?php } ?>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">Form Edit
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <br/>
+                <form name="album-form" id="album-form" data-parsley-validate class="form-horizontal form-label-left"
+                      method="post">
+                    <input type="hidden" name="save" id="save"
+                           value="<?php echo \Bincg\Models\BinLanguage::GENERAL; ?>"/>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Order <span
+                                    class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["image_order"]) ? $formData["image_order"] : "" ?>"
+                                   id="txtOrder" name="txtOrder"
+                                   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["image_order"])) ? $messages["status"] : ""; ?>"
+                                   type="text">
+                            <span class="text-danger msg-order"><?php echo isset($messages["image_order"]) ? $messages["image_order"] : ""; ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Icon </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input maxlength="255"
+                                   value="<?php echo isset($formData["image_icon"]) ? $formData["image_icon"] : "" ?>"
+                                   id="txtIcon"
+                                   name="txtIcon"
+                                   class="form-control col-md-7 col-xs-12 <?php echo (isset($messages["image_icon"])) ? $messages["status"] : ""; ?>"
+                                   type="text">
+                            <span class="text-danger msg-icon"><?php echo isset($messages["image_icon"]) ? $messages["image_icon"] : ""; ?></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Insert Time <span
+                                    class="text-danger">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input value="<?php echo isset($formData["image_insert_time"]) ? $formData["image_insert_time"] : "" ?>"
+                                   type="text" id="txtInsertTime" name="txtInsertTime"
+                                   class="form-control col-md-7 col-xs-12 <?php echo isset($messages["image_insert_time"]) ? $messages["status"] : ""; ?>">MM/DD/YYYY
+                            H:M:S<br>
+                            <span class="text-danger msg-time"><?php echo isset($messages["image_insert_time"]) ? $messages["image_insert_time"] : "" ?></span>
+                        </div>
+                    </div>
+
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                            <button name="sbmAlbum" type="submit" class="btn btn-success">Save change</button>
+                            <a class="btn btn-primary"
+                               href="<?php echo $this->url->get("/dashboard/list-album?album_id=" . $album_id); ?>">Cancel</a>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <ul class="nav nav-pills" role="tablist">
+                <?php
+                foreach ($formData['arr_language'] as $code => $lang) {
+                    $active = $formData['lang_current'] == $code ? "active" : "";
+                    ?>
+                    <li role="presentation" class="<?php echo $active; ?>"><a href="#<?php echo $code ?>translate"
+                                                                              aria-controls="<?php echo $code ?>translate"
+                                                                              role="tab"
+                                                                              data-toggle="tab"><?php echo $lang; ?></a>
+                    </li>
+                <?php } ?>
+            </ul>
+            <div class="tab-content">
+                <?php foreach ($formData['arr_language'] as $code => $lang) {
+                    $active = $formData['lang_current'] == $code ? "active" : "";
+                    ?>
+                    <div role="tabpanel" class="tab-pane <?php echo $active; ?>" id="<?php echo $code; ?>translate">
+                        <br>
+                        <form name="image-form<?php echo $code; ?>" id="image-form<?php echo $code; ?>" action=""
+                              data-parsley-validate class="form-horizontal form-label-left" method="post">
+                            <input type="hidden" name="save" id="save" value="<?php echo $code; ?>"/>
+                            <div class="form-group">
+                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Description <span
+                                            class="text-danger">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                   <textarea class="form-control" id="txtDesc" name="txtDesc"
+                                             style="height: 212px;"><?php echo isset($formData['arr_translate'][$code]["image_description"]) ? $formData['arr_translate'][$code]["image_description"] : "" ?></textarea>
+                                    <span class="text-danger msg-description-<?php echo $code; ?>"><?php echo isset($messages[$code]["image_description"]) ? $messages[$code]["image_description"] : "" ?></span>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                    <button name="sbmImage<?php echo $code; ?>" type="submit" class="btn btn-success">
+                                        Save change
+                                    </button>
+                                </div>
+                            </div>
+                            <script>
+                                $(document).ready(function () {
+                                    $('form[name=image-form<?php echo $code; ?>]').submit(function (event) {
+                                        valid = true;
+                                        if ($('#txtDesc<?php echo $code; ?>').val() == '') {
+                                            $('.msg-description-<?php echo $code; ?>').text('Description field is required.');
+                                            $('#txtDesc<?php echo $code; ?>').addClass("border-red");
+                                            valid = false;
+                                        } else {
+                                            $('.msg-description-<?php echo $code; ?>').text('');
+                                            $('#txtDesc<?php echo $code; ?>').removeClass("border-red");
+                                        }
+                                        if (!valid) event.preventDefault();
+                                        if (valid) {
+                                            $('#sbmImage<?php echo $code; ?>').prop('disabled', true);
+                                        }
+                                    });
+                                });
+                            </script>
+                        </form>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+</div>

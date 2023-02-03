@@ -1,0 +1,682 @@
+<?php
+/**
+ * @var $lang_url ;
+ * @var $lang_code ;
+ * @var $lang_url_slashed ;
+ * @var $parent_keyword ;
+ * @var \Bincg\Models\BinArticle $service
+ * @var \Bincg\Models\BinUser $userData
+ */
+$borderRed = 'has-error';
+?>
+<?php if (!$isMobile) { ?>
+    <div class="breadcrumbs">
+        <div class="container">
+            <a href="<?php echo $this->url->get($lang_url); ?>" target="_self"
+               title="<?php echo htmlentities(defined('txt_menu_home') ? txt_menu_home : ''); ?>">
+                <?php echo defined('txt_menu_home') ? txt_menu_home : '' ?>
+            </a>
+            <a href="<?php echo $this->url->get($lang_url . '/' . $parent_keyword); ?>" target="_self"
+               title="<?php echo htmlentities(isset($menu_bread) ? strip_tags($menu_bread) : '') ?>">
+                <?php echo isset($menu_bread) ? $menu_bread : '' ?>
+            </a>
+        </div>
+    </div>
+<?php } ?>
+<?php $this->view->partial('shared/layoutbanner'); ?>
+
+<?php echo defined('txt_contact_us_get_in_touch') ? txt_contact_us_get_in_touch : ''; ?>
+<form method="post" action="<?php echo $this->url->get($lang_url . '/contact-us'); ?>" name="formContactUs"
+      enctype="multipart/form-data">
+    <div class="padding-block">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h1 class="text-24 text-blue"><?php echo defined('txt_contact_us') ? txt_contact_us : ''; ?></h1>
+                <?php echo defined('txt_contact_us_description') ? txt_contact_us_description : ''; ?>
+                <?php if(isset($msg_result))  {?>
+                    <div  class="alert alert-<?php echo $msg_result['status']?> alert-dismissible fade in show" role="alert">
+                        <?php echo $msg_result['msg']; ?>
+                    </div>
+                <?php }?>
+            </div>
+            <div class="mb-4">
+                <h3 class="text-black"><?php echo defined('txt_what_do_you_want_to_know') ? txt_what_do_you_want_to_know : ''; ?></h3>
+                <p>
+                    <?php echo defined('txt_select_topic') ? txt_select_topic : ''; ?>
+                </p>
+            </div>
+            <div class="row checkbox-group">
+                <div class="col-lg-4">
+                    <div class="list-custom-control">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" name="list_service[]" id="allservices" value="<?php echo defined('txt_all_services') ? txt_all_services : ''; ?>">
+                            <label class="custom-control-label" for="allservices">
+                                <?php echo defined('txt_all_services') ? txt_all_services : ''; ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <?php
+                    echo isset($services) ? $services : "";
+                ?>
+                <div class="col-lg-4">
+                    <div class="list-custom-control">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" name="list_service[]" class="custom-control-input" id="others" value="<?php echo defined('txt_others') ? txt_others : ''; ?>">
+                            <label class="custom-control-label" for="others">
+                                <?php echo defined('txt_others') ? txt_others : ''; ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <span class="text-danger msg-checkbox">
+                        <?php echo isset($message['service']) ? $message['service'] : ""; ?>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="box-shadow-form">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="form-group <?php echo isset($message['name']) ? $borderRed : ''; ?>">
+                        <label>
+                            <?php echo defined('lbl_full_name') ? lbl_full_name : ''; ?>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input maxlength="255" name="txtName" id="txtName" type="text" class="form-control"
+                               placeholder="<?php echo defined('txt_description_type_full_name') ? txt_description_type_full_name : ''; ?>"
+                        value="<?php echo isset($formData['contact_name']) ? $formData['contact_name'] : (isset($userData['user_name']) ? $userData['user_name'] : '') ?>">
+                        <span class="text-danger msg-name">
+                            <?php echo isset($message['name']) ? $message['name'] : ""; ?>
+                        </span>
+                    </div>
+                    <div class="form-group <?php echo isset($message['phone']) ? $borderRed : ''; ?>">
+                        <label>
+                            <?php echo defined('lbl_phone_number') ? lbl_phone_number : ''; ?>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input maxlength="20" name="txtPhone" id="txtPhone" type="text" class="form-control"
+                               placeholder="<?php echo defined('txt_description_type_phone_number') ? txt_description_type_phone_number : ''; ?>">
+                        <input type="hidden" name="txt_iso2" id="txt_iso2"
+                               value="<?php echo isset($formData['contact_country_code']) ? $formData['contact_country_code'] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : ''); ?>">
+                        <input type="hidden" name="txt_phone_number" id="txt_phone_number"
+                               value="<?php echo isset($formData['contact_telapi_number']) ? $formData['contact_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>">
+                        <span class="text-danger msg-phone"><?php echo isset($message['phone']) ? $message['phone'] : ""; ?></span>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <?php echo defined('lbl_communication_channel') ? lbl_communication_channel : '' ?>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div>
+                            <input type="text" name="txtCommunicationChannelHidden" class="form-control input-select2-label-before">
+                            <select class="form-control" id="communication_chanel" name="communication_chanel">
+                                <option value="" data-communication-channel-type="">
+                                    <?php echo defined('txt_please_select') ? txt_please_select : '' ?>
+                                </option>
+                                <?php echo isset($selectCommunicationChannel) ? $selectCommunicationChannel : "" ?>
+                            </select>
+                            <input type="hidden" name="txtCommunicationChannelType" id="txtCommunicationChannelType">
+                        </div>
+                        <span class="text-danger msg-communication-channel">
+                            <?php echo isset($message['communicationChannel']) ? $message['communicationChannel'] : "" ?>
+                        </span>
+                    </div>
+                    <div data-bind="visible: typeOfCommunicationChannel() != ''">
+                        <div class="form-group  <?php echo isset($message['communicationChannelOther']) ? $borderRed : ''; ?>"
+                             data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>'">
+                            <input type="text" maxlength="255" name="txtCommunicationChannelOther"
+                                   id="txtCommunicationChannelOther" class="form-control <?php echo isset($message['communicationChannelOther']) ? $borderRed : ''; ?>"
+                                   placeholder="<?php echo defined('txt_other_channel') ? txt_other_channel : '' ?>"
+                                   value="<?php echo isset($formData['contact_communication_channel_other']) ? $formData['contact_communication_channel_other'] : '' ?>">
+                            <span class="text-danger msg-communication-channel-other">
+                                <?php echo isset($message['communicationChannelOther']) ? $message['communicationChannelOther'] : "" ?>
+                            </span>
+                        </div>
+                        <div class="form-group <?php echo isset($message['communicationChannelId']) || isset($message['communicationChannelNumber']) ? $borderRed : ''; ?>">
+                            <div data-bind="visible: typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                                <input type="text" maxlength="255" name="txtCommunicationChannelID" id="txtCommunicationChannelID"
+                                       class="form-control"
+                                       placeholder="<?php echo defined('lbl_ID') ? lbl_ID : '' ?>"
+                                       value="<?php echo isset($formData['contact_communication_channel_id']) ? $formData['contact_communication_channel_id'] : '' ?>">
+                            </div>
+                            <div data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                                <input maxlength="20" id="txtCommunicationChannelNumber"
+                                       name="txtCommunicationChannelNumber" type="text" class="form-control"
+                                       placeholder="<?php echo defined('txt_description_type_phone_number') ? txt_description_type_phone_number : ''; ?>">
+                                <input type="hidden" name="txtPhoneIso2CommunicationChannel" id="txtPhoneIso2CommunicationChannel"
+                                       value="<?php echo isset($formData['contact_country_code']) ? $formData['contact_country_code'] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : ''); ?>">
+                                <input type="hidden" name="txtPhoneNumberCommunicationChannel" id="txtPhoneNumberCommunicationChannel"
+                                       value="<?php echo isset($formData['contact_communication_channel_telapi_number']) ? $formData['contact_communication_channel_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>">
+                            </div>
+                            <span class="text-danger msg-phone-communication">
+                                <?php echo isset($message['communicationChannelNumber']) ? $message['communicationChannelNumber'] : "" ?>
+                            </span>
+                            <span class="text-danger msg-communication-id">
+                                <?php echo isset($message['communicationChannelId']) ? $message['communicationChannelId'] : "" ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-group <?php echo isset($message['email']) ? $borderRed : ''; ?>">
+                        <label>
+                            <?php echo defined('lbl_email_address') ? lbl_email_address : ''; ?>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input maxlength="255" name="txtEmail" id="txtEmail" type="text" class="form-control"
+                               placeholder="<?php echo defined('txt_please_type_email') ? txt_please_type_email : ''; ?>"
+                               value="<?php echo isset($formData['contact_email']) ? $formData['contact_email'] : (isset($userData['user_email']) ? $userData['user_email'] : '') ?>">
+                        <span class="text-danger msg-email"><?php echo isset($message['email']) ? $message['email'] : ""; ?></span>
+                    </div>
+                    <div class="form-group <?php echo isset($message['subject']) ? $borderRed : ''; ?>">
+                        <label>
+                            <?php echo defined('lbl_subject') ? lbl_subject : ''; ?> <span class="text-danger">*</span>
+                        </label>
+                        <input maxlength="255" name="txtSubject" id="txtSubject" type="text" class="form-control"
+                               placeholder="<?php echo defined('txt_type_your_subject') ? txt_type_your_subject : ''; ?>"
+                               value="<?php echo isset($formData['contact_subject']) ? $formData['contact_subject'] : '' ?>">
+                        <span class="text-danger msg-subject"><?php echo isset($message['subject']) ? $message['subject'] : ""; ?></span>
+                    </div>
+                    <div class="form-group <?php echo isset($message['comment']) ? $borderRed : ''; ?>">
+                        <label>
+                            <?php echo defined('lbl_comment') ? lbl_comment : ''; ?> <span class="text-danger">*</span>
+                        </label>
+                        <textarea maxlength="255" name="txtComment" id="txtComment" class="form-control"
+                                  placeholder="<?php echo defined('txt_type_your_comment') ? txt_type_your_comment : ''; ?>"><?php echo isset($formData['contact_comment']) ? $formData['contact_comment'] : '' ?></textarea>
+                        <span class="text-danger msg-comment"><?php echo isset($message['comment']) ? $message['comment'] : ""; ?></span>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <label for="txtAttachFile" class="btn btn-white mb-2">
+                        <img class="lazyload mr-1" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-attach.svg" title="<?php echo htmlentities(defined('btn_attach_file') ? btn_attach_file : ''); ?>"
+                             alt="<?php echo htmlentities(defined('btn_attach_file') ? btn_attach_file : ''); ?>"/>
+                        <?php echo defined('btn_attach_file') ? btn_attach_file : ''; ?>
+                    </label>
+                    <input type="file" name="txtAttachFile[]" id="txtAttachFile" multiple style="display: none"
+                           accept="<?php
+                           $index = 0;
+                           foreach ($this->globalVariable->acceptUploadTypes as $key => $value) {
+                               $index ++;
+                               echo $key;
+                               if ($index != count($this->globalVariable->acceptUploadTypes)) {
+                                   echo ',';
+                               }
+                           }
+                           ?>">
+                    <span id="textChosen"></span>
+                    <p id="nameFiles" class="text-16" style="font-weight: bold"></p>
+                    <span class="text-danger msg-file"><?php echo isset($message['file']) ? $message['file'] : ""; ?></span>
+                    <p><?php echo defined('txt_note_upload_file') ? txt_note_upload_file : ''; ?></p>
+                    <div class="form-group">
+                        <div class="g-recaptcha" data-sitekey="<?php echo RECAPTCHA_SITEKEY; ?>"></div>
+                        <span class="msg-captcha text-danger"><?php echo isset($message["captcha"]) ? $message["captcha"] : ""; ?></span>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-right">
+                    <button type="submit" name="btnSubmit" id="btnSubmit"
+                            class="btn btn-main"><?php echo defined('btn_submit') ? btn_submit : ''; ?></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="screen-size" name="screen-size">
+    <input type="hidden" id="browser-size" name="browser-size">
+</form>
+<div class="lazyload bg h-banner tab-over" data-bgset="<?php echo $this->url->getStatic('frontend/'); ?>images/bg-contact-xs.jpg [(max-width: 776px)] |
+            <?php echo $this->url->getStatic('frontend/'); ?>images/bg-contact.jpg"></div>
+<div class="padding-block">
+    <div class="container">
+        <h2 class="mb-4"><?php echo defined('txt_our_office') ? txt_our_office : ''; ?></h2>
+        <img class="full mb-4 d-none d-md-block lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+             data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/bg-contact-2.jpg" title="<?php echo htmlentities(defined('txt_our_office') ? txt_our_office : ''); ?>" alt="<?php echo htmlentities(defined('txt_our_office') ? txt_our_office : ''); ?>"/>
+        <img class="full mb-4 d-md-none lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+             data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/bg-contact-2-xs.jpg" title="<?php echo htmlentities(defined('txt_our_office') ? txt_our_office : ''); ?>" alt="<?php echo htmlentities(defined('txt_our_office') ? txt_our_office : ''); ?>"/>
+        <div class="row">
+            <?php /** @var \Bincg\Models\BinOffice $office */
+            foreach ($offices as $office) { ?>
+                <div class="col-lg-4">
+                    <div class="group-address">
+                        <h3>
+                            <img class="mr-2 lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $this->globalVariable->urlFlag . strtolower($office->getOfficeCountryCode()) . '.png'; ?>"
+                                 title="<?php echo htmlentities($office->getOfficeName()) ?>" alt="<?php echo htmlentities($office->getOfficeName()) ?>"/>
+                            <?php echo $office->getOfficeName() ?>
+                        </h3>
+                        <div class="item">
+                            <div class="image">
+                                <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-location.svg"
+                                     title="<?php echo htmlentities(defined('lbl_address') ? lbl_address : ''); ?>" alt="<?php echo htmlentities(defined('lbl_address') ? lbl_address : ''); ?>"/>
+                            </div>
+                            <div class="content">
+                                <strong><?php echo defined('lbl_address') ? lbl_address : ''; ?>:</strong>
+                                <p><?php echo $office->getOfficeAddress() ?></p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-clock.svg" title="<?php echo htmlentities(defined('lbl_working_hours') ? lbl_working_hours : ''); ?>"
+                                     alt="<?php echo htmlentities(defined('lbl_working_hours') ? lbl_working_hours : ''); ?>"/>
+                            </div>
+                            <div class="content">
+                                <strong><?php echo defined('lbl_working_hours') ? lbl_working_hours : ''; ?>:</strong>
+                                <p><?php echo $office->getOfficeWorkingTime() ?></p>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="image">
+                                <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg" data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-phone.svg" title="<?php echo htmlentities(defined('txt_telephone') ? txt_telephone : ''); ?>"
+                                     alt="<?php echo htmlentities(defined('txt_telephone') ? txt_telephone : ''); ?>"/>
+                            </div>
+                            <div class="content">
+                                <strong><?php echo defined('txt_telephone') ? txt_telephone : ''; ?>:</strong>
+                                <p><a href="tel:<?php echo str_replace(' ','',$office->getOfficePhone()) ?>" target="_self" title="<?php echo htmlentities($office->getOfficePhone()) ?>"><?php echo $office->getOfficePhone() ?></a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+    </div>
+</div>
+<div class="pt-5 pt-sm-4 background-grey">
+    <div class="container">
+        <h2><?php echo defined('txt_brand_name') ? txt_brand_name : ''; ?></h2>
+        <p><?php echo defined('txt_contact_us_click_on_country_name') ? txt_contact_us_click_on_country_name : ''; ?></p>
+    </div>
+    <div class="map-wrapper">
+        <div id="map"></div>
+        <?php /** @var \Bincg\Models\BinOffice $office */
+        foreach ($offices as $office) { ?>
+            <div class="popup-map-content" id="myModal<?php echo $office->getOfficeId() ?>" role="dialog">
+                <div class="close-popup-map-content"><img class="lazyload" alt="<?php echo htmlentities(defined('txt_close') ? txt_close : '') ?>"
+                                                          title="<?php echo htmlentities(defined('txt_close') ? txt_close : '') ?>"
+                                                          src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                                                          data-src="<?php echo $this->url->get('frontend/'); ?>images/close-popup.png">
+                </div>
+                <?php $country_name = \Bincg\Repositories\CountryGeneral::getNameByCode($office->getOfficeCountryCode()) ?>
+                <h3><img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                         data-src="<?php echo $this->globalVariable->urlFlag . strtolower($office->getOfficeCountryCode()) . '.png'; ?>"
+                         alt="<?php echo htmlentities($country_name) ?>"
+                         title="<?php echo htmlentities($country_name) ?>"><?php echo $office->getOfficeName() ?></h3>
+                <ul>
+                    <?php if (!empty($office->getOfficeAddress())) { ?>
+                        <li>
+                            <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                                 data-src="<?php echo $this->url->get('frontend/'); ?>images/icon-addpress-white.png"
+                                 alt="<?php echo htmlentities(defined('lbl_address') ? lbl_address : ''); ?>"
+                                 title="<?php echo htmlentities(defined('lbl_address') ? lbl_address : ''); ?>"> <strong
+                                    class="title">
+                                <?php echo defined('lbl_address') ? lbl_address : ''; ?>:
+                            </strong> <?php echo $office->getOfficeAddress() ?>
+                        </li>
+                    <?php } ?>
+                    <?php if (!empty($office->getOfficeWorkingTime())) { ?>
+                        <li>
+                            <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                                 data-src="<?php echo $this->url->get('frontend/'); ?>images/icon-time.png"
+                                 alt="<?php echo htmlentities(defined('lbl_working_hours') ? lbl_working_hours : ''); ?>"
+                                 title="<?php echo htmlentities(defined('lbl_working_hours') ? lbl_working_hours : ''); ?>"> <strong
+                                    class="title">
+                                <?php echo defined('lbl_working_hours') ? lbl_working_hours : ''; ?>:
+                            </strong> <?php echo $office->getOfficeWorkingTime() ?>
+                        </li>
+                    <?php } ?>
+                    <?php if (!empty($office->getOfficeEmail())) { ?>
+                        <li>
+                            <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                                 data-src="<?php echo $this->url->get('frontend/'); ?>images/icon-email-white.png"
+                                 alt="<?php echo htmlentities(defined('lbl_email') ? lbl_email : ''); ?>"
+                                 title="<?php echo htmlentities(defined('lbl_email') ? lbl_email : ''); ?>">
+                            <strong class="title"><?php echo defined('lbl_email') ? lbl_email : ''; ?></strong>:
+                            <?php echo $office->getOfficeEmail() ?>
+                        </li>
+                    <?php } ?>
+                    <?php if (!empty($office->getOfficePhone())) { ?>
+                        <li>
+                            <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                                 data-src="<?php echo $this->url->get('frontend/'); ?>images/icon-phone-white.png"
+                                 alt="<?php echo htmlentities(defined('lbl_hotline') ? lbl_hotline : ''); ?>"
+                                 title="<?php echo htmlentities(defined('lbl_hotline') ? lbl_hotline : ''); ?>">
+                            <strong class="title"><?php echo defined('lbl_hotline') ? lbl_hotline : ''; ?></strong>:
+                            <?php echo $office->getOfficePhone() ?>
+                        </li>
+                    <?php } ?>
+                    <?php if (!empty($office->getOfficeFax())) { ?>
+                        <li>
+                            <img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
+                                 data-src="<?php echo $this->url->get('frontend/'); ?>images/icon-fax-white.png"
+                                 alt="<?php echo htmlentities(defined('lbl_fax_number') ? lbl_fax_number : ''); ?>"
+                                 title="<?php echo htmlentities(defined('lbl_fax_number') ? lbl_fax_number : ''); ?>">
+                            <strong class="title"><?php echo defined('lbl_fax_number') ? lbl_fax_number : ''; ?></strong>:
+                            <?php echo $office->getOfficeFax() ?>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+
+<?php $this->my->addJsSource(array('src' => 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBsmdPoD50YCRZvgS4MhZH6KvYs1qalV7o&libraries=places&callback=')); ?>
+
+<script>
+    commands.push(function () {
+        function formatState(state) {
+            if (!state.id) {
+                return state.text;
+            }
+            return $('<span><img src="' + state.element.getAttribute('data-img-src') + '" class="img-flag" alt="' + state.text + '"/>' + state.text + '</span>');
+        }
+
+        $(document).ready(function () {
+            $('#communication_chanel').select2({
+                templateResult: formatState,
+                templateSelection: formatState,
+                dropdownCssClass: "communication-dropdown"
+            });
+            $('.close-popup-map-content').on('click', function () {
+                $('.popup-map-content').hide();
+            });
+            var datalat = 54.6967;
+            var datalng = 25.2783;
+            var coordinates_office = <?php echo $coordinates_office; ?>;
+            mapLocation(parseFloat(datalat), parseFloat(datalng), coordinates_office);
+            var profileTel = $('input[name=txtPhone]');
+            profileTel.intlTelInput({
+                autoPlaceholder: "off",
+                initialCountry: "<?php echo isset($formData["contact_country_code"]) ? $formData["contact_country_code"] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : strtolower($ipCountryCode)); ?>",
+                preferredCountries: ["<?php echo isset($formData["contact_country_code"]) ? $formData["contact_country_code"] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : strtolower($ipCountryCode)); ?>"],
+                formatOnDisplay: true,
+                utilsScript: "<?php echo $this->url->getStatic('shared/'); ?>js/utils.js"
+            });
+            profileTel.intlTelInput('setNumber', '<?php echo isset($formData['contact_telapi_number']) ? $formData['contact_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>');
+            var isValidNumber = true;
+            profileTel.blur(function () {
+                var phone_number = profileTel.intlTelInput('getNumber');
+                $('input[name=txt_phone_number]').val(phone_number);
+                isValidNumber = profileTel.intlTelInput('isValidNumber');
+                var country_data = profileTel.intlTelInput('getSelectedCountryData');
+                $('input[name=txt_iso2]').val(country_data.iso2);
+                $('input[name=txtCommunicationChannelNumber]').val(profileTel.val());
+                $('input[name=txtPhoneNumberCommunicationChannel]').val(phone_number);
+                $('input[name=txtPhoneIso2CommunicationChannel]').val(country_data.iso2);
+                communicationChannelNumber.intlTelInput('destroy').intlTelInput({
+                    initialCountry: country_data.iso2,
+                    formatOnDisplay: false
+                });
+            });
+
+            var communicationChannelNumber = $('input[name=txtCommunicationChannelNumber]');
+            communicationChannelNumber.intlTelInput({
+                autoPlaceholder: "off",
+                initialCountry: "<?php echo isset($formData["contact_communication_channel_country_code"]) ? $formData["contact_communication_channel_country_code"] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : strtolower($ipCountryCode)); ?>",
+                preferredCountries: ["<?php echo isset($formData["contact_communication_channel_country_code"]) ? $formData["contact_communication_channel_country_code"] : (isset($userData['user_country_code']) ? $userData['user_country_code'] : strtolower($ipCountryCode)); ?>"],
+                formatOnDisplay: true,
+                utilsScript: "<?php echo $this->url->getStatic('shared/'); ?>js/utils.js"
+            });
+            communicationChannelNumber.intlTelInput('setNumber', '<?php echo isset($formData['contact_communication_channel_telapi_number']) ? $formData['contact_communication_channel_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>');
+            var isValidCommunicationChannelNumber = true;
+            communicationChannelNumber.blur(function () {
+                if (formVM.typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                    return;
+                }
+                var phone_number = communicationChannelNumber.intlTelInput('getNumber');
+                $('input[name=txtPhoneNumberCommunicationChannel]').val(phone_number);
+                isValidCommunicationChannelNumber = communicationChannelNumber.intlTelInput('isValidNumber');
+                var country_data = communicationChannelNumber.intlTelInput('getSelectedCountryData');
+                $('input[name=txtPhoneIso2CommunicationChannel]').val(country_data.iso2);
+            });
+
+            var arrayFileUpload = [];
+            $("input[id='txtAttachFile']").change(function (e) {
+                arrayFileUpload = [];
+                $('#nameFiles').empty();
+                var files = e.target.files;
+                if (files.length > 0) {
+                    $('#textChosen').text(files.length > 1 ? files.length + ' files' : files.length + ' file');
+                    for (var i = 0; i < files.length; i++) {
+                        var name = files[i].name;
+                        var ext = name.split('.').pop().toLowerCase();
+                        var size = files[i].size;
+                        arrayFileUpload.push([name, ext, size]);
+                        $('#nameFiles').append((i + 1) + '. ' + name + '<br>');
+                    }
+                } else{
+                    $('#textChosen').text('');
+                }
+            });
+
+            $('form[name=formContactUs]').submit(function (event) {
+                var responeRecaptcha = grecaptcha.getResponse();
+                var valid = true;
+
+                var len = document.querySelectorAll('.checkbox-group input[type="checkbox"]:checked').length;
+                if (len <= 0) {
+                    valid = false;
+                    $('.msg-checkbox').text('<?php echo defined('txt_please_select_topics') ? txt_please_select_topics : '';?>');
+                } else {
+                    $('.msg-checkbox').text('');
+                }
+
+                if ($('#communication_chanel').val() == 0) {
+                    valid = false;
+                    $('.msg-communication-channel').text('<?php echo defined('txt_please_select_communication_channel') ? txt_please_select_communication_channel : '';?>');
+                    $('#communication_chanel').parent().addClass("has-error");
+                } else {
+                    $('.msg-communication-channel').text('');
+                    $('#communication_chanel').parent().removeClass("has-error");
+                }
+
+                if ($('input[name=txtName]').val() == '') {
+                    valid = false;
+                    $('.msg-name').text('<?php echo defined('txt_enter_full_name') ? txt_enter_full_name : '';?>');
+                    $('input[name=txtName]').parent().addClass("has-error");
+                } else {
+                    $('.msg-name').text('');
+                    $('input[name=txtName]').parent().removeClass("has-error");
+                }
+
+                if ($('input[name=txtSubject]').val() == '') {
+                    valid = false;
+                    $('.msg-subject').text('<?php echo defined('txt_please_enter_subject') ? txt_please_enter_subject : '';?>');
+                    $('input[name=txtSubject]').parent().addClass("has-error");
+                } else {
+                    $('.msg-subject').text('');
+                    $('input[name=txtSubject]').parent().removeClass("has-error");
+                }
+
+                if ($('input[name=txtEmail]').val() == '') {
+                    valid = false;
+                    $('.msg-email').text('<?php echo defined('txt_please_enter_your_email') ? txt_please_enter_your_email : '';?>');
+                    $('input[name=txtEmail]').parent().addClass("has-error");
+                } else if (!emailValid($('input[name=txtEmail]').val())) {
+                    valid = false;
+                    $('.msg-email').text('<?php echo defined('txt_email_not_valid') ? txt_email_not_valid : '';?>');
+                    $('input[name=txtEmail]').parent().addClass("has-error");
+                }
+                else {
+                    $('.msg-email').text('');
+                    $('input[name=txtEmail]').parent().removeClass("has-error");
+                }
+
+                if ($('input[name=txtPhone]').val() == '') {
+                    valid = false;
+                    $('.msg-phone').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '';?>');
+                    $('input[name=txtPhone]').parent().addClass("has-error");
+                } else if (!isValidNumber) {
+                    valid = false;
+                    $('.msg-phone').text('<?php echo defined('txt_please_enter_valid_number') ? txt_please_enter_valid_number : '';?>');
+                    $('input[name=txtPhone]').parent().addClass("has-error");
+                }
+                else {
+                    $('.msg-phone').text('');
+                    $('input[name=txtPhone]').parent().removeClass("has-error");
+                }
+
+                if ($('textarea[name=txtComment]').val() == '') {
+                    valid = false;
+                    $('.msg-comment').text('<?php echo defined('txt_enter_comment') ? txt_enter_comment : '';?>');
+                    $('textarea[name=txtComment]').parent().addClass("has-error");
+                } else {
+                    $('.msg-comment').text('');
+                    $('textarea[name=txtComment]').parent().removeClass("has-error");
+                }
+
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                    if ($('input[name=txtCommunicationChannelNumber]').val() == '') {
+                        valid = false;
+                        $('.msg-phone-communication').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '';?>');
+                        $('input[name=txtCommunicationChannelNumber]').parent().addClass("has-error");
+                    } else if (!isValidCommunicationChannelNumber) {
+                        valid = false;
+                        $('.msg-phone-communication').text('<?php echo defined('txt_please_enter_valid_number') ? txt_please_enter_valid_number : '';?>');
+                        $('input[name=txtCommunicationChannelNumber]').parent().addClass("has-error");
+                    }
+                    else {
+                        $('.msg-phone-communication').text('');
+                        $('input[name=txtCommunicationChannelNumber]').parent().removeClass("has-error");
+                    }
+                }
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_TEXT ?>') {
+                    if ($('input[name=txtCommunicationChannelID]').val() == '') {
+                        valid = false;
+                        $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
+                        $('input[name=txtCommunicationChannelID]').parent().addClass("has-error");
+                    } else {
+                        $('.msg-communication-id').text('');
+                        $('input[name=txtCommunicationChannelID]').parent().removeClass("has-error");
+                    }
+                }
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>') {
+                    if ($('input[name=txtCommunicationChannelID]').val() == '') {
+                        valid = false;
+                        $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
+                        $('input[name=txtCommunicationChannelID]').parent().addClass("has-error");
+                    } else {
+                        $('.msg-communication-id').text('');
+                        $('input[name=txtCommunicationChannelID]').parent().removeClass("has-error");
+                    }
+
+                    if ($('input[name=txtCommunicationChannelOther]').val() == '') {
+                        valid = false;
+                        $('.msg-communication-channel-other').text('<?php echo defined('txt_please_enter_other_channel') ? txt_please_enter_other_channel : '';?>');
+                        $('input[name=txtCommunicationChannelOther]').parent().addClass("has-error");
+                    } else {
+                        $('.msg-communication-channel-other').text('');
+                        $('input[name=txtCommunicationChannelOther]').parent().removeClass("has-error");
+                    }
+                }
+
+                if (responeRecaptcha.length === 0) {
+                    valid = false;
+                    $(".msg-captcha").text('<?php echo defined('txt_click_captcha') ? txt_click_captcha : '';?>');
+                } else {
+                    $(".msg-captcha").text('');
+                }
+
+                if (arrayFileUpload.length > 0) {
+                    $.each(arrayFileUpload, function (key, val) {
+                        if (arrayFileUpload.length > 3) {
+                            valid = false;
+                            $('.msg-file').text('<?php echo defined('txt_please_select_file_limit') ? txt_please_select_file_limit : '';?>');
+                        } else if (val[2] > <?php echo $this->globalVariable->maximumSizeUploadFile ?>) {
+                            valid = false;
+                            $('.msg-file').text('<?php echo defined('txt_please_select_file_size_limit') ? txt_please_select_file_size_limit : '';?>');
+                        } else if ($.inArray(val[1], ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx']) === -1) {
+                            valid = false;
+                            $('.msg-file').text('<?php echo defined('txt_choose_file_valid') ? txt_choose_file_valid : '';?>');
+                        } else {
+                            $('.msg-file').text('');
+                        }
+                    });
+                } else {
+                    $('.msg-file').text('');
+                }
+
+                if (!valid) {
+                    event.preventDefault();
+                }
+                if (valid) {
+                    $('#l-loading').show();
+                    $('button[name=btnSubmit]').prop('disabled', true);
+                }
+
+            });
+
+            function emailValid(email) {
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(email);
+            }
+
+            var width = $(window).width();
+            var height = $(window).height();
+            var browserSize = $("#browser-size");
+            var screenSize = $("#screen-size");
+            if (browserSize != null) {
+                browserSize.attr('value', width + ' x ' + height);
+            }
+            if (screenSize != null) {
+                screenSize.attr('value', screen.width + ' x ' + screen.height);
+            }
+
+            var communicationChannel = $('#communication_chanel');
+            communicationChannel.on("change", function () {
+                var self = $(this);
+                var cur = self.find("option:selected");
+                var type = cur.attr("data-communication-channel-type");
+                $('#txtCommunicationChannelType').val(type);
+                formVM.typeOfCommunicationChannel(type);
+                $('input[name=txtCommunicationChannelID]').val('').parent().removeClass("has-error");
+                $('input[name=txtCommunicationChannelNumber]').parent().removeClass("has-error");
+                $('input[name=txtCommunicationChannelOther]').val('').parent().removeClass("has-error");
+                $('.msg-communication-channel-other').text('');
+                $('.msg-communication-id').text('');
+                $('.msg-phone-communication').text('');
+            });
+
+            function AppViewModel() {
+                this.typeOfCommunicationChannel = ko.observable('');
+            }
+
+            var formVM = new AppViewModel();
+            ko.applyBindings(formVM);
+
+
+            var communicationSlc = communicationChannel;
+            var cur = communicationSlc.find("option:selected");
+            var type = cur.attr("data-communication-channel-type");
+            $('#txtCommunicationChannelType').val(type);
+            formVM.typeOfCommunicationChannel(type);
+        })
+    });
+
+    function mapLocation(lat, lng, offices) {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: lat, lng: lng},
+            zoom: 2
+        });
+        $('.popup-map-content').hide();
+        for (var i = 0; i < offices.length; i++) {
+            setMarker(offices[i]);
+        }
+    }
+
+    function setMarker(office) {
+        var lat = parseFloat(office['lat']);
+        var lng = parseFloat(office['lng']);
+        latlng = new google.maps.LatLng(lat, lng);
+        marker = new google.maps.Marker({
+            position: latlng,
+            map: map,
+        });
+        google.maps.event.addListener(marker, 'click', function () {
+            $('.popup-map-content').hide();
+            $('#myModal' + office['id']).show();
+        });
+    };
+</script>
+
+

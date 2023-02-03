@@ -1,0 +1,76 @@
+<?php
+namespace Bincg\Frontend\Controllers;
+
+use Bincg\Repositories\Article;
+use Bincg\Repositories\Banner;
+use Bincg\Repositories\Page;
+use Bincg\Repositories\Type;
+
+class CorporatesocialresponsibilityController extends ControllerBase
+{
+    public function indexAction()
+    {
+        $page = new Page();
+        $page->AutoGenMetaPage("corporate-social-responsibility",defined('txt_corporate_social_responsibility') ? txt_corporate_social_responsibility : '',$this->lang_code);
+        $page->generateStylePage('corporate-social-responsibility');
+        $parent_keyword = 'corporate-social-responsibility';
+        $type_id = $this->globalVariable->typeCorporateSocialResponsibilityId;
+        $repoType = new Type();
+        $repoArticle = new Article();
+        $type = $repoType->getTypeById($type_id,$this->lang_code);
+        if(!$type){
+            $this->my->sendErrorEmailAndRedirectToNotFoundPage($this->lang_code, $this->location_code);
+            return;
+        }
+        $articles = $repoArticle->getByTypeAndOrder($type_id,$this->lang_code, 1);
+        $repoBanner = new Banner();
+        $banners = $repoBanner->getBannerByController($this->router->getControllerName(), $this->lang_code);
+        $list_articles = $repoArticle->getByTypeAndOrder($type_id, $this->lang_code, 6);
+
+        if(count($articles) > 0) {
+            $this->view->ar_content = $articles[0]->getArticleContent(true);
+        }
+
+        $this->view->setVars([
+            'parent_keyword' => $parent_keyword,
+            'articles'       => $articles,
+            'banners'        => $banners,
+            'list_articles' => $list_articles,
+        ]);
+    }
+
+    public function detailAction()
+    {
+        $repoArticle = new Article();
+        $keyword = $this->dispatcher->getParam("ar-key");
+        $type_id = $this->globalVariable->typeCorporateSocialResponsibilityId;
+        if(!$type_id){
+            $this->my->sendErrorEmailAndRedirectToNotFoundPage($this->lang_code, $this->location_code);
+            return;
+        }
+
+        $article = $repoArticle->getByKey($keyword, $this->lang_code);
+
+        if(!$article) {
+            $this->my->sendErrorEmailAndRedirectToNotFoundPage($this->lang_code, $this->location_code);
+            return;
+        }
+        $repoBanner = new Banner();
+        $banners = $repoBanner->getBannerByKeyWord($keyword, $this->lang_code);
+
+        $list_articles = $repoArticle->getByTypeAndOrder($type_id, $this->lang_code, 6);
+
+        $this->tag->setTitle(html_entity_decode($article->getArticleTitle(),ENT_QUOTES));
+        $this->view->setVars([
+            'meta_key'          => $article->getArticleMetaKeyword(),
+            'meta_descript'     => $article->getArticleMetaDescription(),
+            'meta_social_image' => $article->getArticleMetaImage(),
+
+            'keyword' => $article->getArticleKeyword(),
+            'name' => $article->getArticleName(),
+            'ar_content'       => $article->getArticleContent($this->lang_url_slashed, true),
+            'banners'        => $banners,
+            'list_articles' => $list_articles,
+        ]);
+    }
+}
