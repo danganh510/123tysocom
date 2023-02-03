@@ -5,12 +5,12 @@
  * @var $lang_url_slashed;
  * @var $parent_keyword;
  * @var $keyword;
- * @var \Bincg\Models\BinCareer[] $articles
- * @var \Bincg\Models\BinArticle[] $related_articles
- * @var \Bincg\Models\BinArticle[] $general_articles
- * @var \Bincg\Models\BinCareer[] $related_careers
- * @var \Bincg\Models\BinOffice[] $offices
- * @var \Bincg\Models\BinOfficeImage[] $office_images
+ * @var \Score\Models\ScCareer[] $articles
+ * @var \Score\Models\ScArticle[] $related_articles
+ * @var \Score\Models\ScArticle[] $general_articles
+ * @var \Score\Models\ScCareer[] $related_careers
+ * @var \Score\Models\ScOffice[] $offices
+ * @var \Score\Models\ScOfficeImage[] $office_images
  */
 ?>
 <?php if(!$isMobile){ ?>
@@ -42,7 +42,7 @@
                     <img src="<?php echo $this->url->getStatic('frontend/'); ?>images/icon-location-gray.svg" class="mr-2" alt="<?php echo htmlentities(defined('txt_office_location') ? txt_office_location : ''); ?>" title="<?php echo htmlentities(defined('txt_office_location') ? txt_office_location : ''); ?>">
                     <strong><?php echo defined('txt_office_location') ? txt_office_location : ''; ?>: </strong>
                     <?php foreach ($offices as $office){ ?>
-                    <u class="text-black px-1"><?php echo \Bincg\Repositories\CountryGeneral::getNameByCode($office->getOfficeCountryCode()); ?></u>
+                    <u class="text-black px-1"><?php echo \Score\Repositories\CountryGeneral::getNameByCode($office->getOfficeCountryCode()); ?></u>
                     <?php } ?>
                 </div>
             <?php } ?>

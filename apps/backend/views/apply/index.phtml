@@ -83,12 +83,12 @@ if(strlen($this->dispatcher->getParam("slcCareer")) > 0) {
                             <tbody class="tb_body">
                             <?php foreach ($page->items as $item ) {
                                 /**
-                                 * @var \Bincg\Models\BinApply $item
+                                 * @var \Score\Models\ScApply $item
                                  */
                                 ?>
                                 <tr>
                                     <td class=" ">#<?php echo $this->my->formatApplyID($item->getApplyInsertTime(), $item->getApplyId()); ?></td>
-                                    <td class=" "><?php echo \Bincg\Repositories\Career::getNameByID($item->getApplyCareerId()) ; ?></td>
+                                    <td class=" "><?php echo \Score\Repositories\Career::getNameByID($item->getApplyCareerId()) ; ?></td>
                                     <td class=" "><?php echo $item->getApplyName(); ?></td>
                                     <td class=" "><?php echo $item->getApplyEmail(); ?></td>
                                     <td class=" "><?php echo $item->getApplyTel(); ?></td>

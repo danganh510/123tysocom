@@ -1,11 +1,11 @@
 <?php
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinLocation;
-use Bincg\Repositories\CountryGeneral;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Models\ScLocation;
+use Score\Repositories\CountryGeneral;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Location;
+use Score\Repositories\Activity;
+use Score\Repositories\Location;
 
 class LocationController extends ControllerBase
 {
@@ -16,7 +16,7 @@ class LocationController extends ControllerBase
         if($validator->validInt($current_page) == false || $current_page < 1)
             $current_page=1;
         $country = strtolower($this->request->get('slCountry'));
-        $sql = "SELECT * FROM Bincg\Models\BinLocation WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScLocation WHERE 1";
         $arrParameter = array();
         if(!empty($country)){
             $sql.=" AND (location_country_code = :countryCODE:)";
@@ -77,7 +77,7 @@ class LocationController extends ControllerBase
             }
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_location = new BinLocation();
+                $new_location = new ScLocation();
                 $new_location->setLocationCountryCode($data["location_country_code"]);
                 $new_location->setLocationLangCode($data["location_lang_code"]);
                 $new_location->setLocationSchemaContactpoint($data["location_schema_contactpoint"]);
@@ -126,7 +126,7 @@ class LocationController extends ControllerBase
         if (!$checkID->validInt($id)) {
             return $this->response->redirect('notfound');
         }
-        $location_model = BinLocation::findFirstById($id);
+        $location_model = ScLocation::findFirstById($id);
         if (empty($location_model)) {
             return $this->response->redirect('notfound');
         }
@@ -215,7 +215,7 @@ class LocationController extends ControllerBase
         if (!empty($location_checked)) {
             $location_log = array();
             foreach ($location_checked as $id) {
-                $location_item = BinLocation::findFirstById($id);
+                $location_item = ScLocation::findFirstById($id);
                 if ($location_item) {
                     $msg_result = array();
                     if ($location_item->delete() === false) {

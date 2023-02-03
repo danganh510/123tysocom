@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinCareerOffice extends BaseModel
+class ScCareerOffice extends BaseModel
 {
 
     /**
@@ -79,7 +79,7 @@ class BinCareerOffice extends BaseModel
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCareerOffice[]|BinCareerOffice
+     * @return ScCareerOffice[]|ScCareerOffice
      */
     public static function find($parameters = null)
     {
@@ -90,7 +90,7 @@ class BinCareerOffice extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCareerOffice
+     * @return ScCareerOffice
      */
     public static function findFirst($parameters = null)
     {
@@ -104,7 +104,7 @@ class BinCareerOffice extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_career_office';
+        return 'sc_career_office';
     }
 
 }

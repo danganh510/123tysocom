@@ -1,6 +1,6 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
 class IndexController extends ControllerBase
 {

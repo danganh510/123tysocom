@@ -94,7 +94,7 @@ if($this->dispatcher->getParam("slType") != ""){
                                     </td>
                                     <td class=" "><?php echo $item->getTypeId(); ?></td>
                                     <td class=" "><?php echo $item->getTypeName(); ?></td>
-                                    <td class=" "><?php echo Bincg\Repositories\Type::getNameByID($item->getTypeParentId()) ?></td>
+                                    <td class=" "><?php echo Score\Repositories\Type::getNameByID($item->getTypeParentId()) ?></td>
                                     <td class=" "><?php echo $item->getTypeOrder(); ?></td>
                                     <td class="text-center" data-title="Active">
                                         <?php

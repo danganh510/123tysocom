@@ -1,12 +1,12 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinConfig;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\Config;
+namespace Score\Backend\Controllers;
+use Score\Models\ScConfig;
+use Score\Models\ScLanguage;
+use Score\Repositories\Config;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Language;
+use Score\Repositories\Activity;
+use Score\Repositories\Language;
 
 class ConfigController extends ControllerBase
 {
@@ -14,7 +14,7 @@ class ConfigController extends ControllerBase
     public function indexAction()
     {
         $current_page = $this->request->getQuery('page', 'int');
-        $sql="SELECT * FROM Bincg\Models\BinConfig WHERE  1 ";
+        $sql="SELECT * FROM Score\Models\ScConfig WHERE  1 ";
         $arrParameter = array();
         $keyword=trim($this->request->get("txtSearch"));
         $lang = $this->request->get("slcLang", array('string', 'trim'));
@@ -52,7 +52,7 @@ class ConfigController extends ControllerBase
     public function createAction(){
         $lang_default = $this->globalVariable->defaultLanguage;
         $arr_language = array();
-        $languages = BinLanguage::getLanguages();
+        $languages = ScLanguage::getLanguages();
         $arr_translate = array();
         $config_key = '';
         $messages = array();
@@ -83,7 +83,7 @@ class ConfigController extends ControllerBase
                 foreach ($arr_language as $code => $lang) {
                     $config_model = Config::findByLanguage($config_key,$code);
                     if(!$config_model){
-                        $config_model = new BinConfig();
+                        $config_model = new ScConfig();
                         $config_model->setConfigKey($config_key);
                         $config_model->setConfigLanguage($code);
                     }  else{
@@ -143,7 +143,7 @@ class ConfigController extends ControllerBase
         $new_data = array();
         $messages = array();
         $arr_language = array();
-        $languages = BinLanguage::getLanguages();
+        $languages = ScLanguage::getLanguages();
         $arr_translate = array();
         $list_config = Config::getByID($config_key);
         foreach ($list_config as $config){
@@ -173,7 +173,7 @@ class ConfigController extends ControllerBase
                 foreach ($arr_language as $code => $lang) {
                     $config_model = Config::findByLanguage($config_key,$code);
                     if(!$config_model){
-                        $config_model = new BinConfig();
+                        $config_model = new ScConfig();
                         $config_model->setConfigKey($config_key);
                         $config_model->setConfigLanguage($code);
                     }  else{

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinTemplateEmailLang extends BaseModel
+class ScTemplateEmailLang extends BaseModel
 {
 
     /**
@@ -142,14 +142,14 @@ class BinTemplateEmailLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_template_email_lang';
+        return 'sc_template_email_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinTemplateEmailLang[]|BinTemplateEmailLang
+     * @return ScTemplateEmailLang[]|ScTemplateEmailLang
      */
     public static function find($parameters = null)
     {
@@ -160,7 +160,7 @@ class BinTemplateEmailLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinTemplateEmailLang
+     * @return ScTemplateEmailLang
      */
     public static function findFirst($parameters = null)
     {
@@ -168,7 +168,7 @@ class BinTemplateEmailLang extends BaseModel
     }
     public static function findById($id)
     {
-        return BinTemplateEmailLang::find(array(
+        return ScTemplateEmailLang::find(array(
             "email_id =:ID:",
             'bind' => array('ID' => $id)
         ));

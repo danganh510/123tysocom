@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 
 use Phalcon\Mvc\Model;

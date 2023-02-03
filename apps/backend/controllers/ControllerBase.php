@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Repositories\Role;
+use Score\Repositories\Role;
 
 class ControllerBase extends \Phalcon\Mvc\Controller
 {

@@ -91,7 +91,7 @@ if($this->dispatcher->getParam("slNewspaper") != ""){
                             <?php foreach ($article_list->items as $item ) { ?>
                                 <?php
                                 /**
-                                 * @var \Bincg\Models\BinNewspaperArticle $item
+                                 * @var \Score\Models\ScNewspaperArticle $item
                                  */
                                 ?>
                                 <tr>
@@ -103,7 +103,7 @@ if($this->dispatcher->getParam("slNewspaper") != ""){
                                     </td>
                                     <td class=" "><?php echo $item->getArticleId(); ?></td>
                                     <td class=" "><?php echo $item->getArticleName(); ?></td>
-                                    <td class=" "><?php echo Bincg\Repositories\Newspaper::getNameByID($item->getArticleNewspaperId()) ?></td>
+                                    <td class=" "><?php echo Score\Repositories\Newspaper::getNameByID($item->getArticleNewspaperId()) ?></td>
                                     <td class=" "><?php echo $this->my->formatDateTime($item->getArticleUpdateTime(),false); ?></td>
                                     <td class="text-center"><?php echo $item->getArticleOrder() ?></td>
                                     <td class="text-center" data-title="Active">

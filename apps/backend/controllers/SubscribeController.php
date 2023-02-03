@@ -1,13 +1,13 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Subscribe;
-use Bincg\Repositories\User;
-use Bincg\Repositories\UserAgent;
+use Score\Repositories\Activity;
+use Score\Repositories\Subscribe;
+use Score\Repositories\User;
+use Score\Repositories\UserAgent;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
+use Score\Utils\Validator;
 class SubscribeController extends ControllerBase
 {
     public function indexAction()
@@ -91,7 +91,7 @@ class SubscribeController extends ControllerBase
         $this->view->arr_newletter = $arr_newletter;
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinSubscribe WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScSubscribe WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $from = trim($this->request->get("txtFrom")); //string
         $to = trim($this->request->get("txtTo"));  //string

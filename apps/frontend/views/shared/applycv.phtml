@@ -31,7 +31,7 @@
                             <label><?php echo defined('txt_role_you_interested') ? txt_role_you_interested : ''; ?><span class="text-danger"> *</span></label>
                             <select name="slcRole" id="slcRole" class="form-control">
                                 <option value=0><?php echo defined('txt_role_you_interested') ? txt_role_you_interested : '' ;?></option>
-                                <?php $repoCareer = new \Bincg\Repositories\Career();
+                                <?php $repoCareer = new \Score\Repositories\Career();
                                 echo $combo = $repoCareer->getComboboxCareerById('',$lang_code); ?>
                             </select>
                             <span class="text-danger msg-career"></span>
@@ -64,7 +64,7 @@
                         </span>
                     </div>
                     <div data-bind="visible: typeOfCommunicationChannel() != ''">
-                        <div class="form-group" data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>'">
+                        <div class="form-group" data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_OTHER ?>'">
                             <input type="text" maxlength="255" name="txtCommunicationChannelOther"
                                    id="txtCommunicationChannelOther" class="form-control" placeholder="<?php echo defined('txt_other_channel') ? txt_other_channel : '' ?>"
                                    value="<?php echo isset($formData['contact_communication_channel_other']) ? $formData['contact_communication_channel_other'] : '' ?>">
@@ -73,12 +73,12 @@
                             </span>
                         </div>
                         <div class="form-group">
-                            <div data-bind="visible: typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                            <div data-bind="visible: typeOfCommunicationChannel() != '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>'">
                                 <input type="text" maxlength="255" name="txtCommunicationChannelID" id="txtCommunicationChannelID"
                                        class="form-control" placeholder="<?php echo defined('lbl_ID') ? lbl_ID : '' ?>"
                                        value="<?php echo isset($formData['contact_communication_channel_id']) ? $formData['contact_communication_channel_id'] : '' ?>">
                             </div>
-                            <div data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                            <div data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>'">
                                 <input maxlength="20" id="txtCommunicationChannelNumber"
                                        name="txtCommunicationChannelNumber" type="text" class="form-control" placeholder="<?php echo defined('txt_description_type_phone_number') ? txt_description_type_phone_number : ''; ?>">
                                 <input type="hidden" name="txtPhoneIso2CommunicationChannel" id="txtPhoneIso2CommunicationChannel"
@@ -174,7 +174,7 @@
             communicationChannelNumber.intlTelInput('setNumber', '<?php echo isset($formData['contact_communication_channel_telapi_number']) ? $formData['contact_communication_channel_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>');
             var isValidCommunicationChannelNumber = true;
             communicationChannelNumber.blur(function () {
-                if (formVM.typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                if (formVM.typeOfCommunicationChannel() != '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>') {
                     return;
                 }
                 var phone_number = communicationChannelNumber.intlTelInput('getNumber');
@@ -273,7 +273,7 @@
                     valid = false;
                     $('.msg-file').text('<?php echo defined('txt_select_file_required') ? txt_select_file_required : '' ;?>');
                 }
-                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>') {
                     if ($('input[name=txtCommunicationChannelNumber]').val() == '') {
                         valid = false;
                         $('.msg-phone-communication').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '';?>');
@@ -288,7 +288,7 @@
                         $('input[name=txtCommunicationChannelNumber]').parent().removeClass("has-error");
                     }
                 }
-                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_TEXT ?>') {
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_TEXT ?>') {
                     if ($('input[name=txtCommunicationChannelID]').val() == '') {
                         valid = false;
                         $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
@@ -298,7 +298,7 @@
                         $('input[name=txtCommunicationChannelID]').parent().removeClass("has-error");
                     }
                 }
-                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>') {
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_OTHER ?>') {
                     if ($('input[name=txtCommunicationChannelID]').val() == '') {
                         valid = false;
                         $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
@@ -421,7 +421,7 @@
             }
 
             var formVM = new AppViewModel();
-            ko.applyBindings(formVM);
+            ko.applyScdings(formVM);
 
 
             var communicationSlc = communicationChannel;

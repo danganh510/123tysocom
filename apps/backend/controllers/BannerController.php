@@ -1,15 +1,15 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinBanner;
-use Bincg\Models\BinBannerLang;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\BannerLang;
+use Score\Models\ScBanner;
+use Score\Models\ScBannerLang;
+use Score\Repositories\Activity;
+use Score\Repositories\Banner;
+use Score\Repositories\BannerLang;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
-use Bincg\Models\BinLanguage;
+use Score\Utils\Validator;
+use Score\Models\ScLanguage;
 class BannerController extends ControllerBase
 {
     public function indexAction()
@@ -20,7 +20,7 @@ class BannerController extends ControllerBase
         $controller = $this->request->get('slcController');
         $banner = new Banner();
         $select_controller = $banner->getControllerCombobox($controller);
-        $sql = "SELECT * FROM Bincg\Models\BinBanner WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScBanner WHERE 1";
         $arrParameter = array();
         if(!empty($keyword)){
             if($validator->validInt($keyword)) {
@@ -98,7 +98,7 @@ class BannerController extends ControllerBase
                 $banner_controller = Banner::getValue($data['banner_controller'],Banner::CONTROLLER);
                 $banner_article_keyword  = Banner::getValue($data['banner_controller'],Banner::ARTICLE);
                 $msg_result = array();
-                $new_banner = new BinBanner();
+                $new_banner = new ScBanner();
                 $new_banner->setBannerController($banner_controller);
                 $new_banner->setBannerArticleKeyword($banner_article_keyword);
                 $new_banner->setBannerTitle($data['banner_title']);
@@ -146,7 +146,7 @@ class BannerController extends ControllerBase
             return $this->response->redirect('notfound');
         }
 
-        $banner_model = BinBanner::findFirstById($id_banner);
+        $banner_model = ScBanner::findFirstById($id_banner);
         if(empty($banner_model))
         {
             return $this->response->redirect('notfound');
@@ -168,7 +168,7 @@ class BannerController extends ControllerBase
              ) ;
         $save_mode = '';
         $lang_default = $this->globalVariable->defaultLanguage;
-        $languages = BinLanguage::getLanguages();
+        $languages = ScLanguage::getLanguages();
         $lang_current = $lang_default;
         foreach ($languages as $lang){
             $arr_language[$lang->getLanguageCode()] = $lang->getLanguageName();
@@ -262,7 +262,7 @@ class BannerController extends ControllerBase
                     default:
                         $banner_lang = BannerLang::findFirstByIdAndLang($id_banner, $save_mode);
                         if (!$banner_lang) {
-                            $banner_lang = new BinBannerLang();
+                            $banner_lang = new ScBannerLang();
                             $banner_lang->setBannerId($id_banner);
                             $banner_lang->setBannerLangCode($save_mode);
                         }
@@ -303,7 +303,7 @@ class BannerController extends ControllerBase
             'banner_content'=>($save_mode === $this->globalVariable->defaultLanguage)?$data_post['banner_content']:$banner_model->getBannerContent(),
         );
         $arr_translate[$lang_default] = $item;
-        $arr_banner_lang = BinBannerLang::findById($id_banner);
+        $arr_banner_lang = ScBannerLang::findById($id_banner);
         foreach ($arr_banner_lang as $banner_language){
             $item = array(
                 'banner_title'=>($save_mode === $banner_language->getBannerLangCode())?$data_post['banner_title']:$banner_language->getBannerTitle(),
@@ -352,7 +352,7 @@ class BannerController extends ControllerBase
             $occ_log = array();
             foreach ($banner_checked as $id)
             {
-                $banner_item = BinBanner::findFirstById($id);
+                $banner_item = ScBanner::findFirstById($id);
                 if($banner_item)
                 {
                     if ($banner_item->delete() === false) {

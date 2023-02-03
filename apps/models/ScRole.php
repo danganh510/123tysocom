@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 use Phalcon\Db\RawValue;
 
-class BinRole extends BaseModel
+class ScRole extends BaseModel
 {
 
     /**
@@ -174,14 +174,14 @@ class BinRole extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_role';
+        return 'sc_role';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinRole[]|BinRole
+     * @return ScRole[]|ScRole
      */
     public static function find($parameters = null)
     {
@@ -192,7 +192,7 @@ class BinRole extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinRole
+     * @return ScRole
      */
     public static function findFirst($parameters = null)
     {
@@ -217,7 +217,7 @@ class BinRole extends BaseModel
 
     /**
      * @param integer $id
-     * @return BinRole
+     * @return ScRole
      */
     public static function getFirstLoginById($id){
         return self::findFirst(array(

@@ -1,19 +1,19 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Models\BinCommunicationChannel;
-use Bincg\Models\BinContactus;
-use Bincg\Models\BinUser;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\CommunicationChannel;
-use Bincg\Repositories\EmailTemplate;
-use Bincg\Repositories\Office;
-use Bincg\Repositories\Page;
-use Bincg\Utils\IpApi;
-use Bincg\Utils\NumVerify;
-use Bincg\Utils\Validator;
+use Score\Models\ScCommunicationChannel;
+use Score\Models\ScContactus;
+use Score\Models\ScUser;
+use Score\Repositories\Activity;
+use Score\Repositories\Article;
+use Score\Repositories\Banner;
+use Score\Repositories\CommunicationChannel;
+use Score\Repositories\EmailTemplate;
+use Score\Repositories\Office;
+use Score\Repositories\Page;
+use Score\Utils\IpApi;
+use Score\Utils\NumVerify;
+use Score\Utils\Validator;
 
 define('MyS3UploadFolder', 'contactus');
 
@@ -46,7 +46,7 @@ class ContactusController extends ControllerBase
 
         $user = array();
         if($this->auth) {
-            $user = BinUser::findFirstById($this->auth['id']);
+            $user = ScUser::findFirstById($this->auth['id']);
             if($user){
                 $user = $user->toArray();
             }
@@ -94,7 +94,7 @@ class ContactusController extends ControllerBase
             } else{
                 $message['service'] = defined('txt_please_select_topics') ? txt_please_select_topics : '';
             }
-            if (!empty($data['contact_communication_channel_type']) && $data['contact_communication_channel_type'] == BinCommunicationChannel::TYPE_PHONE) {
+            if (!empty($data['contact_communication_channel_type']) && $data['contact_communication_channel_type'] == ScCommunicationChannel::TYPE_PHONE) {
                 if (empty($data['contact_communication_channel_number'])) {
                     $message['communicationChannelNumber'] = defined('txt_enter_phone_number') ? txt_enter_phone_number : '';
                 }
@@ -106,13 +106,13 @@ class ContactusController extends ControllerBase
                 }
             }
 
-            if (!empty($data['contact_communication_channel_type']) && $data['contact_communication_channel_type'] == BinCommunicationChannel::TYPE_TEXT) {
+            if (!empty($data['contact_communication_channel_type']) && $data['contact_communication_channel_type'] == ScCommunicationChannel::TYPE_TEXT) {
                 if (empty($data['contact_communication_channel_id'])) {
                     $message['communicationChannelId'] = defined('txt_please_enter_id') ? txt_please_enter_id : '';
                 }
             }
 
-            if (!empty($data['contact_communication_channel_type']) && $data['contact_communication_channel_type'] == BinCommunicationChannel::TYPE_OTHER) {
+            if (!empty($data['contact_communication_channel_type']) && $data['contact_communication_channel_type'] == ScCommunicationChannel::TYPE_OTHER) {
                 if (empty($data['contact_communication_channel_id'])) {
                     $message['communicationChannelId'] = defined('txt_please_enter_id') ? txt_please_enter_id : '';
                 }
@@ -219,9 +219,9 @@ class ContactusController extends ControllerBase
                     }
                 }
 
-                $new_contact = new BinContactus();
+                $new_contact = new ScContactus();
                 /**
-                 * @var BinContactus $new_contact
+                 * @var ScContactus $new_contact
                  */
                 $new_contact->setContactName($data['contact_name']);
                 $new_contact->setContactNumber($inter_phone_format);
@@ -230,8 +230,8 @@ class ContactusController extends ControllerBase
                 $new_contact->setContactContent($data['contact_comment']);
                 $new_contact->setContactTopics($list_service_contact);
                 $new_contact->setContactCommunicationChannelId($data['contact_communication_channel']);
-                $new_contact->setContactCommunicationChannelName(($data['contact_communication_channel_type'] == BinCommunicationChannel::TYPE_OTHER) ? $data['contact_communication_channel_other'] : CommunicationChannel::getCommunicationNameByID($data['contact_communication_channel']));
-                $new_contact->setContactCommunicationChannelNumber(($data['contact_communication_channel_type'] == BinCommunicationChannel::TYPE_PHONE) ? $contact_tel_communication_format : $data['contact_communication_channel_id']);
+                $new_contact->setContactCommunicationChannelName(($data['contact_communication_channel_type'] == ScCommunicationChannel::TYPE_OTHER) ? $data['contact_communication_channel_other'] : CommunicationChannel::getCommunicationNameByID($data['contact_communication_channel']));
+                $new_contact->setContactCommunicationChannelNumber(($data['contact_communication_channel_type'] == ScCommunicationChannel::TYPE_PHONE) ? $contact_tel_communication_format : $data['contact_communication_channel_id']);
                 $getFileUrlFull = array();
                 if ($uploadFiles) {
                     foreach ($uploadFiles as $key => $val) {
@@ -324,7 +324,7 @@ class ContactusController extends ControllerBase
     private function sendContactUsEmail($contactus,$lang_code)
     {
         /**
-         * @var BinContactus $contactus
+         * @var ScContactus $contactus
          */
         $emailRepo = new EmailTemplate();
         $email_template = $emailRepo->getEmailContactUs($contactus,$lang_code);
@@ -351,7 +351,7 @@ class ContactusController extends ControllerBase
     private function sendContactUsServiceEmail($contactus,$service_email,$lang_code)
     {
         /**
-         * @var BinContactus $contactus
+         * @var ScContactus $contactus
          */
         $emailRepo = new EmailTemplate();
         $email_template = $emailRepo->getEmailContactUs($contactus,$lang_code);

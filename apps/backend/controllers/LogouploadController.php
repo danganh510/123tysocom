@@ -1,6 +1,6 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 define('MyS3UploadFolder', 'uploads');
 class LogouploadController extends ControllerBase
 {

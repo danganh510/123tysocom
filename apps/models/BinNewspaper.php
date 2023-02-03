@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinNewspaper extends BaseModel
+class ScNewspaper extends BaseModel
 {
 
     /**
@@ -412,14 +412,14 @@ class BinNewspaper extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_newspaper';
+        return 'sc_newspaper';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinNewspaper[]|BinNewspaper
+     * @return ScNewspaper[]|ScNewspaper
      */
     public static function find($parameters = null)
     {
@@ -430,7 +430,7 @@ class BinNewspaper extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinNewspaper
+     * @return ScNewspaper
      */
     public static function findFirst($parameters = null)
     {
@@ -438,7 +438,7 @@ class BinNewspaper extends BaseModel
     }
     public static function findAllNewspaper($limit=null)
     {
-        return BinNewspaper::find(array(
+        return ScNewspaper::find(array(
             "newspaper_active = 'Y' ",
             'order' => 'newspaper_order ASC',
             'limit' => $limit
@@ -446,7 +446,7 @@ class BinNewspaper extends BaseModel
     }
     public static function findRelatedByNewspaperKey($keyword,$limit=null)
     {
-        return BinNewspaper::find(array(
+        return ScNewspaper::find(array(
             "newspaper_active = 'Y' AND newspaper_keyword != :KEY:",
             'bind' => ['KEY'=>$keyword],
             'order' => 'newspaper_order ASC',
@@ -455,7 +455,7 @@ class BinNewspaper extends BaseModel
     }
     public static function findFirstNewspaperByKey($keyword)
     {
-        return BinNewspaper::findFirst(array(
+        return ScNewspaper::findFirst(array(
             "newspaper_active = 'Y' AND newspaper_keyword = :KEY: ",
             'bind' => ['KEY'=>$keyword]
         ));

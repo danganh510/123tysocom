@@ -85,7 +85,7 @@ if($this->dispatcher->getParam("slcCountry") != 0){
                             <?php foreach ($office->items as $item ) { ?>
                                 <?php
                                 /**
-                                 * @var \Bincg\Models\BinOffice $item
+                                 * @var \Score\Models\ScOffice $item
                                  */
 
                                 ?>
@@ -98,7 +98,7 @@ if($this->dispatcher->getParam("slcCountry") != 0){
                                     </td>
                                     <td class=" "><?php echo $item->getOfficeId(); ?></td>
                                     <td class=" "><?php echo $item->getOfficeName(); ?></td>
-                                    <td class=" "><?php echo \Bincg\Repositories\CountryGeneral::getNameByCode(strtoupper($item->getOfficeCountryCode())) ?></td>
+                                    <td class=" "><?php echo \Score\Repositories\CountryGeneral::getNameByCode(strtoupper($item->getOfficeCountryCode())) ?></td>
                                     <td class=" "><?php echo $item->getOfficeOrder(); ?></td>
                                     <td class="text-center" data-title="Active">
                                         <?php
@@ -111,7 +111,7 @@ if($this->dispatcher->getParam("slcCountry") != 0){
                                         <a class="btn btn-primary btn-xs margin-0" style="" href="<?php echo $this->url->get("/dashboard/edit-office?id=".$item->getOfficeId()); ?>">View</a>
                                         <?php
                                         $sum = '';
-                                        $sumOfficeImage = \Bincg\Repositories\OfficeImage::countByOfficeId($item->getOfficeId());
+                                        $sumOfficeImage = \Score\Repositories\OfficeImage::countByOfficeId($item->getOfficeId());
                                         if ( $sumOfficeImage > 0 ){
                                             $sum = '('. $sumOfficeImage . ')';
                                         }

@@ -1,18 +1,18 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 use Phalcon\Mvc\User\Component;
-use Bincg\Utils\UserAgent;
-use Bincg\Models\BinActivity;
-use Bincg\Models\BinIp;
-use Bincg\Models\BinUserAgent;
-use Bincg\Utils\IpApi;
+use Score\Utils\UserAgent;
+use Score\Models\ScActivity;
+use Score\Models\ScIp;
+use Score\Models\ScUserAgent;
+use Score\Utils\IpApi;
 
 class Activity extends Component
 {
     // get By Controller And Action
     public function getByControllerAndAction($activity_controller, $activity_action) {
-        return BinActivity::find(array(
+        return ScActivity::find(array(
             'columns' => 'activity_user_id, activity_data_log, activity_ip, activity_user_agent_id',
             'activity_controller = :activity_controller: AND activity_action = :activity_action:',
             'bind' => array('activity_controller' => $activity_controller, 'activity_action' => $activity_action)
@@ -23,7 +23,7 @@ class Activity extends Component
         $agent = $_SERVER['HTTP_USER_AGENT'];
         $info = array();
 
-        $activity = new BinActivity();
+        $activity = new ScActivity();
         $activity->setActivityController($controller);
         $activity->setActivityAction($action);
         $activity->setActivityUserId($user_id);
@@ -32,7 +32,7 @@ class Activity extends Component
         $activity->setActivityMessage($message);
         $activity->setActivityDataLog($data_log);
 
-        $checkUser_Agent = BinUserAgent::findFirstByUserAgent($agent);
+        $checkUser_Agent = ScUserAgent::findFirstByUserAgent($agent);
         if ($checkUser_Agent) {
             if($checkUser_Agent->getAgentChecked() == 'N'){
                 $userAgent = UserAgent::info($agent);
@@ -51,14 +51,14 @@ class Activity extends Component
                 if($info->save()){
                     $activity->setActivityUserAgentId($info->getAgentId());
                 }else{
-                    $info = new BinUserAgent();
+                    $info = new ScUserAgent();
                     $info->setAgentChecked('N');
                     $info->setAgentUserAgent($_SERVER['HTTP_USER_AGENT']);
                     $info->save();
                     $activity->setActivityUserAgentId($info->getAgentId());
                 }
             }else{
-                $info = new BinUserAgent();
+                $info = new ScUserAgent();
                 $info->setAgentChecked('N');
                 $info->setAgentUserAgent($_SERVER['HTTP_USER_AGENT']);
                 $info->save();
@@ -70,7 +70,7 @@ class Activity extends Component
             }
         }
 
-        $erpIp = BinIp::findFirstByIpAddress($ip);
+        $erpIp = ScIp::findFirstByIpAddress($ip);
         if($erpIp){
             if($erpIp->getIpDateModified() == 0){
                 $ip = IpApi::info_ip($_SERVER['REMOTE_ADDR']);
@@ -81,7 +81,7 @@ class Activity extends Component
                 }
             }
         }else{
-            $newErpIp = new BinIp();
+            $newErpIp = new ScIp();
             $newErpIp->setIpQuery($_SERVER['REMOTE_ADDR']);
             $ip = IpApi::info_ip($_SERVER['REMOTE_ADDR']);
             if($ip){
@@ -95,7 +95,7 @@ class Activity extends Component
         return array();
     }
     private function setUserAgent($userAgent) {
-        $info = new BinUserAgent();
+        $info = new ScUserAgent();
         $info->setAgentChecked('Y');
         $info->setAgentUserAgent($_SERVER['HTTP_USER_AGENT']);
         $info->setAgentHardwareType($userAgent->hardware_type);

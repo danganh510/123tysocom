@@ -1,10 +1,10 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Page;
-use Bincg\Repositories\Type;
-use Bincg\Utils\Validator;
+use Score\Repositories\Article;
+use Score\Repositories\Page;
+use Score\Repositories\Type;
+use Score\Utils\Validator;
 
 class NewsController extends ControllerBase
 {
@@ -60,8 +60,8 @@ class NewsController extends ControllerBase
         $arrParameter = array();
         if ($this->lang_code && $this->lang_code != $this->globalVariable->defaultLanguage) {
             $count_sql = "SELECT COUNT(*) AS count ";
-            $table_sql = " FROM \Bincg\Models\BinArticle n  
-                        INNER JOIN \Bincg\Models\BinArticleLang nl ON nl.article_id = n.article_id AND nl.article_lang_code = :LANG: 
+            $table_sql = " FROM \Score\Models\ScArticle n  
+                        INNER JOIN \Score\Models\ScArticleLang nl ON nl.article_id = n.article_id AND nl.article_lang_code = :LANG: 
                         WHERE n.article_active = 'Y' AND n.article_type_id = $type_child_id 
                         ORDER BY n.article_insert_time DESC 
 	                  ";
@@ -69,7 +69,7 @@ class NewsController extends ControllerBase
             $arrParameter = array("LANG" => $this->lang_code);
         }else{
             $count_sql = "SELECT COUNT(*) AS count ";
-            $table_sql = " FROM \Bincg\Models\BinArticle n  
+            $table_sql = " FROM \Score\Models\ScArticle n  
                       WHERE n.article_active = 'Y' AND n.article_type_id = $type_child_id 
                       ORDER BY n.article_insert_time DESC 
 	                  ";

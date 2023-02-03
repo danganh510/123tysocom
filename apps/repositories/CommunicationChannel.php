@@ -1,15 +1,15 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
 use Phalcon\Di;
 use Phalcon\Mvc\User\Component;
-use Bincg\Models\BinCommunicationChannel;
+use Score\Models\ScCommunicationChannel;
 
 class CommunicationChannel extends Component
 {
     public static function getById($communication_channel_id){
-        return BinCommunicationChannel::findFirst(array(
+        return ScCommunicationChannel::findFirst(array(
             'communication_channel_id = :communication_channel_id:',
             'bind' => array('communication_channel_id' => $communication_channel_id),
         ));
@@ -17,13 +17,13 @@ class CommunicationChannel extends Component
 
     public function getType ($inputslc)
     {
-        $data = BinCommunicationChannel::allTypes();
+        $data = ScCommunicationChannel::allTypes();
         return is_array($data) ?$this->my->getComboBox($data,$inputslc):"";
     }
 
     public static function checkName ($name, $type, $id)
     {
-        return BinCommunicationChannel::findFirst(
+        return ScCommunicationChannel::findFirst(
             [
                 'communication_channel_name = :name: AND communication_channel_type = :type: AND communication_channel_id != :id:',
                 'bind' => array('name' => $name, 'type' => $type, 'id' => $id),
@@ -39,8 +39,8 @@ class CommunicationChannel extends Component
         $para = array();
         $listCommunicationChannel = array();
         if ($lang && $lang != $globalVariable->defaultLanguage) {
-            $sql = "SELECT cc.*, ccl.* FROM Bincg\Models\BinCommunicationChannel cc
-                INNER JOIN Bincg\Models\BinCommunicationChannelLang ccl
+            $sql = "SELECT cc.*, ccl.* FROM Score\Models\ScCommunicationChannel cc
+                INNER JOIN Score\Models\ScCommunicationChannelLang ccl
                 ON cc.communication_channel_id = ccl.communication_channel_id AND ccl.communication_channel_lang_code = :LANG: 
                 WHERE cc.communication_channel_active = 'Y' 
                 ORDER BY cc.communication_channel_order ASC 
@@ -50,11 +50,11 @@ class CommunicationChannel extends Component
             if($lists && sizeof($lists)>0) {
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinCommunicationChannel(),array_merge($item->cc->toArray(), $item->ccl->toArray()));
+                        new ScCommunicationChannel(),array_merge($item->cc->toArray(), $item->ccl->toArray()));
                 }
             }
         } else {
-            $sql = "SELECT * FROM Bincg\Models\BinCommunicationChannel
+            $sql = "SELECT * FROM Score\Models\ScCommunicationChannel
                 WHERE communication_channel_active = 'Y' 
                 ORDER BY communication_channel_order ASC";
             $lists = $modelsManager->executeQuery($sql,$para);
@@ -92,15 +92,15 @@ class CommunicationChannel extends Component
         return $output;
     }
     public static function getCommunicationNameByID ($id) {
-        $result = BinCommunicationChannel::findFirstById($id);
+        $result = ScCommunicationChannel::findFirstById($id);
         return $result ? $result->getCommunicationChannelName() : '';
     }
 
     public function getAllActiveCommunicationChannelTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinCommunicationChannel as b
+        $sql = "SELECT * FROM Score\Models\ScCommunicationChannel as b
                 WHERE b.communication_channel_active = 'Y' AND b.communication_channel_id NOT IN 
-                 (SELECT bl.communication_channel_id FROM Bincg\Models\BinCommunicationChannelLang as bl WHERE bl.communication_channel_lang_code =
+                 (SELECT bl.communication_channel_id FROM Score\Models\ScCommunicationChannelLang as bl WHERE bl.communication_channel_lang_code =
                 :lang_code:)
                 ORDER BY b.communication_channel_order ASC ";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {

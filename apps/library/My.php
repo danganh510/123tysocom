@@ -210,12 +210,12 @@ class My extends Phalcon\Mvc\User\Component
     }
     public function sendErrorEmailAndRedirectToNotFoundPage($lang = 'en', $country = 'gx')
     {
-        $sent_error = new \Bincg\Repositories\SendError();
+        $sent_error = new \Score\Repositories\SendError();
         $sent_error->sendErrorNotfound('');
         $this->response->redirect($country.'/'.$lang.'/notfound');
     }
     public function ssIpInfo() {
-        $ipInfo = \Bincg\Utils\IpApi::info_ip($_SERVER['REMOTE_ADDR']);
+        $ipInfo = \Score\Utils\IpApi::info_ip($_SERVER['REMOTE_ADDR']);
         if ($ipInfo->status == 'success') {
             $this->session->set('ssIpInfo', serialize($ipInfo));
             return $ipInfo;

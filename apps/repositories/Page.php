@@ -1,21 +1,21 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinPage;
+use Score\Models\ScPage;
 use Phalcon\Mvc\User\Component;
 
 class Page extends Component
 {
     public static function getByID($page_id) {
-        return BinPage::findFirst(array(
+        return ScPage::findFirst(array(
             'page_id = :page_id:',
             'bind' => array('page_id' => $page_id)
         ));
     }
     public static function checkKeyword($keyword, $page_id)
     {
-        $result = BinPage::findFirst(array(
+        $result = ScPage::findFirst(array(
             "page_keyword = :keyword: AND page_id != :pageID:",
             "bind" => array("keyword" => $keyword,
                 "pageID" => $page_id)
@@ -29,15 +29,15 @@ class Page extends Component
     {
         $page = false;
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT p.*, pl.* FROM \Bincg\Models\BinPageLang pl  
-                    INNER JOIN \Bincg\Models\BinPage p  
+            $sql = "SELECT p.*, pl.* FROM \Score\Models\ScPageLang pl  
+                    INNER JOIN \Score\Models\ScPage p  
                         ON pl.page_id = p.page_id AND pl.page_lang_code = '$lang' 
                     WHERE p.page_keyword = '$page_keyword' 
                 ";
             $lists = $this->modelsManager->executeQuery($sql)->getFirst();
             if($lists && sizeof($lists)>0){
                 $page = \Phalcon\Mvc\Model::cloneResult(
-                    new BinPage(),
+                    new ScPage(),
                     [
                         "page_id" => $lists->p->getPageId(),
                         "page_name" => $lists->pl->getPageName(),
@@ -51,7 +51,7 @@ class Page extends Component
                 );
             }
         }else{
-            $page = BinPage::findFirst(array(
+            $page = ScPage::findFirst(array(
                 'page_keyword = :page_keyword:',
                 'bind' => array('page_keyword' => $page_keyword)
             ));
@@ -97,9 +97,9 @@ class Page extends Component
     }
     public function getAllActivePageTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinPage as a
+        $sql = "SELECT * FROM Score\Models\ScPage as a
                 WHERE a.page_id NOT IN 
-                 (SELECT al.page_id FROM Bincg\Models\BinPageLang as al WHERE al.page_lang_code =
+                 (SELECT al.page_id FROM Score\Models\ScPageLang as al WHERE al.page_lang_code =
                 :lang_code:) ";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
             $sql .= ' LIMIT '.$limit;

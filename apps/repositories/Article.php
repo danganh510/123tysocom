@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinArticle;
+use Score\Models\ScArticle;
 use Phalcon\Mvc\User\Component;
 class Article extends Component
 {
     public static function checkKeyword($article_keyword, $article_type_id, $article_id)
     {
-        return BinArticle::findFirst(
+        return ScArticle::findFirst(
             [
                 'article_keyword = :articlekeyword: AND article_type_id = :articletypeid:  AND article_id != :articleid:',
                 'bind' => array('articlekeyword' => $article_keyword, 'articletypeid' => $article_type_id, 'articleid' => $article_id),
@@ -16,25 +16,25 @@ class Article extends Component
         );
     }
     public static function checkCodeCountry($article_country_code,$article_type_id, $article_id){
-        return BinArticle::findFirst(array('article_country_code = :ARTICLECOUNTRYCODE: AND article_type_id = :ARTICLETYPEID: AND article_id !=:ARTICLEID:','bind' => array('ARTICLECOUNTRYCODE' => $article_country_code, 'ARTICLETYPEID' =>$article_type_id, 'ARTICLEID' => $article_id),));
+        return ScArticle::findFirst(array('article_country_code = :ARTICLECOUNTRYCODE: AND article_type_id = :ARTICLETYPEID: AND article_id !=:ARTICLEID:','bind' => array('ARTICLECOUNTRYCODE' => $article_country_code, 'ARTICLETYPEID' =>$article_type_id, 'ARTICLEID' => $article_id),));
     }
     public static function getByID($article_id)
     {
-        return BinArticle::findFirst(array(
+        return ScArticle::findFirst(array(
             'article_id = :article_id:',
             'bind' => array('article_id' => $article_id)
         ));
     }
     public static function getFirstByType ($type_id)
     {
-        $result = BinArticle::findFirst(array(
+        $result = ScArticle::findFirst(array(
             "article_type_id = :typeID:",
             "bind" => array("typeID" => $type_id)
         ));
         return $result;
     }
     public static function getNameByKeyword($keyword){
-        $result = BinArticle::findFirst(array(
+        $result = ScArticle::findFirst(array(
             "article_keyword = :keyword:",
             "bind" => array("keyword" => $keyword)
         ));
@@ -44,8 +44,8 @@ class Article extends Component
         $result = array();
         $para = array('TYPEID'=>$type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_type_id = :TYPEID: 
                     ORDER BY a.article_order ASC ";
@@ -57,11 +57,11 @@ class Article extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinArticle 
+            $sql = "SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = 'Y' AND article_type_id = :TYPEID: 
                 ORDER BY article_order ASC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -73,14 +73,14 @@ class Article extends Component
         return $result;
     }
     /**
-     * @return BinArticle
+     * @return ScArticle
      */
     public function getByTypeAndInsertTime ($type_id, $lang, $limit = null){
         $result = array();
         $para = array('TYPEID'=>$type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_type_id = :TYPEID: 
                     ORDER BY a.article_insert_time DESC ";
@@ -92,11 +92,11 @@ class Article extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinArticle 
+            $sql = "SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = 'Y' AND article_type_id = :TYPEID: 
                 ORDER BY article_insert_time DESC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -111,8 +111,8 @@ class Article extends Component
         $result = array();
         $para = array('TYPEID'=>$type_id,'ARRID'=>$arr_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_type_id = :TYPEID: AND !FIND_IN_SET (a.article_id,:ARRID:) 
                     ORDER BY a.article_insert_time DESC ";
@@ -124,11 +124,11 @@ class Article extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinArticle 
+            $sql = "SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = 'Y' AND article_type_id = :TYPEID: AND !FIND_IN_SET (article_id,:ARRID:) 
                 ORDER BY article_insert_time DESC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -143,11 +143,11 @@ class Article extends Component
         $result = array();
         $para = array('TYPEID'=>$type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_type_id IN(
-                        SELECT t.type_id FROM Bincg\Models\BinType t 
+                        SELECT t.type_id FROM Score\Models\ScType t 
                         WHERE t.type_active = 'Y' AND t.type_parent_id = :TYPEID: 
                     ) 
                     ORDER BY a.article_insert_time DESC ";
@@ -159,13 +159,13 @@ class Article extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinArticle 
+            $sql = "SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = 'Y' AND article_type_id IN(
-                    SELECT type_id FROM Bincg\Models\BinType 
+                    SELECT type_id FROM Score\Models\ScType 
                     WHERE type_active = 'Y' AND type_parent_id = :TYPEID: 
                 ) 
                 ORDER BY article_insert_time DESC ";
@@ -181,11 +181,11 @@ class Article extends Component
         $result = array();
         $para = array('TYPEID'=>$type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_is_home = 'Y' AND a.article_type_id IN(
-                        SELECT t.type_id FROM Bincg\Models\BinType t 
+                        SELECT t.type_id FROM Score\Models\ScType t 
                         WHERE t.type_active = 'Y' AND t.type_parent_id = :TYPEID: 
                     ) 
                     ORDER BY a.article_insert_time DESC ";
@@ -197,13 +197,13 @@ class Article extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinArticle 
+            $sql = "SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = 'Y' AND article_is_home = 'Y' AND article_type_id IN(
-                    SELECT type_id FROM Bincg\Models\BinType 
+                    SELECT type_id FROM Score\Models\ScType 
                     WHERE type_active = 'Y' AND type_parent_id = :TYPEID: 
                 ) 
                 ORDER BY article_insert_time DESC ";
@@ -219,8 +219,8 @@ class Article extends Component
         $result = false;
         $para = array('keyword'=>$keyword, 'TYPEID' => $type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_type_id = :TYPEID: AND a.article_keyword = :keyword:                    
                     ";
@@ -228,10 +228,10 @@ class Article extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists && sizeof($lists)>0){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
+                    new ScArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
             }
         }else{
-            $sql = 'SELECT * FROM Bincg\Models\BinArticle 
+            $sql = 'SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = "Y" AND article_keyword = :keyword: AND article_type_id = :TYPEID: 
                 ';
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();
@@ -243,8 +243,8 @@ class Article extends Component
         $result = false;
         $para = array('keyword'=>$keyword);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_keyword = :keyword:                    
                     ";
@@ -252,10 +252,10 @@ class Article extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists && sizeof($lists)>0){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
+                    new ScArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
             }
         }else{
-            $sql = 'SELECT * FROM Bincg\Models\BinArticle 
+            $sql = 'SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = "Y" AND article_keyword = :keyword: 
                 ';
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();
@@ -267,8 +267,8 @@ class Article extends Component
         $result = array();
         $para = array('KEYWORD'=>$keyword, 'TYPEID' => $type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_type_id = :TYPEID: AND a.article_keyword != :KEYWORD: 
                     ORDER BY a.article_insert_time DESC ";
@@ -280,11 +280,11 @@ class Article extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScArticle(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinArticle 
+            $sql = "SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = 'Y' AND article_keyword != :KEYWORD: AND article_type_id = :TYPEID:
                 ORDER BY article_insert_time DESC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -300,8 +300,8 @@ class Article extends Component
         $result = false;
         $para = array('CONTACTNAME'=>$name);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_name = :CONTACTNAME: 
                     ";
@@ -309,10 +309,10 @@ class Article extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists && sizeof($lists)>0){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
+                    new ScArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
             }
         }else{
-            $sql = 'SELECT * FROM Bincg\Models\BinArticle 
+            $sql = 'SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = "Y" AND article_name = :CONTACTNAME: 
                 ';
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();
@@ -350,9 +350,9 @@ class Article extends Component
     }
     public function getAllActiveArticleTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinArticle as a
+        $sql = "SELECT * FROM Score\Models\ScArticle as a
                 WHERE a.article_active = 'Y' AND a.article_id NOT IN 
-                 (SELECT al.article_id FROM Bincg\Models\BinArticleLang as al WHERE al.article_lang_code =
+                 (SELECT al.article_id FROM Score\Models\ScArticleLang as al WHERE al.article_lang_code =
                 :lang_code:)
                 ORDER BY article_order ASC ";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -368,8 +368,8 @@ class Article extends Component
         $result = false;
         $para = array('CONTACTNAME'=>$name);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinArticle a 
-                    INNER JOIN \Bincg\Models\BinArticleLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScArticle a 
+                    INNER JOIN \Score\Models\ScArticleLang al 
                         ON a.article_id = al.article_id AND al.article_lang_code = :LANG: 
                     WHERE a.article_active = 'Y' AND a.article_name = :CONTACTNAME: 
                     ";
@@ -377,10 +377,10 @@ class Article extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists && sizeof($lists)>0){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
+                    new ScArticle(),array_merge($lists->a->toArray(), $lists->al->toArray()));
             }
         }else{
-            $sql = 'SELECT * FROM Bincg\Models\BinArticle 
+            $sql = 'SELECT * FROM Score\Models\ScArticle 
                 WHERE article_active = "Y" AND article_order = :CONTACTNAME: 
                 ';
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();

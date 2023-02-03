@@ -1,15 +1,15 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
 use Phalcon\Mvc\User\Component;
-use Bincg\Models\BinAlbumLang;
+use Score\Models\ScAlbumLang;
 
 class AlbumLang extends Component
 {
     public static function deleteById($id)
     {
-        $arr_lang = BinAlbumLang::findById($id);
+        $arr_lang = ScAlbumLang::findById($id);
         foreach ($arr_lang as $lang) {
             $lang->delete();
         }
@@ -17,7 +17,7 @@ class AlbumLang extends Component
 
     public static function findFirstByIdAndLang($id, $lang_code)
     {
-        return BinAlbumLang::findFirst(array(
+        return ScAlbumLang::findFirst(array(
             "album_id = :ID: AND album_lang_code = :CODE:",
             'bind' => array('ID' => $id,
                 'CODE' => $lang_code)));

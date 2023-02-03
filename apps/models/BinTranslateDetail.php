@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinTranslateDetail extends BaseModel
+class ScTranslateDetail extends BaseModel
 {
     const STATUS_SUCCESS = 'Success';
     const STATUS_FAIL = 'Fail';
@@ -288,14 +288,14 @@ class BinTranslateDetail extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_translate_detail';
+        return 'sc_translate_detail';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinTranslateDetail[]|BinTranslateDetail
+     * @return ScTranslateDetail[]|ScTranslateDetail
      */
     public static function find($parameters = null)
     {
@@ -306,7 +306,7 @@ class BinTranslateDetail extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinTranslateDetail
+     * @return ScTranslateDetail
      */
     public static function findFirst($parameters = null)
     {

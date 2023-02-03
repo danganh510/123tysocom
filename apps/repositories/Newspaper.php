@@ -1,13 +1,13 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinNewspaper;
+use Score\Models\ScNewspaper;
 use Phalcon\Mvc\User\Component;
 class Newspaper extends Component
 {
     public static function checkKeyword($newspaper_keyword,$newspaper_id) {
-        return BinNewspaper::findFirst(
+        return ScNewspaper::findFirst(
             [
                 'newspaper_keyword = :keyword: AND newspaper_id != :newspaperid:',
                 'bind' => [
@@ -19,7 +19,7 @@ class Newspaper extends Component
     }
     public static function findFirstById($id)
     {
-        return BinNewspaper::findFirst(array(
+        return ScNewspaper::findFirst(array(
             'newspaper_id = :id:',
             'bind' => array('id' => $id)
         ));
@@ -27,7 +27,7 @@ class Newspaper extends Component
 
     public static function getNewspaperCombobox($id)
     {
-        $newspaper = BinNewspaper::find();
+        $newspaper = ScNewspaper::find();
         $output = '';
         foreach ($newspaper as $value)
         {

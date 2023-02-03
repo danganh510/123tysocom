@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinUserAgent;
+use Score\Models\ScUserAgent;
 use Phalcon\Mvc\User\Component;
 
 class UserAgent extends Component
 {
     public static function getFirstUserAgentById($agent_id) {
-        return BinUserAgent::findFirst(array(
+        return ScUserAgent::findFirst(array(
             'agent_id = :agent_id:',
             'bind' => array('agent_id' => $agent_id)
         ));

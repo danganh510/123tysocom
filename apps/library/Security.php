@@ -4,8 +4,8 @@ use Phalcon\Events\Event,
     Phalcon\Mvc\User\Plugin,
     Phalcon\Mvc\Dispatcher,
     Phalcon\Acl;
-use Bincg\Repositories\Role;
-use Bincg\Models\BinRole;
+use Score\Repositories\Role;
+use Score\Models\ScRole;
 /**
  * Security
  * This is the security plugin which controls that users only have access to the modules they're assigned to
@@ -127,7 +127,7 @@ class Security extends Plugin
         {
             if($acl->isResource($resource))
             {
-                if(($module == 'backend') && !in_array($role, BinRole::getGuestUser())){
+                if(($module == 'backend') && !in_array($role, ScRole::getGuestUser())){
                     $this->response->redirect('dashboard/accessdenied');
                     return false;
                 }

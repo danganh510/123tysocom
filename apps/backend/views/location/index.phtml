@@ -75,13 +75,13 @@ if(!empty($message_success)) { ?>
                             <?php foreach ($list_location->items as $item) { ?>
                                 <tr >
                                     <?php 
-                                    /* @var \Bincg\Models\BinfLocation $item
+                                    /* @var \Score\Models\ScfLocation $item
                                     */
                                     ?>
                                     <td><label class="container_checkbox"><input class="check" name="item[]" value="<?php echo $item->getLocationId() ?>" type="checkbox"><span class="checkmark_checkbox"></span></label></td>
                                     <td class=" "><?php echo $item->getLocationId() ?></td>
-                                    <td class=" "><?php echo \Bincg\Repositories\CountryGeneral::getNameByCode($item->getLocationCountryCode())?></td>
-                                    <td class=" "><?php  echo \Bincg\Repositories\Language::getNameByCode($item->getLocationLangCode())?></td>
+                                    <td class=" "><?php echo \Score\Repositories\CountryGeneral::getNameByCode($item->getLocationCountryCode())?></td>
+                                    <td class=" "><?php  echo \Score\Repositories\Language::getNameByCode($item->getLocationLangCode())?></td>
                                     <td class=" "><?php echo $item->getLocationOrder() ?></td>
                                     <td class="text-center" data-title="Active">
                                         <?php

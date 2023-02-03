@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinType;
+use Score\Models\ScType;
 use Phalcon\Mvc\User\Component;
 class Type extends Component
 {
     public function checkKeyword($type_keyword, $type_parent_id, $type_id)
     {
-        return BinType::findFirst(
+        return ScType::findFirst(
             [
                 'type_keyword = :typekeyword: AND type_parent_id = :typeparentid: AND type_id != :typeid:',
                 'bind' => array('typekeyword' => $type_keyword, 'typeparentid' => $type_parent_id, 'typeid' => $type_id),
@@ -18,7 +18,7 @@ class Type extends Component
 
     public function getComboboxTypeMulti($str = "", $parent = 0, $inputslc)
     {
-        $sql = 'SELECT type_id, type_parent_id, type_name FROM Bincg\Models\BinType WHERE type_parent_id = :PARENTID: Order By type_order ASC';
+        $sql = 'SELECT type_id, type_parent_id, type_name FROM Score\Models\ScType WHERE type_parent_id = :PARENTID: Order By type_order ASC';
         $data = $this->modelsManager->executeQuery($sql,
             array(
                 "PARENTID" => $parent
@@ -39,7 +39,7 @@ class Type extends Component
 
     public function getComboboxType($str = "", $parent = 0, $inputslc)
     {
-        $sql = 'SELECT type_id, type_parent_id, type_name FROM Bincg\Models\BinType WHERE type_parent_id = :PARENTID: Order By type_order ASC';
+        $sql = 'SELECT type_id, type_parent_id, type_name FROM Score\Models\ScType WHERE type_parent_id = :PARENTID: Order By type_order ASC';
         $data = $this->modelsManager->executeQuery($sql,
             array(
                 "PARENTID" => $parent
@@ -58,12 +58,12 @@ class Type extends Component
     }
     public static function getNameByID($id)
     {
-        $result = BinType::findFirstById($id);
+        $result = ScType::findFirstById($id);
         return $result ? $result->getTypeName() : '';
     }
     public static function getFirstChild ($type_parent_id)
     {
-        return  $result = BinType::findFirst(array(
+        return  $result = ScType::findFirst(array(
             "type_parent_id = :type_PARENTID:",
             "bind" => array("type_PARENTID" => $type_parent_id)
         ));
@@ -72,8 +72,8 @@ class Type extends Component
         $result = false;
         $para = array('ID'=>$id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT t.*, tl.* FROM \Bincg\Models\BinType t 
-                    INNER JOIN \Bincg\Models\BinTypeLang tl 
+            $sql = "SELECT t.*, tl.* FROM \Score\Models\ScType t 
+                    INNER JOIN \Score\Models\ScTypeLang tl 
                     ON t.type_id = tl.type_id AND tl.type_lang_code = :LANG: 
                     WHERE t.type_active = 'Y' AND t.type_id = :ID: 
                     ";
@@ -81,10 +81,10 @@ class Type extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinType(),array_merge($lists->t->toArray(), $lists->tl->toArray()));
+                    new ScType(),array_merge($lists->t->toArray(), $lists->tl->toArray()));
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinType 
+            $sql = "SELECT * FROM Score\Models\ScType 
                 WHERE type_active = 'Y' AND type_id = :ID: 
                 ";
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();
@@ -93,14 +93,14 @@ class Type extends Component
         return $result;
     }
     /*
-     * return BinType
+     * return ScType
      * */
     public function getTypeByKeyword($keyword, $lang){
         $result = false;
         $para = array('KEYWORD'=>$keyword);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT t.*, tl.* FROM \Bincg\Models\BinType t 
-                    INNER JOIN \Bincg\Models\BinTypeLang tl 
+            $sql = "SELECT t.*, tl.* FROM \Score\Models\ScType t 
+                    INNER JOIN \Score\Models\ScTypeLang tl 
                     ON t.type_id = tl.type_id AND tl.type_lang_code = :LANG: 
                     WHERE t.type_active = 'Y' AND t.type_keyword = :KEYWORD: 
                     ";
@@ -108,10 +108,10 @@ class Type extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinType(),array_merge($lists->t->toArray(), $lists->tl->toArray()));
+                    new ScType(),array_merge($lists->t->toArray(), $lists->tl->toArray()));
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinType 
+            $sql = "SELECT * FROM Score\Models\ScType 
                 WHERE type_active = 'Y' AND type_keyword = :KEYWORD: 
                 ";
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();
@@ -123,8 +123,8 @@ class Type extends Component
     {
         $result = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT t.*, tl.* FROM Bincg\Models\BinType t 
-                    INNER JOIN Bincg\Models\BinTypeLang tl 
+            $sql = "SELECT t.*, tl.* FROM Score\Models\ScType t 
+                    INNER JOIN Score\Models\ScTypeLang tl 
                         ON t.type_id = tl.type_id AND tl.type_lang_code = :LANG:  
                     WHERE t.type_active = 'Y' AND t.type_parent_id = :PARENTID:  
                     ORDER BY t.type_order ASC 
@@ -136,10 +136,10 @@ class Type extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinType(),array_merge($item->t->toArray(), $item->tl->toArray()));
+                        new ScType(),array_merge($item->t->toArray(), $item->tl->toArray()));
                 }}
         }else{
-            $sql = "SELECT * FROM \Bincg\Models\BinType 
+            $sql = "SELECT * FROM \Score\Models\ScType 
                 WHERE type_active = 'Y' AND type_parent_id = :PARENTID: 
                 ORDER BY type_order ASC 
                 ";
@@ -155,8 +155,8 @@ class Type extends Component
         $result = array();
         $para = array('KEYWORD'=>$keyword,'TYPEID'=>$type_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT t.*, tl.* FROM \Bincg\Models\BinType t 
-                    INNER JOIN \Bincg\Models\BinTypeLang tl 
+            $sql = "SELECT t.*, tl.* FROM \Score\Models\ScType t 
+                    INNER JOIN \Score\Models\ScTypeLang tl 
                         ON t.type_id = tl.type_id AND tl.type_lang_code = :LANG: 
                     WHERE t.type_active = 'Y' AND t.type_keyword != :KEYWORD: AND t.type_parent_id = :TYPEID:  ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -167,13 +167,13 @@ class Type extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinType(),
+                        new ScType(),
                         array_merge($item->t->toArray(), $item->tl->toArray())
                     );
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinType 
+            $sql = "SELECT * FROM Score\Models\ScType 
                 WHERE type_active = 'Y' AND type_keyword != :KEYWORD: AND type_parent_id = :TYPEID: ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
                 $sql .= ' LIMIT '.$limit;
@@ -190,14 +190,14 @@ class Type extends Component
         $arr_para = array('TYPENEWSID'=>$type_news_id,'TYPECAREERSID'=>$type_careers_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
             $sql = 'SELECT  tl.type_name,t.type_id,t.type_parent_id 
-                    FROM Bincg\Models\BinType t
-                    INNER JOIN Bincg\Models\BinTypeLang tl ON t.type_id = tl.type_id 
+                    FROM Score\Models\ScType t
+                    INNER JOIN Score\Models\ScTypeLang tl ON t.type_id = tl.type_id 
                     WHERE t.type_active = "Y" AND t.type_id != :TYPENEWSID: AND t.type_id != :TYPECAREERSID: AND type_lang_code = :LANG: 
                     ORDER BY type_order ASC';
             $arr_para["LANG"] = $lang;
         }
         else {
-            $sql = 'SELECT type_id, type_parent_id, type_name FROM Bincg\Models\BinType WHERE type_active = "Y" AND type_id != :TYPENEWSID: AND type_id != :TYPECAREERSID: ORDER BY type_order ASC';
+            $sql = 'SELECT type_id, type_parent_id, type_name FROM Score\Models\ScType WHERE type_active = "Y" AND type_id != :TYPENEWSID: AND type_id != :TYPECAREERSID: ORDER BY type_order ASC';
         }
         $data = $this->modelsManager->executeQuery($sql,$arr_para);
         $output="";
@@ -220,14 +220,14 @@ class Type extends Component
         $arr_para = array('TYPENEWSID'=>$type_news_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
             $sql = 'SELECT  tl.type_name,t.type_id,t.type_parent_id 
-                    FROM Bincg\Models\BinType t
-                    INNER JOIN Bincg\Models\BinTypeLang tl ON t.type_id = tl.type_id 
+                    FROM Score\Models\ScType t
+                    INNER JOIN Score\Models\ScTypeLang tl ON t.type_id = tl.type_id 
                     WHERE t.type_active = "Y" AND t.type_parent_id = :TYPENEWSID:  AND tl.type_lang_code = :LANG: 
                     ORDER BY t.type_order ASC';
             $arr_para["LANG"] = $lang;
         }
         else {
-            $sql = 'SELECT type_id, type_parent_id, type_name FROM Bincg\Models\BinType WHERE type_active = "Y" AND type_parent_id = :TYPENEWSID: ORDER BY type_order ASC';
+            $sql = 'SELECT type_id, type_parent_id, type_name FROM Score\Models\ScType WHERE type_active = "Y" AND type_parent_id = :TYPENEWSID: ORDER BY type_order ASC';
         }
         $data = $this->modelsManager->executeQuery($sql,$arr_para);
         $output ="";
@@ -246,9 +246,9 @@ class Type extends Component
     }
     public function getAllActiveTypeTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinType as b
+        $sql = "SELECT * FROM Score\Models\ScType as b
                 WHERE b.type_active = 'Y' AND b.type_id NOT IN 
-                 (SELECT bl.type_id FROM Bincg\Models\BinTypeLang as bl WHERE bl.type_lang_code =
+                 (SELECT bl.type_id FROM Score\Models\ScTypeLang as bl WHERE bl.type_lang_code =
                 :lang_code:)
                 ORDER BY b.type_order ASC ";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {

@@ -91,7 +91,7 @@ if($this->dispatcher->getParam("slType") != ""){
                                     </td>
                                     <td class=" "><?php echo $item->getArticleId(); ?></td>
                                     <td class=" "><?php echo $item->getArticleName(); ?></td>
-                                    <td class=" "><?php echo \Bincg\Repositories\Type::getNameByID($item->getArticleTypeId()) ?></td>
+                                    <td class=" "><?php echo \Score\Repositories\Type::getNameByID($item->getArticleTypeId()) ?></td>
                                     <td class="text-center"><?php echo $item->getArticleOrder(); ?></td>
                                     <td class=" "><?php echo $this->my->formatDateTime($item->getArticleUpdateTime(),false); ?></td>
                                     <td class="text-center" data-title="IsHome">

@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 use Phalcon\Db\RawValue;
 
-class BinOfficeLang extends BaseModel
+class ScOfficeLang extends BaseModel
 {
 
     /**
@@ -195,7 +195,7 @@ class BinOfficeLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_office_lang';
+        return 'sc_office_lang';
     }
 
     public function beforeValidation()
@@ -212,7 +212,7 @@ class BinOfficeLang extends BaseModel
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinOfficeLang[]|BinOfficeLang
+     * @return ScOfficeLang[]|ScOfficeLang
      */
     public static function find($parameters = null)
     {
@@ -223,7 +223,7 @@ class BinOfficeLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinOfficeLang
+     * @return ScOfficeLang
      */
     public static function findFirst($parameters = null)
     {
@@ -232,7 +232,7 @@ class BinOfficeLang extends BaseModel
 
     public static function findById($id)
     {
-        return BinOfficeLang::find(array(
+        return ScOfficeLang::find(array(
             "office_id =:ID:",
             'bind' => array('ID' => $id)
         ));

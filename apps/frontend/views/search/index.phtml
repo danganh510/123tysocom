@@ -116,7 +116,7 @@
                     ?>
                     <div class="mb-4 pb-2 border-bottom-gray">
                         <p>
-                            <?php $reUrl = \Bincg\Repositories\SearchAzure::replaceUrl(isset($service['ar_url'])?$this->url->get($lang_url.$service['ar_url']):''); ?>
+                            <?php $reUrl = \Score\Repositories\SearchAzure::replaceUrl(isset($service['ar_url'])?$this->url->get($lang_url.$service['ar_url']):''); ?>
                             <a class="text-blue-1" href="<?php echo isset($service['ar_url'])?$this->url->get($lang_url.$service['ar_url']):''; ?>" target="_self" title="<?php echo $reUrl; ?>">
                                 <?php echo $reUrl; ?>
                             </a>
@@ -126,7 +126,7 @@
                                 <?php echo isset($service['ar_name'])?$service['ar_name']:''; ?>
                             </a>
                         </h3>
-                        <p><?php echo \Bincg\Repositories\SearchAzure::_substr(isset($service['ar_content'])?$service['ar_content']:'',150); ?></p>
+                        <p><?php echo \Score\Repositories\SearchAzure::_substr(isset($service['ar_content'])?$service['ar_content']:'',150); ?></p>
                     </div>
                 <?php }
                 ?>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
 use General\Models\Country;
 use Phalcon\Mvc\User\Component;

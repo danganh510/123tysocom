@@ -20,7 +20,7 @@
             <div class="x_content">
                 <br />
                 <form name="office-form" id="office-form" data-parsley-validate class="form-horizontal form-label-left" method="post">
-                    <input type="hidden" name="save" id="save" value="<?php echo \Bincg\Models\BinLanguage::GENERAL ;?>" />
+                    <input type="hidden" name="save" id="save" value="<?php echo \Score\Models\ScLanguage::GENERAL ;?>" />
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Country <span class="text-danger">*</span>
                         </label>
@@ -29,7 +29,7 @@
                                 <option value="">Select Country. . . </option>
                                 <?php
                                 $country_code = isset($formData["office_country_code"])?strtoupper($formData["office_country_code"]):'';
-                                echo \Bincg\Repositories\CountryGeneral::getCountryCombobox($country_code);
+                                echo \Score\Repositories\CountryGeneral::getCountryCombobox($country_code);
                                 ?>
                             </select>
                             <span class="text-danger msg-country-code"><?php echo isset($messages["office_country_code"]) ? $messages["office_country_code"] : ""?></span>

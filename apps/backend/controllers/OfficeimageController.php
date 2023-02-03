@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinOffice;
-use Bincg\Models\BinOfficeImage;
-use Bincg\Repositories\Activity;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Models\ScOffice;
+use Score\Models\ScOfficeImage;
+use Score\Repositories\Activity;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 class OfficeimageController extends ControllerBase
 {
@@ -49,7 +49,7 @@ class OfficeimageController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $office_model = BinOffice::findFirstById($id);
+        $office_model = ScOffice::findFirstById($id);
         if(empty($office_model))
         {
             return $this->response->redirect('notfound');
@@ -77,7 +77,7 @@ class OfficeimageController extends ControllerBase
 
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_office_image = new BinOfficeImage();
+                $new_office_image = new ScOfficeImage();
                 $new_office_image->setImageUrl($data["image_url"]);
                 $new_office_image->setImageOrder($data["image_order"]);
                 $new_office_image->setImageActive($data["image_active"]);
@@ -119,7 +119,7 @@ class OfficeimageController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $office_image_model = BinOfficeImage::findFirstById($id);
+        $office_image_model = ScOfficeImage::findFirstById($id);
         if(empty($office_image_model))
         {
             $this->response->redirect('notfound');
@@ -201,7 +201,7 @@ class OfficeimageController extends ControllerBase
         $msg_delete = array('error' => '', 'success' => '');
         if($list_office_image) {
             foreach ($list_office_image as $image_id) {
-                $office_image_model = BinOfficeImage::findFirstById($image_id);
+                $office_image_model = ScOfficeImage::findFirstById($image_id);
                 if($office_image_model) {
                     if ($office_image_model->delete() === false) {
                         $message_delete = 'Can\'t delete Office Image ID = '.$office_image_model->getImageId();
@@ -242,13 +242,13 @@ class OfficeimageController extends ControllerBase
             return $data = NULL;
 
         }
-        $office_model = BinOffice::findFirstById($id);
+        $office_model = ScOffice::findFirstById($id);
         if(empty($office_model))
         {
             return $data = NULL;
 
         }
-        $sql = "SELECT * FROM Bincg\Models\BinOfficeImage WHERE image_office_id = :image_office_id: ";
+        $sql = "SELECT * FROM Score\Models\ScOfficeImage WHERE image_office_id = :image_office_id: ";
 
         $arrParameter['image_office_id'] = $id;
         $this->dispatcher->setParam("office_id",$id);

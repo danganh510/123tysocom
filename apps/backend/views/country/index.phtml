@@ -87,12 +87,12 @@ if(!empty($message_success)) { ?>
 
                             <tbody class="tb_body">
                             <?php foreach ($list_country->items as $item) { ?>
-                                <?php /**  @var \Bincg\Models\BinCountry $item */ ?>
+                                <?php /**  @var \Score\Models\ScCountry $item */ ?>
                                 <tr >
                                     <td><label class="container_checkbox"><input class="check" name="item[]" value="<?php echo $item->getCountryId() ?>" type="checkbox"><span class="checkmark_checkbox"></span></label></td>
                                     <td class=" "><?php echo $item->getCountryId() ?></td>
                                     <td class=" "><?php echo $item->getCountryName() ?></td>
-                                    <td class=" "><?php echo \Bincg\Repositories\Area::getNameByID($item->getCountryAreaId()) ?></td>
+                                    <td class=" "><?php echo \Score\Repositories\Area::getNameByID($item->getCountryAreaId()) ?></td>
                                     <td class=" "><?php echo $item->getCountryKeyword() ?></td>
                                     <td class=" "><?php echo $item->getCountryPhoneCode() ?></td>
                                     <td class=" "><?php echo $item->getCountryOrder() ?></td>

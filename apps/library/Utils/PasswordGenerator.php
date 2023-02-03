@@ -1,5 +1,5 @@
 <?php
-namespace Bincg\Utils;
+namespace Score\Utils;
 use Phalcon\Mvc\User\Component;
 
 class PasswordGenerator extends Component

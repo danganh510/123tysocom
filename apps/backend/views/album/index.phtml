@@ -106,7 +106,7 @@ if (strlen($this->dispatcher->getParam("txtSearch")) > 0) {
                                         <a class="btn btn-primary btn-xs margin-0" style=""
                                            href="<?php echo $this->url->get("/dashboard/edit-album?id=" . $item->getAlbumId()); ?>">View</a>
                                         <?php
-                                        $totalImage = \Bincg\Repositories\Image::getTotalByAlbum($item->getAlbumId());
+                                        $totalImage = \Score\Repositories\Image::getTotalByAlbum($item->getAlbumId());
                                         $strCountImage = $totalImage > 0 ? '(' . $totalImage . ')' : '';
                                         ?>
                                         <a class="btn btn-primary btn-xs margin-0" style=""

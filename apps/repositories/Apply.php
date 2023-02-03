@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinApply;
+use Score\Models\ScApply;
 use Phalcon\Mvc\User\Component;
 
 class Apply extends Component {
 
     public static function getByLimit($limit){
-        return BinApply::find(array(
+        return ScApply::find(array(
             "order"      => "apply_insert_time DESC",
             "limit"      => $limit,
         ));

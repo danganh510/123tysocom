@@ -97,7 +97,7 @@ if(strlen($this->dispatcher->getParam("txtTo")) > 0) {
                                     <td class=" "><?php echo $item->user_id; ?></td>
                                     <td class=" "><?php echo $item->user_name; ?></td>
                                     <td class=" "><?php echo $item->user_email; ?></td>
-                                    <td class=" "><?php echo \Bincg\Repositories\Role::getNameRole($item->user_role_id); ?></td>
+                                    <td class=" "><?php echo \Score\Repositories\Role::getNameRole($item->user_role_id); ?></td>
                                      <td class=" "><?php echo $this->my->formatDateTime($item->user_insert_time,false); ?></td>
                                     <td class="text-center" data-title="Active">
                                         <?php

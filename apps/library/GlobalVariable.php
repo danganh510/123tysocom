@@ -100,7 +100,7 @@ class GlobalVariable extends Component
         );
         $this->linkS3FlagLanguage = 'https://d3nqrmb1lqq5py.cloudfront.net/images/flag/';
         $this->maximumSizeUploadFile = 20971520;
-        $this->cronToken = "ThanhLongBinCorp0292";
+        $this->cronToken = "ThanhLongScCorp0292";
         $this->programmableSearchEngineCxKey = '9fdc6b14b9ffedf47';
         $this->typeInformationId = 1;
         $this->typeAboutUsId = 2;

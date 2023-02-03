@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinCareerLang extends BaseModel
+class ScCareerLang extends BaseModel
 {
 
     /**
@@ -461,14 +461,14 @@ class BinCareerLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_career_lang';
+        return 'sc_career_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCareerLang[]|BinCareerLang
+     * @return ScCareerLang[]|ScCareerLang
      */
     public static function find($parameters = null)
     {
@@ -479,7 +479,7 @@ class BinCareerLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCareerLang
+     * @return ScCareerLang
      */
     public static function findFirst($parameters = null)
     {
@@ -487,7 +487,7 @@ class BinCareerLang extends BaseModel
     }
     public static function findById($career_id)
     {
-        return BinCareerLang::find(array(
+        return ScCareerLang::find(array(
             "career_id =:ID:",
             'bind' => array('ID' => $career_id)
         ));

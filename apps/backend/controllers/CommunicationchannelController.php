@@ -1,17 +1,17 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
 
 
-use Bincg\Models\BinCommunicationChannel;
-use Bincg\Models\BinCommunicationChannelLang;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\CommunicationChannel;
-use Bincg\Repositories\CommunicationChannelLang;
-use Bincg\Repositories\Language;
-use Bincg\Utils\Validator;
+use Score\Models\ScCommunicationChannel;
+use Score\Models\ScCommunicationChannelLang;
+use Score\Models\ScLanguage;
+use Score\Repositories\Activity;
+use Score\Repositories\CommunicationChannel;
+use Score\Repositories\CommunicationChannelLang;
+use Score\Repositories\Language;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class CommunicationchannelController extends ControllerBase
@@ -29,7 +29,7 @@ class CommunicationchannelController extends ControllerBase
         $validator = new Validator();
         $keyword = $this->request->get('txtSearch', 'trim');
         $type = $this->request->get('slcType');
-        $sql = "SELECT * FROM  Bincg\Models\BinCommunicationChannel WHERE 1";
+        $sql = "SELECT * FROM  Score\Models\ScCommunicationChannel WHERE 1";
         $arrParameter = array();
         if (!empty($keyword)) {
             if ($validator->validInt($keyword)) {
@@ -110,7 +110,7 @@ class CommunicationchannelController extends ControllerBase
             }
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_content_communication_channel = new BinCommunicationChannel();
+                $new_content_communication_channel = new ScCommunicationChannel();
                 $new_content_communication_channel->setCommunicationChannelType($data['communication_channel_type']);
                 $new_content_communication_channel->setCommunicationChannelName($data['communication_channel_name']);
                 $new_content_communication_channel->setCommunicationChannelIcon($data['communication_channel_icon']);
@@ -163,7 +163,7 @@ class CommunicationchannelController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $communication_channel_model = BinCommunicationChannel::findFirstById($communication_channel_id);
+        $communication_channel_model = ScCommunicationChannel::findFirstById($communication_channel_id);
         if(!$communication_channel_model)
         {
             $this->response->redirect('notfound');
@@ -194,7 +194,7 @@ class CommunicationchannelController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if($save_mode != BinLanguage::GENERAL) {
+            if($save_mode != ScLanguage::GENERAL) {
                 $data_post['communication_channel_name'] = $this->request->getPost('txtName', array('string', 'trim'));
                 if(empty($data_post['communication_channel_name'])) {
                     $messages[$save_mode]['name'] = 'Name field is required.';
@@ -226,7 +226,7 @@ class CommunicationchannelController extends ControllerBase
             }
             if(empty($messages)) {
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
+                    case ScLanguage::GENERAL:
                         $data_old = array(
                             'communication_channel_type' => $communication_channel_model->getCommunicationChannelType(),
                             'communication_channel_icon' => $communication_channel_model->getCommunicationChannelIcon(),
@@ -238,7 +238,7 @@ class CommunicationchannelController extends ControllerBase
                         $communication_channel_model->setCommunicationChannelActive($data_post['communication_channel_active']);
                         $communication_channel_model->setCommunicationChannelOrder($data_post['communication_channel_order']);
                         $result = $communication_channel_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'communication_channel_type' => $communication_channel_model->getCommunicationChannelType(),
                             'communication_channel_icon' => $communication_channel_model->getCommunicationChannelIcon(),
@@ -261,7 +261,7 @@ class CommunicationchannelController extends ControllerBase
                     default:
                         $data_content_communication_channel_lang = CommunicationChannelLang::findFirstByIdAndLang($communication_channel_id, $save_mode);
                         if (empty($data_content_communication_channel_lang)) {
-                            $data_content_communication_channel_lang = new BinCommunicationChannelLang();
+                            $data_content_communication_channel_lang = new ScCommunicationChannelLang();
                             $data_content_communication_channel_lang->setCommunicationChannelId($communication_channel_id);
                             $data_content_communication_channel_lang->setCommunicationChannelLangCode($save_mode);
                         }else {
@@ -302,7 +302,7 @@ class CommunicationchannelController extends ControllerBase
             'communication_channel_name'=>($save_mode ===$this->globalVariable->defaultLanguage)?$data_post['communication_channel_name']:$communication_channel_model->getCommunicationChannelName()
         );
         $arr_translate[$this->globalVariable->defaultLanguage] = $item;
-        $arr_communication_channel_lang = BinCommunicationChannelLang::findById($communication_channel_id);
+        $arr_communication_channel_lang = ScCommunicationChannelLang::findById($communication_channel_id);
         foreach ($arr_communication_channel_lang as $communication_channel_lang){
             $item = array(
                 'communication_channel_id'=>$communication_channel_lang->getCommunicationChannelId(),
@@ -319,10 +319,10 @@ class CommunicationchannelController extends ControllerBase
         }
         $formData = array(
             'communication_channel_id'=>$communication_channel_model->getCommunicationChannelId(),
-            'communication_channel_type' => ($save_mode ===BinLanguage::GENERAL)?$data_post['communication_channel_type']:$communication_channel_model->getCommunicationChannelType(),
-            'communication_channel_icon' => ($save_mode ===BinLanguage::GENERAL)?$data_post['communication_channel_icon']:$communication_channel_model->getCommunicationChannelIcon(),
-            'communication_channel_active' => ($save_mode ===BinLanguage::GENERAL)?$data_post['communication_channel_active']:$communication_channel_model->getCommunicationChannelActive(),
-            'communication_channel_order' => ($save_mode ===BinLanguage::GENERAL)?$data_post['communication_channel_order']:$communication_channel_model->getCommunicationChannelOrder(),
+            'communication_channel_type' => ($save_mode ===ScLanguage::GENERAL)?$data_post['communication_channel_type']:$communication_channel_model->getCommunicationChannelType(),
+            'communication_channel_icon' => ($save_mode ===ScLanguage::GENERAL)?$data_post['communication_channel_icon']:$communication_channel_model->getCommunicationChannelIcon(),
+            'communication_channel_active' => ($save_mode ===ScLanguage::GENERAL)?$data_post['communication_channel_active']:$communication_channel_model->getCommunicationChannelActive(),
+            'communication_channel_order' => ($save_mode ===ScLanguage::GENERAL)?$data_post['communication_channel_order']:$communication_channel_model->getCommunicationChannelOrder(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_current' => $lang_current

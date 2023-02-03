@@ -1,35 +1,35 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinAlbumLang;
-use Bincg\Models\BinArticleLang;
-use Bincg\Models\BinBannerLang;
-use Bincg\Models\BinCareerLang;
-use Bincg\Models\BinCommunicationChannelLang;
-use Bincg\Models\BinConfig;
-use Bincg\Models\BinImageLang;
-use Bincg\Models\BinOfficeLang;
-use Bincg\Models\BinPage;
-use Bincg\Models\BinPageLang;
-use Bincg\Models\BinTemplateEmailLang;
-use Bincg\Models\BinTranslateDetail;
-use Bincg\Models\BinTypeLang;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Album;
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\Career;
-use Bincg\Repositories\CommunicationChannel;
-use Bincg\Repositories\Config;
-use Bincg\Repositories\EmailTemplate;
-use Bincg\Repositories\Image;
-use Bincg\Repositories\Language;
-use Bincg\Google\GoogleTranslate;
-use Bincg\Repositories\Office;
-use Bincg\Repositories\Page;
-use Bincg\Repositories\TranslateDetail;
-use Bincg\Repositories\Type;
+use Score\Models\ScAlbumLang;
+use Score\Models\ScArticleLang;
+use Score\Models\ScBannerLang;
+use Score\Models\ScCareerLang;
+use Score\Models\ScCommunicationChannelLang;
+use Score\Models\ScConfig;
+use Score\Models\ScImageLang;
+use Score\Models\ScOfficeLang;
+use Score\Models\ScPage;
+use Score\Models\ScPageLang;
+use Score\Models\ScTemplateEmailLang;
+use Score\Models\ScTranslateDetail;
+use Score\Models\ScTypeLang;
+use Score\Repositories\Activity;
+use Score\Repositories\Album;
+use Score\Repositories\Article;
+use Score\Repositories\Banner;
+use Score\Repositories\Career;
+use Score\Repositories\CommunicationChannel;
+use Score\Repositories\Config;
+use Score\Repositories\EmailTemplate;
+use Score\Repositories\Image;
+use Score\Repositories\Language;
+use Score\Google\GoogleTranslate;
+use Score\Repositories\Office;
+use Score\Repositories\Page;
+use Score\Repositories\TranslateDetail;
+use Score\Repositories\Type;
 
 class TranslateController extends ControllerBase
 {
@@ -262,10 +262,10 @@ class TranslateController extends ControllerBase
                     foreach ($item_translate_success as $sub_item_translate_success) {
                         array_push($arr_detail_data, $sub_item_translate_success['id']);
                     }
-                    $new_translate_detail_model = new BinTranslateDetail();
+                    $new_translate_detail_model = new ScTranslateDetail();
                     $new_translate_detail_model->setDetailUserId($this->auth['id']);
                     $new_translate_detail_model->setDetailTable($slcTableLangItemKey);
-                    $new_translate_detail_model->setDetailStatus(BinTranslateDetail::STATUS_SUCCESS);
+                    $new_translate_detail_model->setDetailStatus(ScTranslateDetail::STATUS_SUCCESS);
                     $new_translate_detail_model->setDetailData(json_encode($arr_detail_data));
                     $new_translate_detail_model->setDetailTotal(count($item_translate_success));
                     $new_translate_detail_model->setDetailInsertTime($this->globalVariable->curTime);
@@ -280,10 +280,10 @@ class TranslateController extends ControllerBase
                     foreach ($item_translate_error as $sub_item_translate_error) {
                         array_push($arr_detail_data, $sub_item_translate_error['id']);
                     }
-                    $new_translate_detail_model = new BinTranslateDetail();
+                    $new_translate_detail_model = new ScTranslateDetail();
                     $new_translate_detail_model->setDetailUserId($this->auth['id']);
                     $new_translate_detail_model->setDetailTable($slcTableLangItemKey);
-                    $new_translate_detail_model->setDetailStatus(BinTranslateDetail::STATUS_FAIL);
+                    $new_translate_detail_model->setDetailStatus(ScTranslateDetail::STATUS_FAIL);
                     $new_translate_detail_model->setDetailData(json_encode($arr_detail_data));
                     $new_translate_detail_model->setDetailTotal(count($item_translate_error));
                     $new_translate_detail_model->setDetailInsertTime($this->globalVariable->curTime);
@@ -357,7 +357,7 @@ class TranslateController extends ControllerBase
                 $ar_icon_translate = $ar_icon;
                 $ar_meta_image_translate = $ar_meta_image;
                 if (strlen($message_error) == 0) {
-                    $data_tran_lang = new BinArticleLang();
+                    $data_tran_lang = new ScArticleLang();
                     $data_tran_lang->setArticleId($ar_id);
                     $data_tran_lang->setArticleLangCode($tran_lang_code);
                     $data_tran_lang->setArticleName($ar_name_translate['data']);
@@ -432,7 +432,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Content: " . $ar_content_translate["errorcode"] . " - " . $ar_content_translate["errormessage"] . "<br>";
                 }
                 if (strlen($message_error) == 0) {
-                    $data_tran_lang = new BinBannerLang();
+                    $data_tran_lang = new ScBannerLang();
                     $data_tran_lang->setBannerId($ar_id);
                     $data_tran_lang->setBannerLangCode($tran_lang_code);
                     $data_tran_lang->setBannerTitle($ar_title_translate['data']);
@@ -516,7 +516,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Content: " . $ar_content_translate["errorcode"] . " - " . $ar_content_translate["errormessage"] . "<br>";
                 }
                 if (strlen($message_error) == 0) {
-                    $data_tran_lang = new BinPageLang();
+                    $data_tran_lang = new ScPageLang();
                     $data_tran_lang->setPageId($ar_id);
                     $data_tran_lang->setPageLangCode($tran_lang_code);
                     $data_tran_lang->setPageName($ar_name_translate['data']);
@@ -581,7 +581,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Name: " . $ar_name_translate["errorcode"] . " - " . $ar_name_translate["errormessage"] . "<br>";
                 }
                 if (strlen($message_error) == 0) {
-                    $data_tran_lang = new BinCommunicationChannelLang();
+                    $data_tran_lang = new ScCommunicationChannelLang();
                     $data_tran_lang->setCommunicationChannelId($ar_id);
                     $data_tran_lang->setCommunicationChannelLangCode($tran_lang_code);
                     $data_tran_lang->setCommunicationChannelName($ar_name_translate['data']);
@@ -657,7 +657,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Description: " . $ar_des_translate["errorcode"] . " - " . $ar_des_translate["errormessage"] . "<br>";
                 }
                 if (strlen($message_error) == 0) {
-                    $data_tran_lang = new BinTypeLang();
+                    $data_tran_lang = new ScTypeLang();
                     $data_tran_lang->setTypeId($ar_id);
                     $data_tran_lang->setTypeLangCode($tran_lang_code);
                     $data_tran_lang->setTypeName($ar_name_translate['data']);
@@ -722,7 +722,7 @@ class TranslateController extends ControllerBase
                     if ($article_lang) {
                         $article_lang->delete();
                     }
-                    $data_tran_lang = new BinConfig();
+                    $data_tran_lang = new ScConfig();
                     $data_tran_lang->setConfigKey($ar_id);
                     $data_tran_lang->setConfigLanguage($tran_lang_code);
                     $data_tran_lang->setConfigContent($ar_content_translate['data']);
@@ -783,7 +783,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Content: ".$ar_content_translate["errorcode"] ." - ". $ar_content_translate["errormessage"]."<br>";
                 }
                 if(strlen($message_error) == 0) {
-                    $data_tran_lang = new BinTemplateEmailLang();
+                    $data_tran_lang = new ScTemplateEmailLang();
                     $data_tran_lang->setEmailId($ar_id);
                     $data_tran_lang->setEmailLangCode($tran_lang_code);
                     $data_tran_lang->setEmailSubject($ar_name_translate['data']);
@@ -845,7 +845,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Description: ".$ar_content_translate["errorcode"] ." - ". $ar_content_translate["errormessage"]."<br>";
                 }
                 if(strlen($message_error) == 0) {
-                    $data_tran_lang = new BinAlbumLang();
+                    $data_tran_lang = new ScAlbumLang();
                     $data_tran_lang->setAlbumId($ar_id);
                     $data_tran_lang->setAlbumLangCode($tran_lang_code);
                     $data_tran_lang->setAlbumName($ar_name_translate['data']);
@@ -935,7 +935,7 @@ class TranslateController extends ControllerBase
                 $ar_icon_translate = $ar_icon;
                 $ar_meta_image_translate = $ar_meta_image;
                 if(strlen($message_error) == 0) {
-                    $data_tran_lang = new BinCareerLang();
+                    $data_tran_lang = new ScCareerLang();
                     $data_tran_lang->setCareerId($ar_id);
                     $data_tran_lang->setCareerLangCode($tran_lang_code);
                     $data_tran_lang->setCareerName($ar_name_translate['data']);
@@ -1000,7 +1000,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Description: ".$ar_content_translate["errorcode"] ." - ". $ar_content_translate["errormessage"]."<br>";
                 }
                 if(strlen($message_error) == 0) {
-                    $data_tran_lang = new BinImageLang();
+                    $data_tran_lang = new ScImageLang();
                     $data_tran_lang->setImageId($ar_id);
                     $data_tran_lang->setImageLangCode($tran_lang_code);
                     $data_tran_lang->setImageDescription($ar_content_translate['data']);
@@ -1074,7 +1074,7 @@ class TranslateController extends ControllerBase
                     $message_error .= "Keyword: ".$ar_workingtime_translate["errorcode"] ." - ".  $ar_workingtime_translate["errormessage"]."<br>";
                 }
                 if(strlen($message_error) == 0) {
-                    $data_tran_lang = new BinOfficeLang();
+                    $data_tran_lang = new ScOfficeLang();
                     $data_tran_lang->setOfficeId($ar_id);
                     $data_tran_lang->setOfficeLangCode($tran_lang_code);
                     $data_tran_lang->setOfficeName($ar_name_translate['data']);

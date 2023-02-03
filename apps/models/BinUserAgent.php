@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinUserAgent extends \Phalcon\Mvc\Model
+class ScUserAgent extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -1102,14 +1102,14 @@ class BinUserAgent extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'bin_user_agent';
+        return 'sc_user_agent';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinUserAgent[]|BinUserAgent
+     * @return ScUserAgent[]|ScUserAgent
      */
     public static function find($parameters = null)
     {
@@ -1120,7 +1120,7 @@ class BinUserAgent extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinUserAgent
+     * @return ScUserAgent
      */
     public static function findFirst($parameters = null)
     {
@@ -1129,7 +1129,7 @@ class BinUserAgent extends \Phalcon\Mvc\Model
 
     /**
      * @param string $userAgentString
-     * @return \Phalcon\Mvc\Model|BinUserAgent
+     * @return \Phalcon\Mvc\Model|ScUserAgent
      */
     public static function findFirstByUserAgent($userAgentString)
     {

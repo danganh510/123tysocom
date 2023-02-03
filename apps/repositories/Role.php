@@ -1,29 +1,29 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinRole;
+use Score\Models\ScRole;
 use Phalcon\Mvc\User\Component;
 
 class Role extends Component {
 
     // get by ID Role
     public static function getByID($role_id) {
-        return BinRole::findFirst(array(
+        return ScRole::findFirst(array(
             'role_id = :role_id:',
             'bind' => array('role_id' => $role_id)
         ));
     }
     // get by Name Role
     public static function getByName($role_name, $role_id) {
-        return BinRole::findFirst(array(
+        return ScRole::findFirst(array(
             'role_name = :role_name: AND role_id != :role_id:',
             'bind' => array('role_id' => $role_id,
                              'role_name' => $role_name)
            ));
     }
     public static function getFirstByName($role_name){
-        return BinRole::findFirst(array(
+        return ScRole::findFirst(array(
             'role_name = :role_name:',
             'bind' => array('role_name' => $role_name)
         ));
@@ -32,7 +32,7 @@ class Role extends Component {
     public function getFunctionRole($num_of_cols, $resources, $values, $prefix) {
         $row_count = 0;
         $bootstrap_col_width = 12 / $num_of_cols;
-        $default_actions = BinRole::getActions();
+        $default_actions = ScRole::getActions();
         $result ="<div class='row'>";
         foreach ($resources as $key => $items) {
             $name = str_replace($prefix, '', $key);
@@ -93,11 +93,11 @@ class Role extends Component {
     }
     public static  function getAllActive()
     {
-        return BinRole::find("role_active ='Y'");
+        return ScRole::find("role_active ='Y'");
     }
     public static function getComboBox ($role_id)
     {
-        $data =  BinRole::find(array("order" => "role_order"));
+        $data =  ScRole::find(array("order" => "role_order"));
 
         $output="";
         foreach ($data as  $value)
@@ -112,7 +112,7 @@ class Role extends Component {
         return $output;
     }
     public static function getNameRole($role_id) {
-        $role= BinRole::findFirst(array(
+        $role= ScRole::findFirst(array(
             'role_id = :role_id:',
             'bind' => array('role_id' => $role_id)
         ));

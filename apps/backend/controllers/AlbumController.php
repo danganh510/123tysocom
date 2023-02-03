@@ -1,17 +1,17 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinAlbum;
-use Bincg\Models\BinAlbumLang;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\AlbumLang;
-use Bincg\Repositories\ALbum;
-use Bincg\Repositories\Image;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Activity;
+use Score\Models\ScAlbum;
+use Score\Models\ScAlbumLang;
+use Score\Models\ScLanguage;
+use Score\Repositories\AlbumLang;
+use Score\Repositories\ALbum;
+use Score\Repositories\Image;
+use Score\Repositories\Language;
+use Score\Repositories\Activity;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
+use Score\Utils\Validator;
 
 class AlbumController extends ControllerBase
 {
@@ -78,7 +78,7 @@ class AlbumController extends ControllerBase
                 $messages["keyword"] = "Keyword is exists!";
             }
             if (count($messages) == 0) {
-                $new_type = new BinAlbum();
+                $new_type = new ScAlbum();
                 $new_type->setAlbumName($data["name"]);
                 $new_type->setAlbumKeyword($data["keyword"]);
                 $new_type->setAlbumDescription($data["description"]);
@@ -156,7 +156,7 @@ class AlbumController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if ($save_mode != BinLanguage::GENERAL) {
+            if ($save_mode != ScLanguage::GENERAL) {
                 $data_post['album_name'] = $this->request->get("txtName", array('string', 'trim'));
                 $data_post['album_description'] = $this->request->get("txtDesc", array('string', 'trim'));
                 if (empty($data_post['album_name'])) {
@@ -187,8 +187,8 @@ class AlbumController extends ControllerBase
                 $messagesAzure = '';
                 $activity = new Activity();
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
-                        $arr_album_lang = BinAlbumLang::findById($album_id);
+                    case ScLanguage::GENERAL:
+                        $arr_album_lang = ScAlbumLang::findById($album_id);
                         $data_old = array(
                             'album_keyword' => $album_model->getAlbumKeyword(),
                             'album_insert_time' => $album_model->getAlbumInsertTime(),
@@ -200,7 +200,7 @@ class AlbumController extends ControllerBase
                         $album_model->setAlbumActive($data_post['album_active']);
                         $album_model->setAlbumIsHome($data_post['album_is_home']);
                         $result = $album_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'album_insert_time' => $album_model->getAlbumInsertTime(),
                             'album_keyword' => $album_model->getAlbumKeyword(),
@@ -226,7 +226,7 @@ class AlbumController extends ControllerBase
                     default:
                         $album_lang_model = AlbumLang::findFirstByIdAndLang($album_id, $save_mode);
                         if (!$album_lang_model) {
-                            $album_lang_model = new BinAlbumLang();
+                            $album_lang_model = new ScAlbumLang();
                             $album_lang_model->setAlbumId($album_id);
                             $album_lang_model->setAlbumLangCode($save_mode);
                         }
@@ -269,7 +269,7 @@ class AlbumController extends ControllerBase
             'album_description' => ($save_mode === $this->globalVariable->defaultLanguage) ? $data_post['album_description'] : $album_model->getAlbumDescription(),
         );
         $arr_translate[$lang_default] = $item;
-        $arr_album_lang = BinAlbumLang::findById($album_id);
+        $arr_album_lang = ScAlbumLang::findById($album_id);
         foreach ($arr_album_lang as $album_lang) {
             $item = array(
                 'album_id' => $album_lang->getAlbumId(),
@@ -289,10 +289,10 @@ class AlbumController extends ControllerBase
         }
         $formData = array(
             'album_id' => $album_model->getAlbumId(),
-            'album_keyword' => ($save_mode === BinLanguage::GENERAL) ? $data_post['album_keyword'] : $album_model->getAlbumKeyword(),
-            'album_insert_time' => ($save_mode === BinLanguage::GENERAL) ? $data_post['album_insert_time'] : $this->my->formatDateTime($album_model->getAlbumInsertTime(), false),
-            'album_active' => ($save_mode === BinLanguage::GENERAL) ? $data_post['album_active'] : $album_model->getAlbumActive(),
-            'album_is_home' => ($save_mode === BinLanguage::GENERAL) ? $data_post['album_is_home'] : $album_model->getAlbumIsHome(),
+            'album_keyword' => ($save_mode === ScLanguage::GENERAL) ? $data_post['album_keyword'] : $album_model->getAlbumKeyword(),
+            'album_insert_time' => ($save_mode === ScLanguage::GENERAL) ? $data_post['album_insert_time'] : $this->my->formatDateTime($album_model->getAlbumInsertTime(), false),
+            'album_active' => ($save_mode === ScLanguage::GENERAL) ? $data_post['album_active'] : $album_model->getAlbumActive(),
+            'album_is_home' => ($save_mode === ScLanguage::GENERAL) ? $data_post['album_is_home'] : $album_model->getAlbumIsHome(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_default' => $lang_default,
@@ -351,7 +351,7 @@ class AlbumController extends ControllerBase
 
     private function getParameter()
     {
-        $sql = "SELECT * FROM Bincg\Models\BinAlbum WHERE 1 ";
+        $sql = "SELECT * FROM Score\Models\ScAlbum WHERE 1 ";
         $keyword = trim($this->request->get("txtSearch"));
         $arrParameter = array();
         $validator = new Validator();
@@ -374,11 +374,11 @@ class AlbumController extends ControllerBase
 
     private function getParameterExport()
     {
-        $sql = "SELECT * FROM Bincg\Models\BinCareer WHERE career_active = 'Y'";
+        $sql = "SELECT * FROM Score\Models\ScCareer WHERE career_active = 'Y'";
         $keyword = trim($this->request->get("txtSearch"));
 
         $arrParameter = array();
-        $validator = new \Bincg\Utils\Validator();
+        $validator = new \Score\Utils\Validator();
         if (!empty($keyword)) {
             if ($validator->validInt($keyword)) {
                 $sql .= " AND (career_id = :number:)";
@@ -403,7 +403,7 @@ class AlbumController extends ControllerBase
         $data = $this->getParameterExport();
         $list_career = $this->modelsManager->executeQuery($data['sql'], $data['para']);
         $current_page = $this->request->get('page');
-        $validator = new \Bincg\Utils\Validator();
+        $validator = new \Score\Utils\Validator();
         if ($validator->validInt($current_page) == false || $current_page < 1)
             $current_page = 1;
         $msg_result = array();

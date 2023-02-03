@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 use Phalcon\Db\RawValue;
 
-class BinConfig extends BaseModel
+class ScConfig extends BaseModel
 {
 
     /**
@@ -114,14 +114,14 @@ class BinConfig extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_config';
+        return 'sc_config';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinConfig[]|BinConfig
+     * @return ScConfig[]|ScConfig
      */
     public static function find($parameters = null)
     {
@@ -132,7 +132,7 @@ class BinConfig extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinConfig
+     * @return ScConfig
      */
     public static function findFirst($parameters = null)
     {

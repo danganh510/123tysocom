@@ -2,9 +2,9 @@
 
 /**
  * @var $lang_url;
- * @var \Bincg\Models\BinArticle[] $menu_services
- * @var \Bincg\Models\BinArticle[] $menu_abouts
- * @var \Bincg\Models\BinNewspaper[] $footerNewspapers
+ * @var \Score\Models\ScArticle[] $menu_services
+ * @var \Score\Models\ScArticle[] $menu_abouts
+ * @var \Score\Models\ScNewspaper[] $footerNewspapers
  */
 ?>
 <?php echo defined('txt_brand_tell_about_us') ? txt_brand_tell_about_us : '' ?>
@@ -32,46 +32,11 @@
         });
     }
 </script>
-<?php if(count($footerNewspapers) >0) { ?>
-    <div class="padding-block">
-        <div class="container">
-            <h2 class="mb-lg-4"><?php echo defined('txt_footer_newspaper_title') ? txt_footer_newspaper_title : '' ?></h2>
-            <?php if(!$isMobile){ ?>
-                <ul class="list-cell-white text-center">
-                    <?php foreach ($footerNewspapers as $footerNewspaper){ ?>
-                        <li onclick="loadmore(<?php echo $footerNewspaper->getNewspaperId();?>,true);">
-                            <img src="<?php echo $footerNewspaper->getNewspaperLogo(); ?>" alt="<?php echo $footerNewspaper->getNewspaperName(); ?>" title="<?php echo $footerNewspaper->getNewspaperName(); ?>">
-                        </li>
-                    <?php } ?>
-                </ul>
-                <div class="newspaper-articles"></div>
-            <?php }else{ ?>
-                    <?php $footerNewspaperI=0; $itemPerBlock=2; foreach ($footerNewspapers as $footerNewspaperKey => $footerNewspaper){
-                        $footerNewspaperI++;
-                        if($footerNewspaperI%$itemPerBlock == 1){ ?>
-                            <ul class="list-cell-white text-center">
-                        <?php } ?>
-                                <li class="post_<?php echo $footerNewspaper->getNewspaperId() ?>" onclick="loadmore(<?php echo $footerNewspaper->getNewspaperId();?>,true);">
-                                    <img src="<?php echo $footerNewspaper->getNewspaperLogo(); ?>" alt="<?php echo $footerNewspaper->getNewspaperName(); ?>" title="<?php echo $footerNewspaper->getNewspaperName(); ?>">
-                                </li>
-                        <?php if($footerNewspaperI%$itemPerBlock == 0 || $footerNewspaperI == count($footerNewspapers)){ ?>
-                            </ul>
-                        <?php } ?>
-                    <?php } ?>
 
-            <?php } ?>
-            <div class="text-center <?php echo $isMobile ? ' mt-20' : ' mt-40' ?>">
-                <a href="<?php echo $this->url->get($lang_url.'/newspapers'); ?>" class="btn btn-main" target="_self" title="<?php echo defined('btn_view_all') ? btn_view_all : '' ?>"><?php echo defined('btn_view_all') ? btn_view_all : '' ?></a>
-            </div>
-        </div>
-    </div>
-<?php } ?>
 <?php } ?>
 <div class="padding-block">
     <div class="container">
-        <?php if ($locationByLoAndLa) {
-            echo $locationByLoAndLa->getLocationNewspaperstalk();
-        } ?>
+       
     </div>
 
 </div>

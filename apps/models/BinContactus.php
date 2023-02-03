@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinContactus extends \Phalcon\Mvc\Model
+class ScContactus extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -384,14 +384,14 @@ class BinContactus extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'bin_contactus';
+        return 'sc_contactus';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinContactus[]|BinContactus
+     * @return ScContactus[]|ScContactus
      */
     public static function find($parameters = null)
     {
@@ -402,7 +402,7 @@ class BinContactus extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinContactus
+     * @return ScContactus
      */
     public static function findFirst($parameters = null)
     {
@@ -410,7 +410,7 @@ class BinContactus extends \Phalcon\Mvc\Model
     }
     public static function findFirstById ($id)
     {
-        return BinContactus::findFirst(array(
+        return ScContactus::findFirst(array(
             'contact_id = :id:',
             'bind' => array('id' => $id)
         ));

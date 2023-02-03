@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinUser;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Role;
-use Bincg\Repositories\EmailTemplate;
+use Score\Models\ScUser;
+use Score\Repositories\Activity;
+use Score\Repositories\Role;
+use Score\Repositories\EmailTemplate;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
-use Bincg\Utils\PasswordGenerator;
+use Score\Utils\Validator;
+use Score\Utils\PasswordGenerator;
 class UserController extends ControllerBase
 {
     public function indexAction()
@@ -63,7 +63,7 @@ class UserController extends ControllerBase
                 $messages['email'] = "Email field is required.";
             }else if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
                 $messages['email'] = 'The email must be a valid email address.';
-            } else if (BinUser::findFirstByEmail($data['email'])) {
+            } else if (ScUser::findFirstByEmail($data['email'])) {
                 $messages['email'] = 'That email is taken.';
             }
             if (empty($data['password'])) {
@@ -76,7 +76,7 @@ class UserController extends ControllerBase
             if (count($messages) == 0) {
                 $passGenerator = new PasswordGenerator();
                 $password = $passGenerator->encodePass($data['password']);
-                $new_user = new BinUser();
+                $new_user = new ScUser();
                 $new_user->setUserName($data['name']);
                 $new_user->setUserEmail($data['email']);
                 $new_user->setUserPassword($password);
@@ -123,7 +123,7 @@ class UserController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $user_model = BinUser::findFirstById($id);
+        $user_model = ScUser::findFirstById($id);
         if(empty($user_model))
         {
             $this->response->redirect('notfound');
@@ -168,7 +168,7 @@ class UserController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $user_model = BinUser::findFirstById($id);
+        $user_model = ScUser::findFirstById($id);
         if($user_model === null)
         {
             $this->response->redirect('notfound');
@@ -224,7 +224,7 @@ class UserController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $user_model = BinUser::findFirstById($id);
+        $user_model = ScUser::findFirstById($id);
         if(empty($user_model))
         {
             $this->response->redirect('notfound');
@@ -311,7 +311,7 @@ class UserController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $user_model = BinUser::findFirstById($id);
+        $user_model = ScUser::findFirstById($id);
         if(empty($user_model))
         {
             $this->response->redirect('notfound');
@@ -358,7 +358,7 @@ class UserController extends ControllerBase
         $msg_delete = array('error' => '', 'success' => '');
         if($list_user) {
             foreach ($list_user as $user_id) {
-                $user_model = BinUser::findFirstById($user_id);
+                $user_model = ScUser::findFirstById($user_id);
                 if($user_model) {
                     $table_names = array();
                     $message_temp = "Can't delete User Name = ".$user_model->getUserName().". Because It's exist in";
@@ -388,7 +388,7 @@ class UserController extends ControllerBase
     }
     private function getParameter(){
         $sql = "SELECT *
-                FROM Bincg\Models\BinUser
+                FROM Score\Models\ScUser
                 WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $from = trim($this->request->get("txtFrom")); //string

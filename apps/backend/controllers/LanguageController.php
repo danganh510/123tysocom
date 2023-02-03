@@ -1,12 +1,12 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Repositories\Language;
-use Bincg\Models\BinLanguage;
-use Bincg\Utils\Validator;
-use Bincg\Repositories\CountryGeneral;
+namespace Score\Backend\Controllers;
+use Score\Repositories\Language;
+use Score\Models\ScLanguage;
+use Score\Utils\Validator;
+use Score\Repositories\CountryGeneral;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Repositories\Activity;
+use Score\Repositories\Activity;
 class LanguageController extends ControllerBase
 {
 	public function indexAction()
@@ -16,7 +16,7 @@ class LanguageController extends ControllerBase
         if($validator->validInt($current_page) == false || $current_page < 1)
             $current_page=1;
         $keyword = trim($this->request->get("txtSearch"));
-        $sql = "SELECT * FROM Bincg\Models\BinLanguage WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScLanguage WHERE 1";
         $arrParameter = array();
         if(!empty($keyword)){
             if($validator->validInt($keyword)) {
@@ -76,7 +76,7 @@ class LanguageController extends ControllerBase
             }
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_language = new BinLanguage();
+                $new_language = new ScLanguage();
                 $new_language->setLanguageName($data["language_name"]);
                 $new_language->setLanguageCode($data["language_code"]);
                 $new_language->setLanguageCountryCode($data["language_country_code"]);
@@ -124,7 +124,7 @@ class LanguageController extends ControllerBase
         {
             return $this->response->redirect('notfound');
         }
-        $language_model = BinLanguage::findFirstById($id);
+        $language_model = ScLanguage::findFirstById($id);
         if(empty($language_model))
         {
             return $this->response->redirect('notfound');
@@ -204,7 +204,7 @@ class LanguageController extends ControllerBase
         if (!empty($language_checked)) {
             $content_log = array();
             foreach ($language_checked as $id) {
-                $language_item = BinLanguage::findFirstById($id);
+                $language_item = ScLanguage::findFirstById($id);
                 if ($language_item) {
                     $msg_result = array();
                     if ($language_item->delete() === false) {

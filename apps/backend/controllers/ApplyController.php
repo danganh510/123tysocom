@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Repositories\Career;
+use Score\Repositories\Career;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
+use Score\Utils\Validator;
 class ApplyController extends ControllerBase
 {
     public function indexAction()
@@ -61,7 +61,7 @@ class ApplyController extends ControllerBase
     }
 
     private function getParameter($career_id = ""){
-        $sql = "SELECT * FROM Bincg\Models\BinApply WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScApply WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $from = trim($this->request->get("txtFrom")); //string
         $to = trim($this->request->get("txtTo"));  //string

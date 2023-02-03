@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinCommunicationChannel extends BaseModel
+class ScCommunicationChannel extends BaseModel
 {
     const TYPE_TEXT = 'Text';
     const TYPE_OTHER = 'Other';
@@ -197,14 +197,14 @@ class BinCommunicationChannel extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_communication_channel';
+        return 'sc_communication_channel';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCommunicationChannel[]|BinCommunicationChannel
+     * @return ScCommunicationChannel[]|ScCommunicationChannel
      */
     public static function find($parameters = null)
     {
@@ -215,7 +215,7 @@ class BinCommunicationChannel extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCommunicationChannel
+     * @return ScCommunicationChannel
      */
     public static function findFirst($parameters = null)
     {
@@ -233,7 +233,7 @@ class BinCommunicationChannel extends BaseModel
 
     public static function findFirstById($id)
     {
-        return BinCommunicationChannel::findFirst(array(
+        return ScCommunicationChannel::findFirst(array(
             "communication_channel_id=:ID:",
             'bind' => array('ID' => $id)
         ));

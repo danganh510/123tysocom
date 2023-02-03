@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinBannerLang extends BaseModel
+class ScBannerLang extends BaseModel
 {
 
     /**
@@ -173,14 +173,14 @@ class BinBannerLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_banner_lang';
+        return 'sc_banner_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinBannerLang[]|BinBannerLang
+     * @return ScBannerLang[]|ScBannerLang
      */
     public static function find($parameters = null)
     {
@@ -191,7 +191,7 @@ class BinBannerLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinBannerLang
+     * @return ScBannerLang
      */
     public static function findFirst($parameters = null)
     {
@@ -201,11 +201,11 @@ class BinBannerLang extends BaseModel
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinBannerLang[]|BinBannerLang
+     * @return ScBannerLang[]|ScBannerLang
      */
     public static function findById($banner_id)
     {
-        return BinBannerLang::find(array(
+        return ScBannerLang::find(array(
             "banner_id =:ID:",
             'bind' => array('ID' => $banner_id)
         ));

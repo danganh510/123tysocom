@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 use Phalcon\Db\RawValue;
 
-class BinCronDetail extends BaseModel
+class ScCronDetail extends BaseModel
 {
 
     /**
@@ -286,14 +286,14 @@ class BinCronDetail extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_cron_detail';
+        return 'sc_cron_detail';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCronDetail[]|BinCronDetail
+     * @return ScCronDetail[]|ScCronDetail
      */
     public static function find($parameters = null)
     {
@@ -304,7 +304,7 @@ class BinCronDetail extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCronDetail
+     * @return ScCronDetail
      */
     public static function findFirst($parameters = null)
     {
@@ -322,7 +322,7 @@ class BinCronDetail extends BaseModel
     public static function  getTableByLangCode($lang_code,$cron_id)
     {
         $result = array();
-        $list_cron_detail= BinCronDetail::find(array("detail_lang_code = :lang_code: and detail_cron_id = :cron_id:",
+        $list_cron_detail= ScCronDetail::find(array("detail_lang_code = :lang_code: and detail_cron_id = :cron_id:",
             'bind' => array(
                 'lang_code' => $lang_code,
                 'cron_id' =>$cron_id

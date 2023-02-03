@@ -1,11 +1,11 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinContactus;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\User;
-use Bincg\Repositories\UserAgent;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Models\ScContactus;
+use Score\Repositories\Activity;
+use Score\Repositories\User;
+use Score\Repositories\UserAgent;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 class ContactusController extends ControllerBase
 {
@@ -43,7 +43,7 @@ class ContactusController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $contactus_model = BinContactus::findFirstById($contactus_id);
+        $contactus_model = ScContactus::findFirstById($contactus_id);
         if(empty($contactus_model))
         {
             $this->response->redirect('notfound');
@@ -67,7 +67,7 @@ class ContactusController extends ControllerBase
         $this->view->arr_contactus = $arr_contactus;
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinContactus WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScContactus WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $from = trim($this->request->get("txtFrom")); //string
         $to = trim($this->request->get("txtTo"));  //string

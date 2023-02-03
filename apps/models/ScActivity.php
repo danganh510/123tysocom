@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinActivity extends \Phalcon\Mvc\Model
+class ScActivity extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -292,14 +292,14 @@ class BinActivity extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'bin_activity';
+        return 'sc_activity';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinActivity[]|BinActivity
+     * @return ScActivity[]|ScActivity
      */
     public static function find($parameters = null)
     {
@@ -310,7 +310,7 @@ class BinActivity extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinActivity
+     * @return ScActivity
      */
     public static function findFirst($parameters = null)
     {

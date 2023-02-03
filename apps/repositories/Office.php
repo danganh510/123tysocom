@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinOffice;
+use Score\Models\ScOffice;
 use Phalcon\Mvc\User\Component;
 
 class Office extends Component {
@@ -10,8 +10,8 @@ class Office extends Component {
         $result = array();
         $para = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT o.*, ol.* FROM \Bincg\Models\BinOffice o 
-                INNER JOIN \Bincg\Models\BinOfficeLang ol 
+            $sql = "SELECT o.*, ol.* FROM \Score\Models\ScOffice o 
+                INNER JOIN \Score\Models\ScOfficeLang ol 
                 ON ol.office_id = o.office_id AND ol.office_lang_code = :LANG: 
                 WHERE o.office_active = 'Y'
                 ORDER BY o.office_order ASC
@@ -24,11 +24,11 @@ class Office extends Component {
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinOffice(),array_merge($item->o->toArray(), $item->ol->toArray()));
+                        new ScOffice(),array_merge($item->o->toArray(), $item->ol->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinOffice 
+            $sql = "SELECT * FROM Score\Models\ScOffice 
                 WHERE office_active = 'Y' 
                 ORDER BY office_order ASC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -42,7 +42,7 @@ class Office extends Component {
 
     public static function getByID($id)
     {
-        return BinOffice::findFirst(array(
+        return ScOffice::findFirst(array(
             'office_id = :office_id:',
             'bind' => array('office_id' => $id)
         ));
@@ -62,18 +62,18 @@ class Office extends Component {
         return $result;
     }
     public static function getAll () {
-        return BinOffice::find(array(
+        return ScOffice::find(array(
             'office_active' => 'Y',
         ));
     }
 
     public static function getNameById ($id){
-        $office = BinOffice::findFirstById($id);
+        $office = ScOffice::findFirstById($id);
         return isset($office) ? $office->getOfficeName() : "";
     }
 
     public static function findFirstByCountryCode($country_code){
-        return BinOffice::findFirst(array(
+        return ScOffice::findFirst(array(
             'office_country_code = :country_code:',
             'bind' => array('country_code' => $country_code)
         ));
@@ -82,11 +82,11 @@ class Office extends Component {
         $result = array();
         $para = array('ARID'=>$ar_id);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT o.*, ol.* FROM \Bincg\Models\BinOffice o 
-                INNER JOIN \Bincg\Models\BinOfficeLang ol 
+            $sql = "SELECT o.*, ol.* FROM \Score\Models\ScOffice o 
+                INNER JOIN \Score\Models\ScOfficeLang ol 
                 ON ol.office_id = o.office_id AND ol.office_lang_code = :LANG: 
                 WHERE o.office_active = 'Y' AND o.office_id IN(
-                    SELECT co.co_office_id FROM Bincg\Models\BinCareerOffice co 
+                    SELECT co.co_office_id FROM Score\Models\ScCareerOffice co 
                     WHERE co.co_career_id = :ARID: 
                 )
                 ORDER BY o.office_order ASC
@@ -99,13 +99,13 @@ class Office extends Component {
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinOffice(),array_merge($item->o->toArray(), $item->ol->toArray()));
+                        new ScOffice(),array_merge($item->o->toArray(), $item->ol->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinOffice 
+            $sql = "SELECT * FROM Score\Models\ScOffice 
                 WHERE office_active = 'Y' AND office_id IN(
-                    SELECT co_office_id FROM Bincg\Models\BinCareerOffice 
+                    SELECT co_office_id FROM Score\Models\ScCareerOffice 
                     WHERE co_career_id = :ARID: 
                 )
                 ORDER BY office_order ASC ";
@@ -121,11 +121,11 @@ class Office extends Component {
         $result = array();
         $para = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT o.*, ol.* FROM \Bincg\Models\BinOffice o 
-                INNER JOIN \Bincg\Models\BinOfficeLang ol 
+            $sql = "SELECT o.*, ol.* FROM \Score\Models\ScOffice o 
+                INNER JOIN \Score\Models\ScOfficeLang ol 
                 ON ol.office_id = o.office_id AND ol.office_lang_code = :LANG: 
                 WHERE o.office_active = 'Y' AND o.office_id IN(
-                    SELECT co.co_office_id FROM Bincg\Models\BinCareerOffice co 
+                    SELECT co.co_office_id FROM Score\Models\ScCareerOffice co 
                 )
                 ORDER BY o.office_order ASC
                 ";
@@ -137,13 +137,13 @@ class Office extends Component {
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinOffice(),array_merge($item->o->toArray(), $item->ol->toArray()));
+                        new ScOffice(),array_merge($item->o->toArray(), $item->ol->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinOffice 
+            $sql = "SELECT * FROM Score\Models\ScOffice 
                 WHERE office_active = 'Y' AND office_id IN(
-                    SELECT co_office_id FROM Bincg\Models\BinCareerOffice 
+                    SELECT co_office_id FROM Score\Models\ScCareerOffice 
                 )
                 ORDER BY office_order ASC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -157,9 +157,9 @@ class Office extends Component {
     public function getAllImageByCareerInOffices($career_id){
         $result = array();
         $para = array('CAREER_ID' => $career_id);
-        $sql = "SELECT * FROM \Bincg\Models\BinOfficeImage 
+        $sql = "SELECT * FROM \Score\Models\ScOfficeImage 
                 WHERE image_active = 'Y' AND image_office_id IN (
-                    SELECT co_office_id FROM \Bincg\Models\BinCareerOffice 
+                    SELECT co_office_id FROM \Score\Models\ScCareerOffice 
                     WHERE co_career_id = :CAREER_ID: 
                 )";
         $lists = $this->modelsManager->executeQuery($sql,$para);
@@ -191,7 +191,7 @@ class Office extends Component {
     }
     public static function findAll()
     {
-        return BinOffice::find(array(
+        return ScOffice::find(array(
             'office_active = "Y" ',
             "order" => "office_order ASC",
         ));
@@ -216,9 +216,9 @@ class Office extends Component {
 
     public function getAllActiveOfficeTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinOffice as o
+        $sql = "SELECT * FROM Score\Models\ScOffice as o
                 WHERE o.office_active = 'Y' AND o.office_id NOT IN 
-                 (SELECT ol.office_id FROM Bincg\Models\BinOfficeLang as ol WHERE ol.office_lang_code =
+                 (SELECT ol.office_id FROM Score\Models\ScOfficeLang as ol WHERE ol.office_lang_code =
                 :lang_code:)";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
             $sql .= ' LIMIT '.$limit;

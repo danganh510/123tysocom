@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinImageLang extends BaseModel
+class ScImageLang extends BaseModel
 {
 
     /**
@@ -112,14 +112,14 @@ class BinImageLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_image_lang';
+        return 'sc_image_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinImageLang[]|BinImageLang
+     * @return ScImageLang[]|ScImageLang
      */
     public static function find($parameters = null)
     {
@@ -130,7 +130,7 @@ class BinImageLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinImageLang
+     * @return ScImageLang
      */
     public static function findFirst($parameters = null)
     {
@@ -139,7 +139,7 @@ class BinImageLang extends BaseModel
 
     public static function findById($image_id)
     {
-        return BinImageLang::find(array(
+        return ScImageLang::find(array(
             "image_id =:ID:",
             'bind' => array('ID' => $image_id)
         ));

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinLanguage extends BaseModel
+class ScLanguage extends BaseModel
 {
     const GENERAL = 'general';
     /**
@@ -202,17 +202,18 @@ class BinLanguage extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_language';
+        return 'sc_language';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinLanguage[]|BinLanguage
+     * @return ScLanguage[]|ScLanguage
      */
     public static function find($parameters = null)
     {
+
         return parent::find($parameters);
     }
 
@@ -220,7 +221,7 @@ class BinLanguage extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinLanguage
+     * @return ScLanguage
      */
     public static function findFirst($parameters = null)
     {

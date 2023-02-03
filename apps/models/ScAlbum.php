@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinAlbum extends BaseModel
+class ScAlbum extends BaseModel
 {
 
     /**
@@ -232,14 +232,14 @@ class BinAlbum extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_album';
+        return 'sc_album';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinAlbum[]|BinAlbum
+     * @return ScAlbum[]|ScAlbum
      */
     public static function find($parameters = null)
     {
@@ -250,7 +250,7 @@ class BinAlbum extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinAlbum
+     * @return ScAlbum
      */
     public static function findFirst($parameters = null)
     {

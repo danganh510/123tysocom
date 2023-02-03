@@ -1,11 +1,11 @@
 <?php
 
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Career;
-use Bincg\Repositories\Location;
-use Bincg\Repositories\Type;
+use Score\Repositories\Article;
+use Score\Repositories\Career;
+use Score\Repositories\Location;
+use Score\Repositories\Type;
 
 class GeneratesitemapController extends ControllerBase
 {

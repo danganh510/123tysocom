@@ -1,9 +1,9 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinTableTranslate;
-use Bincg\Repositories\Activity;
+use Score\Models\ScTableTranslate;
+use Score\Repositories\Activity;
 use General\Models\Country;
 use General\Models\LanguageSupportTranslate;
 
@@ -18,9 +18,9 @@ class TranslateController extends ControllerBase
             array_push($array_models,$className);
         }
 //        foreach ($array_models as $str_model_lang){
-//            $translateItem = BinTableTranslate::getByName($str_model_lang);
+//            $translateItem = ScTableTranslate::getByName($str_model_lang);
 //            if(!$translateItem){
-//                $newTranslateItem = new BinTableTranslate();
+//                $newTranslateItem = new ScTableTranslate();
 //                $newTranslateItem->setTranslateTable($str_model_lang);
 //                $newTranslateItem->setTranslateOrder(1);
 //                $newTranslateItem->setTranslateActive('Y');
@@ -53,7 +53,7 @@ class TranslateController extends ControllerBase
             }
             $old_data = array();
             if (empty($messages)){
-                $check_translate = BinTableTranslate::checkCodeCountry($data["language"]);
+                $check_translate = ScTableTranslate::checkCodeCountry($data["language"]);
                 if ($check_translate) {
                     $old_data = array (
                         'language' => $check_translate->getTranslateLanguage(),
@@ -62,9 +62,9 @@ class TranslateController extends ControllerBase
                         'list_table' => $check_translate->getTranslateTable()
                     );
                 }
-                $new_translate = new BinTableTranslate();
+                $new_translate = new ScTableTranslate();
                 /**
-                 * @var BinTableTranslate $new_translate
+                 * @var ScTableTranslate $new_translate
                  */
                 $new_translate->setTranslateLanguage($data['language']);
                 $new_translate->setTranslateTable(json_encode($data['list_table']));

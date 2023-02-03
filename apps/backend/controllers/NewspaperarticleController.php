@@ -1,16 +1,16 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Language;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Models\ScLanguage;
+use Score\Repositories\Activity;
+use Score\Repositories\Language;
+use Score\Utils\Validator;
 
-use Bincg\Repositories\Newspaper;
-use Bincg\Models\BinNewspaperArticle;
-use Bincg\Models\BinNewspaperArticleLang;
-use Bincg\Repositories\NewspaperArticle;
-use Bincg\Repositories\NewspaperArticleLang;
+use Score\Repositories\Newspaper;
+use Score\Models\ScNewspaperArticle;
+use Score\Models\ScNewspaperArticleLang;
+use Score\Repositories\NewspaperArticle;
+use Score\Repositories\NewspaperArticleLang;
 
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
@@ -86,7 +86,7 @@ class NewspaperarticleController extends ControllerBase
 
             if (count($messages) == 0) {
                 $msg_result = array();
-                $NewspaperArticle = new BinNewspaperArticle();
+                $NewspaperArticle = new ScNewspaperArticle();
                 $NewspaperArticle->setArticleNewspaperId($data['newspaper']);
                 $NewspaperArticle->setArticleName(($data["name"]));
                 $NewspaperArticle->setArticleLink(($data["link"]));
@@ -158,7 +158,7 @@ class NewspaperarticleController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if($save_mode == BinLanguage::GENERAL) {
+            if($save_mode == ScLanguage::GENERAL) {
                 $data_post['article_newspaper_id'] = $this->request->getPost('slcNewspaper');
                 $data_post['article_link'] = $this->request->getPost('txtLink', array('string', 'trim'));
                 $data_post['article_icon'] = $this->request->getPost('txtIcon', array('string', 'trim'));
@@ -184,7 +184,7 @@ class NewspaperarticleController extends ControllerBase
             }
             if(empty($messages)) {
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
+                    case ScLanguage::GENERAL:
                         $data_old = array(
                             'article_newspaper_id' => $article_model->getArticleNewspaperId(),
                             'article_link' => $article_model->getArticleLink(),
@@ -198,7 +198,7 @@ class NewspaperarticleController extends ControllerBase
                         $article_model->setArticleOrder($data_post['article_order']);
                         $article_model->setArticleActive($data_post['article_active']);
                         $result = $article_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'article_newspaper_id' => $article_model->getArticleNewspaperId(),
                             'article_link' => $article_model->getArticleLink(),
@@ -222,7 +222,7 @@ class NewspaperarticleController extends ControllerBase
                     default:
                         $data_newspaper_article_lang = NewspaperArticleLang::findFirstByIdLang($article_id, $save_mode);
                         if (!$data_newspaper_article_lang) {
-                            $data_newspaper_article_lang = new BinNewspaperArticleLang();
+                            $data_newspaper_article_lang = new ScNewspaperArticleLang();
                             $data_newspaper_article_lang->setArticleId($article_id);
                             $data_newspaper_article_lang->setArticleLangCode($save_mode);
                         }
@@ -274,11 +274,11 @@ class NewspaperarticleController extends ControllerBase
         }
         $formData = array(
             'id'=> $article_model->getArticleId(),
-            'newspaper' => ($save_mode === BinLanguage::GENERAL) ? $data_post['article_newspaper_id'] : $article_model->getArticleNewspaperId(),
-            'icon' => ($save_mode === BinLanguage::GENERAL) ? $data_post['article_icon'] : $article_model->getArticleIcon(),
-            'link' => ($save_mode === BinLanguage::GENERAL) ? $data_post['article_link'] : $article_model->getArticleLink(),
-            'order' => ($save_mode === BinLanguage::GENERAL) ? $data_post['article_order'] : $article_model->getArticleOrder(),
-            'active' => ($save_mode === BinLanguage::GENERAL) ? $data_post['article_active'] : $article_model->getArticleActive(),
+            'newspaper' => ($save_mode === ScLanguage::GENERAL) ? $data_post['article_newspaper_id'] : $article_model->getArticleNewspaperId(),
+            'icon' => ($save_mode === ScLanguage::GENERAL) ? $data_post['article_icon'] : $article_model->getArticleIcon(),
+            'link' => ($save_mode === ScLanguage::GENERAL) ? $data_post['article_link'] : $article_model->getArticleLink(),
+            'order' => ($save_mode === ScLanguage::GENERAL) ? $data_post['article_order'] : $article_model->getArticleOrder(),
+            'active' => ($save_mode === ScLanguage::GENERAL) ? $data_post['article_active'] : $article_model->getArticleActive(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_current' => $lang_current
@@ -299,7 +299,7 @@ class NewspaperarticleController extends ControllerBase
         $msg_delete = array('error' => '', 'success' => '');
         if($list_newspaper_article) {
             foreach ($list_newspaper_article as $article_id) {
-                $article_model = BinNewspaperArticle::findFirst($article_id);
+                $article_model = ScNewspaperArticle::findFirst($article_id);
                 if($article_model) {
                     $old_newspaperArticle_data = array(
                         'name' => $article_model->getArticleName(),
@@ -329,7 +329,7 @@ class NewspaperarticleController extends ControllerBase
         return $this->response->redirect('/dashboard/list-newspaper-article');
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinNewspaperArticle WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScNewspaperArticle WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $newspaper = $this->request->get("slNewspaper");
         $arrParameter = array();

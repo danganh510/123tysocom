@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinLocation extends BaseModel
+class ScLocation extends BaseModel
 {
 
     /**
@@ -262,14 +262,14 @@ class BinLocation extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_location';
+        return 'sc_location';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinLocation|BinLocation[]|\Phalcon\Mvc\Model\ResultsetInterface
+     * @return ScLocation|ScLocation[]|\Phalcon\Mvc\Model\ResultsetInterface
      */
     public static function find($parameters = null)
     {
@@ -280,7 +280,7 @@ class BinLocation extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinLocation|\Phalcon\Mvc\Model
+     * @return ScLocation|\Phalcon\Mvc\Model
      */
     public static function findFirst($parameters = null)
     {
@@ -289,14 +289,14 @@ class BinLocation extends BaseModel
 
     public static function findFirstById($languageId)
     {
-        return BinLocation::findFirst(array(
+        return ScLocation::findFirst(array(
             "location_id =:ID:",
             'bind' => array('ID' => $languageId)
         ));
     }
     public static function findFirstByCountryCode($code)
     {
-        return BinLocation::findFirst(array(
+        return ScLocation::findFirst(array(
             'location_country_code=:country_code: AND location_active="Y"',
             'bind' => array('country_code' => $code),
             'order' => 'location_order ASC',
@@ -304,7 +304,7 @@ class BinLocation extends BaseModel
     }
     public static function findFirstByCountryCodeAndLang($code,$lang)
     {
-        return BinLocation::findFirst(array(
+        return ScLocation::findFirst(array(
             'location_country_code=:country_code: AND location_lang_code=:language_code: AND location_active="Y"',
             'bind' => array('country_code' => $code, 'language_code' => $lang),
             'order' => 'location_order ASC',

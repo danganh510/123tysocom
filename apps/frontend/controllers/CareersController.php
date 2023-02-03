@@ -1,12 +1,12 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\Career;
-use Bincg\Repositories\Office;
-use Bincg\Repositories\Page;
-use Bincg\Repositories\Type;
+use Score\Repositories\Article;
+use Score\Repositories\Banner;
+use Score\Repositories\Career;
+use Score\Repositories\Office;
+use Score\Repositories\Page;
+use Score\Repositories\Type;
 
 class CareersController extends ControllerBase
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Repositories\PageLang;
-use Bincg\Models\BinLanguage;
-use Bincg\Models\BinPage;
-use Bincg\Models\BinPageLang;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Page;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Repositories\PageLang;
+use Score\Models\ScLanguage;
+use Score\Models\ScPage;
+use Score\Models\ScPageLang;
+use Score\Repositories\Activity;
+use Score\Repositories\Language;
+use Score\Repositories\Page;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class PageController extends ControllerBase
@@ -81,7 +81,7 @@ class PageController extends ControllerBase
             }
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_page = new BinPage();
+                $new_page = new ScPage();
                 $new_page->setPageName(html_entity_decode($data["name"]));
                 $new_page->setPageTitle(html_entity_decode($data["title"]));
                 $new_page->setPageKeyword($data["keyword"]);
@@ -130,7 +130,7 @@ class PageController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $page_model = BinPage::findFirstById($page_id);
+        $page_model = ScPage::findFirstById($page_id);
         if(empty($page_model))
         {
             $this->response->redirect('notfound');
@@ -163,7 +163,7 @@ class PageController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if($save_mode != BinLanguage::GENERAL) {
+            if($save_mode != ScLanguage::GENERAL) {
                 $data_post['page_name'] = trim($this->request->getPost('txtName'));
                 $data_post['page_title'] = trim($this->request->getPost('txtTitle'));
                 $data_post['page_meta_keyword'] = trim($this->request->getPost('txtMetaKey'));
@@ -193,7 +193,7 @@ class PageController extends ControllerBase
             }
             if(empty($messages)) {
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
+                    case ScLanguage::GENERAL:
                         $data_old = array(
                             'page_keyword' => $page_model->getPageKeyword(),
                             'page_style' => $page_model->getPageStyle(),
@@ -201,7 +201,7 @@ class PageController extends ControllerBase
                         $page_model->setPageKeyword($data_post['page_keyword']);
                         $page_model->setPageStyle($data_post['page_style']);
                         $result = $page_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'page_keyword' => $page_model->getPageKeyword(),
                             'page_meta_image' => $page_model->getPageMetaImage(),
@@ -237,7 +237,7 @@ class PageController extends ControllerBase
                     default:
                         $data_page_lang = PageLang::findFirstByIdAndLang($page_id, $save_mode);
                         if (!$data_page_lang) {
-                            $data_page_lang = new BinPageLang();
+                            $data_page_lang = new ScPageLang();
                             $data_page_lang->setPageId($page_id);
                             $data_page_lang->setPageLangCode($save_mode);
                         }
@@ -290,7 +290,7 @@ class PageController extends ControllerBase
             'page_content' => ($save_mode ===$this->globalVariable->defaultLanguage)?$data_post['page_content']:$page_model->getPageContent(),
         );
         $arr_translate[$this->globalVariable->defaultLanguage] = $item;
-        $arr_page_lang = BinPageLang::findById($page_id);
+        $arr_page_lang = ScPageLang::findById($page_id);
         foreach ($arr_page_lang as $page_lang){
             $item = array(
                 'page_id'=>$page_lang->getPageId(),
@@ -318,8 +318,8 @@ class PageController extends ControllerBase
         }
         $formData = array(
             'page_id'=>$page_model->getPageId(),
-            'page_keyword' => ($save_mode ===BinLanguage::GENERAL)?$data_post['page_keyword']:$page_model->getPageKeyword(),
-            'page_style' => ($save_mode ===BinLanguage::GENERAL)?$data_post['page_style']:$page_model->getPageStyle(),
+            'page_keyword' => ($save_mode ===ScLanguage::GENERAL)?$data_post['page_keyword']:$page_model->getPageKeyword(),
+            'page_style' => ($save_mode ===ScLanguage::GENERAL)?$data_post['page_style']:$page_model->getPageStyle(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_current' => $lang_current
@@ -369,7 +369,7 @@ class PageController extends ControllerBase
         return $this->response->redirect('/dashboard/list-page');
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinPage WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScPage WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $arrParameter = array();
         $validator = new Validator();

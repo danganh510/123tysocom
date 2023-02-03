@@ -1,19 +1,19 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinCareer;
-use Bincg\Models\BinCareerLang;
-use Bincg\Models\BinCareerOffice;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\CareerLang;
-use Bincg\Repositories\Career;
-use Bincg\Repositories\CareerOffice;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Office;
+use Score\Models\ScCareer;
+use Score\Models\ScCareerLang;
+use Score\Models\ScCareerOffice;
+use Score\Models\ScLanguage;
+use Score\Repositories\CareerLang;
+use Score\Repositories\Career;
+use Score\Repositories\CareerOffice;
+use Score\Repositories\Language;
+use Score\Repositories\Activity;
+use Score\Repositories\Office;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
+use Score\Utils\Validator;
 class CareerController extends ControllerBase
 {
     public function indexAction()
@@ -107,7 +107,7 @@ class CareerController extends ControllerBase
                 $messages["order"] = "Order is not valid ";
             }
             if (count($messages) == 0) {
-                $new_type = new BinCareer();
+                $new_type = new ScCareer();
                 $new_type->setCareerName($data["name"]);
                 $new_type->setCareerIcon($data["icon"]);
                 $new_type->setCareerMetaImage($data["meta_image"]);
@@ -135,7 +135,7 @@ class CareerController extends ControllerBase
                 if ($result === true){
                     foreach ($data["offices"] as $office_id)
                     {
-                        $career_office = new BinCareerOffice();
+                        $career_office = new ScCareerOffice();
                         $career_office->setCoCareerId($new_type->getCareerId());
                         $career_office->setCoOfficeId($office_id);
                         $career_office->save();
@@ -223,7 +223,7 @@ class CareerController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if($save_mode != BinLanguage::GENERAL) {
+            if($save_mode != ScLanguage::GENERAL) {
                 $data_post['career_name'] = $this->request->get("txtName", array('string', 'trim'));
                 $data_post['career_title'] = $this->request->get("txtTitle", array('string', 'trim'));
                 $data_post['career_meta_keyword'] = $this->request->get("txtMetaKey", array('string', 'trim'));
@@ -280,8 +280,8 @@ class CareerController extends ControllerBase
                 $messagesAzure = '';
                 $activity = new Activity();
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
-                        $arr_career_lang = BinCareerLang::findById($career_id);
+                    case ScLanguage::GENERAL:
+                        $arr_career_lang = ScCareerLang::findById($career_id);
                         $data_old = array(
                             'career_keyword' => $career_model->getCareerKeyword(),
                             'career_insert_time' => $career_model->getCareerInsertTime(),
@@ -304,13 +304,13 @@ class CareerController extends ControllerBase
                             CareerOffice::deleteByCareer($career_id);
                             foreach ($data_post["career_offices"] as $office_id)
                             {
-                                $career_office = new BinCareerOffice();
+                                $career_office = new ScCareerOffice();
                                 $career_office->setCoCareerId($career_model->getCareerId());
                                 $career_office->setCoOfficeId($office_id);
                                 $career_office->save();
                             }
                         }
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'career_insert_time' => $career_model->getCareerInsertTime(),
                             'career_keyword' => $career_model->getCareerKeyword(),
@@ -373,7 +373,7 @@ class CareerController extends ControllerBase
                     default:
                         $content_career_lang = CareerLang::findFirstByIdAndLang($career_id, $save_mode);
                         if (!$content_career_lang) {
-                            $content_career_lang = new BinCareerLang();
+                            $content_career_lang = new ScCareerLang();
                             $content_career_lang->setCareerId($career_id);
                             $content_career_lang->setCareerLangCode($save_mode);
                         }
@@ -445,7 +445,7 @@ class CareerController extends ControllerBase
             'career_base_salary' => ($save_mode ===$this->globalVariable->defaultLanguage)?$data_post['career_base_salary']:$career_model->getCareerBaseSalarySchema(),
         );
         $arr_translate[$lang_default] = $item;
-        $arr_career_lang = BinCareerLang::findById($career_id);
+        $arr_career_lang = ScCareerLang::findById($career_id);
         foreach ($arr_career_lang as $career_lang){
             $item = array(
                 'career_id'=>$career_lang->getCareerId(),
@@ -486,14 +486,14 @@ class CareerController extends ControllerBase
         }
         $formData = array(
             'career_id'=>$career_model->getCareerId(),
-            'career_offices' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_offices']:CareerOffice::getOfficesByCareer($career_id),
-            'career_keyword' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_keyword']:$career_model->getCareerKeyword(),
-            'career_insert_time' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_insert_time']:$this->my->formatDateTime($career_model->getCareerInsertTime(),false),
-            'career_order' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_order']:$career_model->getCareerOrder(),
-            'career_active' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_active']:$career_model->getCareerActive(),
-            'career_featured' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_featured']:$career_model->getCareerFeatured(),
-            'career_is_home' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_is_home']:$career_model->getCareerIsHome(),
-            'career_expired' => ($save_mode ===BinLanguage::GENERAL)?$data_post['career_expired']:$career_model->getCareerExpired(),
+            'career_offices' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_offices']:CareerOffice::getOfficesByCareer($career_id),
+            'career_keyword' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_keyword']:$career_model->getCareerKeyword(),
+            'career_insert_time' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_insert_time']:$this->my->formatDateTime($career_model->getCareerInsertTime(),false),
+            'career_order' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_order']:$career_model->getCareerOrder(),
+            'career_active' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_active']:$career_model->getCareerActive(),
+            'career_featured' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_featured']:$career_model->getCareerFeatured(),
+            'career_is_home' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_is_home']:$career_model->getCareerIsHome(),
+            'career_expired' => ($save_mode ===ScLanguage::GENERAL)?$data_post['career_expired']:$career_model->getCareerExpired(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_default' => $lang_default,
@@ -518,7 +518,7 @@ class CareerController extends ControllerBase
         if($list_career) {
             foreach ($list_career as $career_id) {
                 $career = Career::getByID($career_id);
-                $arr_career_lang = BinCareerLang::findById($career_id);
+                $arr_career_lang = ScCareerLang::findById($career_id);
                 if( $career ) {
                     $old_career_data = $career->toArray();
                     $new_career_data = array();
@@ -542,7 +542,7 @@ class CareerController extends ControllerBase
         return;
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinCareer WHERE 1 ";
+        $sql = "SELECT * FROM Score\Models\ScCareer WHERE 1 ";
         $keyword = trim($this->request->get("txtSearch"));
         $office = $this->request->get("slcOffice");
         $arrParameter = array();
@@ -560,7 +560,7 @@ class CareerController extends ControllerBase
             $this->dispatcher->setParam("txtSearch", $keyword);
         }
         if (!empty($office)) {
-            $sql.=" AND career_id IN (SELECT co_career_id  FROM Bincg\Models\BinCareerOffice WHERE co_office_id =:office_id: )";
+            $sql.=" AND career_id IN (SELECT co_career_id  FROM Score\Models\ScCareerOffice WHERE co_office_id =:office_id: )";
             $arrParameter['office_id'] = $office;
             $this->dispatcher->setParam("slcOffice", $office);
         }
@@ -573,11 +573,11 @@ class CareerController extends ControllerBase
     }
 
     private function getParameterExport(){
-        $sql = "SELECT * FROM Bincg\Models\BinCareer WHERE career_active = 'Y'";
+        $sql = "SELECT * FROM Score\Models\ScCareer WHERE career_active = 'Y'";
         $keyword = trim($this->request->get("txtSearch"));
 
         $arrParameter = array();
-        $validator = new \Bincg\Utils\Validator();
+        $validator = new \Score\Utils\Validator();
         if(!empty($keyword)) {
             if($validator->validInt($keyword)) {
                 $sql.= " AND (career_id = :number:)";
@@ -603,7 +603,7 @@ class CareerController extends ControllerBase
         $data = $this->getParameterExport();
         $list_career = $this->modelsManager->executeQuery($data['sql'],$data['para']);
         $current_page = $this->request->get('page');
-        $validator = new \Bincg\Utils\Validator();
+        $validator = new \Score\Utils\Validator();
         if($validator->validInt($current_page) == false || $current_page < 1)
             $current_page = 1;
         $msg_result = array();

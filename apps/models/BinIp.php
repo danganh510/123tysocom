@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-use Bincg\Utils\IpApi;
+use Score\Utils\IpApi;
 
-class BinIp extends \Phalcon\Mvc\Model
+class ScIp extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -564,14 +564,14 @@ class BinIp extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'bin_ip';
+        return 'sc_ip';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinIp[]|BinIp
+     * @return ScIp[]|ScIp
      */
     public static function find($parameters = null)
     {
@@ -582,7 +582,7 @@ class BinIp extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinIp
+     * @return ScIp
      */
     public static function findFirst($parameters = null)
     {
@@ -593,7 +593,7 @@ class BinIp extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param string $ipAddress
-     * @return \Phalcon\Mvc\Model|BinIp
+     * @return \Phalcon\Mvc\Model|ScIp
      */
     public static function findFirstByIpAddress($ipAddress)
     {
@@ -603,7 +603,7 @@ class BinIp extends \Phalcon\Mvc\Model
         ));
     }
     /**
-     * @param BinIp $ipInfo
+     * @param ScIp $ipInfo
      */
     public function setWithIpInfo($ipInfo = null)
     {

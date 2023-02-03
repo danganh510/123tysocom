@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinCommunicationChannelLang extends BaseModel
+class ScCommunicationChannelLang extends BaseModel
 {
 
     /**
@@ -104,14 +104,14 @@ class BinCommunicationChannelLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_communication_channel_lang';
+        return 'sc_communication_channel_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCommunicationChannelLang[]|BinCommunicationChannelLang
+     * @return ScCommunicationChannelLang[]|ScCommunicationChannelLang
      */
     public static function find($parameters = null)
     {
@@ -122,7 +122,7 @@ class BinCommunicationChannelLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCommunicationChannelLang
+     * @return ScCommunicationChannelLang
      */
     public static function findFirst($parameters = null)
     {
@@ -131,7 +131,7 @@ class BinCommunicationChannelLang extends BaseModel
 
     public static function findById($id)
     {
-        return BinCommunicationChannelLang::find(array(
+        return ScCommunicationChannelLang::find(array(
             "communication_channel_id =:ID:",
             'bind' => array('ID' => $id)
         ));

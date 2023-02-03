@@ -4,8 +4,8 @@ if(isset($role_function)) {
     $menu_active = 'class="active"';
     $menu_sub_active = 'style="display: block;"';
     $menu_sub_sub_active = 'class="current-page"';
-    $role = new \Bincg\Repositories\Role();
-    $controllers = \Bincg\Models\BinRole::getControllers();
+    $role = new \Score\Repositories\Role();
+    $controllers = \Score\Models\ScRole::getControllers();
     $content = isset($controllers['content']) ? $controllers['content'] : array();
     $check_content = ($role::checkMenu($role_function, $content)) ? true : false;
     $check_content_sub = ($role::checkMenuSub($content, $controllerName)) ? true : false;

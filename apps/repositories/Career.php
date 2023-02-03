@@ -1,14 +1,14 @@
 <?php
-namespace Bincg\Repositories;
-use Bincg\Models\BinCareer;
-use Bincg\Models\BinCareerOffice;
+namespace Score\Repositories;
+use Score\Models\ScCareer;
+use Score\Models\ScCareerOffice;
 use Phalcon\Di;
 use Phalcon\Mvc\User\Component;
 class Career extends Component
 {
     public function checkKeyword($keyword, $career_id)
     {
-        return BinCareer::findFirst(
+        return ScCareer::findFirst(
             [
                 'career_keyword = :careerkeyword: AND  career_id != :careerid:',
                 'bind' => array('careerkeyword' => $keyword, 'careerid' => $career_id),
@@ -16,7 +16,7 @@ class Career extends Component
         );
     }
     public static function getByID($career_id) {
-        return BinCareer::findFirst(array(
+        return ScCareer::findFirst(array(
             'career_id = :career_id:',
             'bind' => array('career_id' => $career_id)
         ));
@@ -24,13 +24,13 @@ class Career extends Component
 
     public static function getNameByID ($id)
     {
-        $article = BinCareer::findFirstById($id);
+        $article = ScCareer::findFirstById($id);
         return ($article) ? $article->getCareerName() : "";
     }
 
     public static function getComboBox ($career_id)
     {
-        $data = BinCareer::find("career_active = 'Y'");
+        $data = ScCareer::find("career_active = 'Y'");
 
         $output="";
         foreach ($data as  $value)
@@ -48,8 +48,8 @@ class Career extends Component
         $result = array();
         $para = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinCareer a 
-                    INNER JOIN \Bincg\Models\BinCareerLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScCareer a 
+                    INNER JOIN \Score\Models\ScCareerLang al 
                         ON a.career_id = al.career_id AND al.career_lang_code = :LANG: 
                     WHERE a.career_active = 'Y' AND a.career_expired = 'N' 
                     ORDER BY a.career_order ASC ";
@@ -61,11 +61,11 @@ class Career extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinCareer(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScCareer(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinCareer 
+            $sql = "SELECT * FROM Score\Models\ScCareer 
                 WHERE career_active = 'Y' AND career_expired = 'N' 
                 ORDER BY career_order ASC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -80,8 +80,8 @@ class Career extends Component
         $result = array();
         $para = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinCareer a 
-                    INNER JOIN \Bincg\Models\BinCareerLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScCareer a 
+                    INNER JOIN \Score\Models\ScCareerLang al 
                         ON a.career_id = al.career_id AND al.career_lang_code = :LANG: 
                     WHERE a.career_active = 'Y' AND a.career_expired = 'N' 
                     ORDER BY a.career_insert_time DESC ";
@@ -93,11 +93,11 @@ class Career extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinCareer(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScCareer(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinCareer 
+            $sql = "SELECT * FROM Score\Models\ScCareer 
                 WHERE career_active = 'Y' AND career_expired = 'N' 
                 ORDER BY career_insert_time DESC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -112,8 +112,8 @@ class Career extends Component
         $result = array();
         $para = array('KEY'=>$key);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinCareer a 
-                    INNER JOIN \Bincg\Models\BinCareerLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScCareer a 
+                    INNER JOIN \Score\Models\ScCareerLang al 
                         ON a.career_id = al.career_id AND al.career_lang_code = :LANG: 
                     WHERE a.career_active = 'Y' AND a.career_expired = 'N' AND a.career_keyword != :KEY: 
                     ORDER BY a.career_order ASC ";
@@ -125,11 +125,11 @@ class Career extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinCareer(),array_merge($item->a->toArray(), $item->al->toArray()));
+                        new ScCareer(),array_merge($item->a->toArray(), $item->al->toArray()));
                 }
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinCareer 
+            $sql = "SELECT * FROM Score\Models\ScCareer 
                 WHERE career_active = 'Y' AND career_expired = 'N' AND career_keyword != :KEY: 
                 ORDER BY career_order ASC ";
             if (isset($limit) && is_numeric($limit) && $limit > 0) {
@@ -144,8 +144,8 @@ class Career extends Component
         $result = false;
         $para = array('keyword'=>$keyword);
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT a.*, al.* FROM \Bincg\Models\BinCareer a 
-                    INNER JOIN \Bincg\Models\BinCareerLang al 
+            $sql = "SELECT a.*, al.* FROM \Score\Models\ScCareer a 
+                    INNER JOIN \Score\Models\ScCareerLang al 
                         ON a.career_id = al.career_id AND al.career_lang_code = :LANG: 
                     WHERE a.career_active = 'Y' AND a.career_keyword = :keyword: AND a.career_expired = 'N'                
                     ";
@@ -153,10 +153,10 @@ class Career extends Component
             $lists = $this->modelsManager->executeQuery($sql, $para)->getFirst();
             if($lists && sizeof($lists)>0){
                 $result = \Phalcon\Mvc\Model::cloneResult(
-                    new BinCareer(),array_merge($lists->a->toArray(), $lists->al->toArray()));
+                    new ScCareer(),array_merge($lists->a->toArray(), $lists->al->toArray()));
             }
         }else{
-            $sql = "SELECT * FROM Bincg\Models\BinCareer 
+            $sql = "SELECT * FROM Score\Models\ScCareer 
                 WHERE career_active = 'Y' AND career_keyword = :keyword: AND career_expired = 'N'  
                 ";
             $lists = $this->modelsManager->executeQuery($sql,$para)->getFirst();
@@ -170,8 +170,8 @@ class Career extends Component
         $para = array();
         $output = '';
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT c.*, cl.* FROM \Bincg\Models\BinCareer c 
-                    INNER JOIN \Bincg\Models\BinCareerLang cl ON c.career_id = cl.career_id AND cl.career_lang_code = :LANG: 
+            $sql = "SELECT c.*, cl.* FROM \Score\Models\ScCareer c 
+                    INNER JOIN \Score\Models\ScCareerLang cl ON c.career_id = cl.career_id AND cl.career_lang_code = :LANG: 
                     WHERE c.career_active = 'Y'
                     ORDER BY c.career_insert_time DESC 
                     ";
@@ -180,10 +180,10 @@ class Career extends Component
             if($lists && count($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinCareer(),array_merge($item->c->toArray(), $item->cl->toArray()));
+                        new ScCareer(),array_merge($item->c->toArray(), $item->cl->toArray()));
                 }}
         }else{
-            $sql = 'SELECT * FROM Bincg\Models\BinCareer 
+            $sql = 'SELECT * FROM Score\Models\ScCareer 
                 WHERE career_active = "Y" 
                 ORDER BY career_insert_time DESC 
                 ';
@@ -207,8 +207,8 @@ class Career extends Component
         if ($lang && $lang != $globalVariable->defaultLanguage) {
             $para['LANG'] = $lang;
             $modelsManager = Di::getDefault()->get('modelsManager');
-            $sql = "SELECT cc.*, ccl.* FROM Bincg\Models\BinCareer cc
-                    INNER JOIN Bincg\Models\BinCareerLang ccl
+            $sql = "SELECT cc.*, ccl.* FROM Score\Models\ScCareer cc
+                    INNER JOIN Score\Models\ScCareerLang ccl
                     ON cc.career_id = ccl.career_id AND ccl.career_lang_code = :LANG: 
                     WHERE cc.career_active = 'Y' 
                     ORDER BY cc.career_order ASC 
@@ -228,7 +228,7 @@ class Career extends Component
             }
             return $arr;
         } else {
-            $items = BinCareer::find([
+            $items = ScCareer::find([
                 'conditions' => 'career_active = :value: ',
                 'bind' => ['value' => 'Y']
             ]);
@@ -248,7 +248,7 @@ class Career extends Component
     }
     private static function getCareerOffice()
     {
-        $items = BinCareerOffice::find();
+        $items = ScCareerOffice::find();
         $arr = array();
         foreach ($items as $item) {
             if (empty($arr[$item->getCoCareerId()]))
@@ -294,9 +294,9 @@ class Career extends Component
     }
     public function getAllActiveCareerTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinCareer as c
+        $sql = "SELECT * FROM Score\Models\ScCareer as c
                 WHERE c.career_active = 'Y' AND c.career_id NOT IN 
-                 (SELECT cl.career_id FROM Bincg\Models\BinCareerLang as cl WHERE cl.career_lang_code =
+                 (SELECT cl.career_id FROM Score\Models\ScCareerLang as cl WHERE cl.career_lang_code =
                 :lang_code:)";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
             $sql .= ' LIMIT '.$limit;

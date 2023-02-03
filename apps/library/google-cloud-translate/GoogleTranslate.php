@@ -1,5 +1,5 @@
 <?php
-namespace Bincg\Google;
+namespace Score\Google;
 
 use Google\Cloud\Translate\V3\GcsSource;
 use Google\Cloud\Translate\V3\Glossary;

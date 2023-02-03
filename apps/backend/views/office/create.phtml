@@ -93,7 +93,7 @@
                                 <option value="">Select Country. . . </option>
                                 <?php
                                 $country_code = isset($oldinput["countryCode"])?strtoupper($oldinput["countryCode"]):'';
-                                echo \Bincg\Repositories\CountryGeneral::getCountryCombobox($country_code);
+                                echo \Score\Repositories\CountryGeneral::getCountryCombobox($country_code);
                                 ?>
                             </select>
                             <span class="text-danger msg-country-code"><?php echo isset($messages["countryCode"]) ? $messages["countryCode"] : ""?></span>

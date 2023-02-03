@@ -1,13 +1,13 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
 use Phalcon\Mvc\User\Component;
 
 /**
  * Class SearchAzure
  * @property \GlobalVariable globalVariable
- * @package Bincg\Repositories
+ * @package Score\Repositories
  */
 class SearchAzure extends Component
 {
@@ -89,17 +89,17 @@ class SearchAzure extends Component
             if($lang == $this->globalVariable->defaultLanguage){
                 $sql = "SELECT s.article_id, s.article_type_id, s.article_name, s.article_title, s.article_keyword, s.article_meta_keyword, s.article_meta_description,
                         s.article_content
-                        FROM Bincg\Models\BinArticle s
-                        INNER JOIN Bincg\Models\BinType t ON t.type_id = s.article_type_id AND t.type_active = 'Y'
+                        FROM Score\Models\ScArticle s
+                        INNER JOIN Score\Models\ScType t ON t.type_id = s.article_type_id AND t.type_active = 'Y'
                         WHERE s.article_active = 'Y'
                         ORDER BY s.article_insert_time DESC";
             }else{
                 $arr_para = array("LANG" => $lang);
                 $sql = "SELECT sl.article_id, s.article_type_id,sl.article_name, sl.article_title, s.article_keyword, sl.article_meta_keyword, sl.article_meta_description,
                         sl.article_content
-                        FROM Bincg\Models\BinArticle s
-                        INNER JOIN Bincg\Models\BinType t ON t.type_id = s.article_type_id AND t.type_active = 'Y'
-                        INNER JOIN Bincg\Models\BinArticleLang sl ON s.article_id = sl.article_id AND sl.article_lang_code =:LANG:
+                        FROM Score\Models\ScArticle s
+                        INNER JOIN Score\Models\ScType t ON t.type_id = s.article_type_id AND t.type_active = 'Y'
+                        INNER JOIN Score\Models\ScArticleLang sl ON s.article_id = sl.article_id AND sl.article_lang_code =:LANG:
                         WHERE s.article_active = 'Y'
                         ORDER BY s.article_insert_time DESC";
             }
@@ -126,14 +126,14 @@ class SearchAzure extends Component
             $arr_para = array();
             if($lang == $this->globalVariable->defaultLanguage){
                 $sql = "SELECT c.career_id, c.career_name, c.career_title, c.career_keyword, c.career_meta_keyword, c.career_meta_description, c.career_content
-                        FROM Bincg\Models\BinCareer c
+                        FROM Score\Models\ScCareer c
                         WHERE c.career_active = 'Y' AND c.career_expired = 'N' 
                         ORDER BY c.career_order ASC ";
             }else{
                 $arr_para = array("LANG" => $lang);
                 $sql = "SELECT c.career_id, cl.career_name, cl.career_title, c.career_keyword, cl.career_meta_keyword, cl.career_meta_description, cl.career_content
-                        FROM Bincg\Models\BinCareer c 
-                        INNER JOIN Bincg\Models\BinCareerLang cl ON c.career_id = cl.career_id AND cl.career_lang_code =:LANG:
+                        FROM Score\Models\ScCareer c 
+                        INNER JOIN Score\Models\ScCareerLang cl ON c.career_id = cl.career_id AND cl.career_lang_code =:LANG:
                         WHERE c.career_active = 'Y' AND c.career_expired = 'N' 
                         ORDER BY c.career_order ASC ";
             }

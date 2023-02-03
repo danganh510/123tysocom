@@ -1,6 +1,6 @@
 <?php
 
-namespace Bincg\Frontend;
+namespace Score\Frontend;
 
 use Phalcon\Loader;
 use Phalcon\Mvc\View;
@@ -19,7 +19,7 @@ class Module implements ModuleDefinitionInterface
         $loader = new Loader();
 
         $loader->registerNamespaces(array(
-            'Bincg\Frontend\Controllers' => __DIR__ . '/controllers/',
+            'Score\Frontend\Controllers' => __DIR__ . '/controllers/',
         ));
 
         $loader->register();
@@ -47,7 +47,7 @@ class Module implements ModuleDefinitionInterface
 			$security = new \Security('frontend');
 			$eventManager->attach('dispatch', $security);
 			$dispatcher->setEventsManager($eventManager);
-			$dispatcher->setDefaultNamespace("Bincg\Frontend\Controllers");
+			$dispatcher->setDefaultNamespace("Score\Frontend\Controllers");
 			return $dispatcher;
 		});
 

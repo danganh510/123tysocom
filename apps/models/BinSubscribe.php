@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinSubscribe extends \Phalcon\Mvc\Model
+class ScSubscribe extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -142,14 +142,14 @@ class BinSubscribe extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'bin_subscribe';
+        return 'sc_subscribe';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinSubscribe[]|BinSubscribe
+     * @return ScSubscribe[]|ScSubscribe
      */
     public static function find($parameters = null)
     {
@@ -160,7 +160,7 @@ class BinSubscribe extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinSubscribe
+     * @return ScSubscribe
      */
     public static function findFirst($parameters = null)
     {

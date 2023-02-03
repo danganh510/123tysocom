@@ -1,19 +1,19 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinArticleLang;
+use Score\Models\ScArticleLang;
 use Phalcon\Mvc\User\Component;
 class ArticleLang extends Component
 {
     public static function deleteById($id){
-        $arr_lang = BinArticleLang::findById($id);
+        $arr_lang = ScArticleLang::findById($id);
         foreach ($arr_lang as $lang){
             $lang->delete();
         }
     }
     public static function findFirstByIdAndLang($id,$lang_code){
-        return BinArticleLang::findFirst(array (
+        return ScArticleLang::findFirst(array (
             " article_id = :ID: AND article_lang_code = :CODE:",
             'bind' => array('ID' => $id,
                 'CODE' => $lang_code )));

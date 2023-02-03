@@ -1,12 +1,12 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Google\GoogleTranslate;
-use Bincg\Models\BinArticleLang;
-use Bincg\Models\BinConfig;
-use Bincg\Models\BinPageLang;
-use Bincg\Models\BinTypeLang;
+use Score\Google\GoogleTranslate;
+use Score\Models\ScArticleLang;
+use Score\Models\ScConfig;
+use Score\Models\ScPageLang;
+use Score\Models\ScTypeLang;
 use Phalcon\Mvc\User\Component;
 
 class Cron extends Component
@@ -16,7 +16,7 @@ class Cron extends Component
         if (empty($string_data)) {
             $string_data = "''";
         }
-        $sql_ar = "Select * From Bincg\Models\BinArticle  Where article_active = 'Y' AND article_id NOT IN ($string_data) limit 3 ";
+        $sql_ar = "Select * From Score\Models\ScArticle  Where article_active = 'Y' AND article_id NOT IN ($string_data) limit 3 ";
         $list_article = $this->modelsManager->executeQuery($sql_ar);
         //translate Article
         $article_success = array();
@@ -25,7 +25,7 @@ class Cron extends Component
         $googleTranslate = new GoogleTranslate();
         $message_error = "";
         /**
-         * @var \Bincg\Models\BinArticle[] $list_article
+         * @var \Score\Models\ScArticle[] $list_article
          */
         foreach ($list_article as $list) {
             $id = $list->getArticleId();
@@ -105,7 +105,7 @@ class Cron extends Component
             }
             if ($is_check) {
                 ArticleLang::deleteByIdAndLang($id, $code_lang);
-                $article_lang = new BinArticleLang();
+                $article_lang = new ScArticleLang();
                 $article_lang->setArticleId($id);
                 $article_lang->setArticleLangCode($code_lang);
                 $article_lang->setArticleName($article_name["data"]);
@@ -139,7 +139,7 @@ class Cron extends Component
         if (empty($string_data)) {
             $string_data = "''";
         }
-        $sql_type = "Select * From Bincg\Models\BinType  Where type_active = 'Y' AND type_id NOT IN ($string_data) limit 5";
+        $sql_type = "Select * From Score\Models\ScType  Where type_active = 'Y' AND type_id NOT IN ($string_data) limit 5";
         $list_type = $this->modelsManager->executeQuery($sql_type);
         //translate type
         $article_success = array();
@@ -148,7 +148,7 @@ class Cron extends Component
         $googleTranslate = new GoogleTranslate();
         $message_error="";
         /**
-         * @var \Bincg\Models\BinType[] $list_type
+         * @var \Score\Models\ScType[] $list_type
          */
         foreach ($list_type as $list) {
             $id = $list->getTypeId();
@@ -224,7 +224,7 @@ class Cron extends Component
 
             if ($is_check) {
                 TypeLang::deleteByIdAndLang($id, $code_lang);
-                $article_lang = new BinTypeLang();
+                $article_lang = new ScTypeLang();
                 $article_lang->setTypeId($id);
                 $article_lang->setTypeLangCode($code_lang);
                 $article_lang->setTypeName($article_name["data"]);
@@ -257,7 +257,7 @@ class Cron extends Component
         if (empty($string_data)) {
             $string_data = "''";
         }
-        $sql_type = "Select * From Bincg\Models\BinPage  Where page_id NOT IN ($string_data) limit 5";
+        $sql_type = "Select * From Score\Models\ScPage  Where page_id NOT IN ($string_data) limit 5";
         $list_type = $this->modelsManager->executeQuery($sql_type);
         //translate type
         $article_success = array();
@@ -266,7 +266,7 @@ class Cron extends Component
         $googleTranslate = new GoogleTranslate();
         $message_error="";
         /**
-         * @var \Bincg\Models\BinPage[] $list_type
+         * @var \Score\Models\ScPage[] $list_type
          */
         foreach ($list_type as $list) {
             $id = $list->getPageId();
@@ -369,7 +369,7 @@ class Cron extends Component
 
             if ($is_check) {
                 PageLang::deleteByIdAndLang($id, $code_lang);
-                $article_lang = new BinPageLang();
+                $article_lang = new ScPageLang();
                 $article_lang->setPageId($id);
                 $article_lang->setPageLangCode($code_lang);
                 $article_lang->setPageName($article_name["data"]);
@@ -401,7 +401,7 @@ class Cron extends Component
             $string_data = array();
         }
         $arr_data = explode(",",$string_data);
-        $sql_type = "Select * From Bincg\Models\BinConfig  Where config_key NOT IN ( '" . implode( "', '" , $arr_data ) . "' )  And config_language = 'en' limit 15";
+        $sql_type = "Select * From Score\Models\ScConfig  Where config_key NOT IN ( '" . implode( "', '" , $arr_data ) . "' )  And config_language = 'en' limit 15";
         $list_type = $this->modelsManager->executeQuery($sql_type);
 
         //translate type
@@ -411,7 +411,7 @@ class Cron extends Component
         $googleTranslate = new GoogleTranslate();
         $message_error="";
         /**
-         * @var \Bincg\Models\BinConfig[] $list_type
+         * @var \Score\Models\ScConfig[] $list_type
          */
         foreach ($list_type as $list) {
             $id = $list->getConfigKey();
@@ -437,7 +437,7 @@ class Cron extends Component
             }
             if ($is_check) {
                 Config::deleteByIdAndLang($id,$code_lang);
-                $article_lang = new BinConfig();
+                $article_lang = new ScConfig();
                 $article_lang->setConfigKey($id);
                 $article_lang->setConfigLanguage($code_lang);
                 $article_lang->setConfigContent($article_name["data"]);
@@ -466,7 +466,7 @@ class Cron extends Component
         if (empty($string_data)) {
             $string_data = "''";
         }
-        $sql_type = "Select * From Bincg\Models\BinAlbum  Where album_id NOT IN ($string_data) limit 5";
+        $sql_type = "Select * From Score\Models\ScAlbum  Where album_id NOT IN ($string_data) limit 5";
         $list_type = $this->modelsManager->executeQuery($sql_type);
         //translate type
         $article_success = array();
@@ -475,7 +475,7 @@ class Cron extends Component
         $googleTranslate = new GoogleTranslate();
         $message_error="";
         /**
-         * @var \Bincg\Models\BinAlbum[] $list_type
+         * @var \Score\Models\ScAlbum[] $list_type
          */
         foreach ($list_type as $list) {
             $id = $list->getAlbumId();
@@ -547,7 +547,7 @@ class Cron extends Component
             }
             if ($is_check) {
                 PageLang::deleteByIdAndLang($id, $code_lang);
-                $article_lang = new BinPageLang();
+                $article_lang = new ScPageLang();
                 $article_lang->setPageId($id);
                 $article_lang->setPageLangCode($code_lang);
                 $article_lang->setPageName($article_name["data"]);

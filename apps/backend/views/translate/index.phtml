@@ -114,14 +114,14 @@
                     <td><?php echo $item->getDetailTotal(); ?></td>
                     <td>English</td>
                     <td>
-                        <?php $lang_name = \Bincg\Repositories\Language::getNameByCode($item->getDetailLangCode()); ?>
+                        <?php $lang_name = \Score\Repositories\Language::getNameByCode($item->getDetailLangCode()); ?>
                         <?php echo $lang_name ? $lang_name : ''; ?>
                     </td>
                     <td><?php echo $this->my->formatDateTime($item->getDetailInsertTime(),false); ?></td>
                     <td class="<?php echo $item->getDetailStatus()=='Success' ? 'text-success' : 'text-danger'; ?>"><?php echo $item->getDetailStatus(); ?></td>
                     <td>
                         <?php
-                        $user_translate = \Bincg\Repositories\User::getFirstUserByUserId($item->getDetailUserId());
+                        $user_translate = \Score\Repositories\User::getFirstUserByUserId($item->getDetailUserId());
                         ?>
                         <?php echo $user_translate ? $user_translate->getUserName().' ['.$user_translate->getUserEmail().']' : ''; ?>
                     </td>

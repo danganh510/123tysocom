@@ -1,10 +1,10 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\Page;
-use Bincg\Repositories\Type;
+use Score\Repositories\Article;
+use Score\Repositories\Banner;
+use Score\Repositories\Page;
+use Score\Repositories\Type;
 
 class ServicesController extends ControllerBase
 {

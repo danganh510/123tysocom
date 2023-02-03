@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 use Phalcon\Db\RawValue;
 
-class BinOffice extends BaseModel
+class ScOffice extends BaseModel
 {
 
     /**
@@ -474,7 +474,7 @@ class BinOffice extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_office';
+        return 'sc_office';
     }
 
     public function beforeValidation()
@@ -500,7 +500,7 @@ class BinOffice extends BaseModel
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinOffice[]|BinOffice
+     * @return ScOffice[]|ScOffice
      */
     public static function find($parameters = null)
     {
@@ -511,7 +511,7 @@ class BinOffice extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinOffice
+     * @return ScOffice
      */
     public static function findFirst($parameters = null)
     {
@@ -519,7 +519,7 @@ class BinOffice extends BaseModel
     }
 
     public static function findFirstById($id){
-        return BinOffice::findFirst(array(
+        return ScOffice::findFirst(array(
             'office_id = :id:',
             'bind' => array('id' => $id)
         ));

@@ -1,10 +1,10 @@
 <?php
-use Bincg\Models\BinUser;
-use Bincg\Repositories\User;
-use Bincg\Repositories\ContactUs AS ContactUs;
-use Bincg\Models\BinContactus AS BinContactus;
-use Bincg\Repositories\Apply AS Apply;
-use Bincg\Models\BinApply AS BinApply;
+use Score\Models\ScUser;
+use Score\Repositories\User;
+use Score\Repositories\ContactUs AS ContactUs;
+use Score\Models\ScContactus AS ScContactus;
+use Score\Repositories\Apply AS Apply;
+use Score\Models\ScApply AS ScApply;
 
 ?>
 <div class="row top_tiles">
@@ -12,21 +12,21 @@ use Bincg\Models\BinApply AS BinApply;
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-user"></i></div>
             <div class="count">
-                <?php echo BinUser::count(); ?></div>
+                <?php echo ScUser::count(); ?></div>
             <h3>Total User</h3>
         </div>
     </div>
     <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-envelope-o"></i></div>
-            <div class="count"><?php echo BinContactus::count();?></div>
+            <div class="count"><?php echo ScContactus::count();?></div>
             <h3>Total Contact us</h3>
         </div>
     </div>
     <div class="animated flipInY col-lg-4 col-md-4 col-sm-6 col-xs-12">
         <div class="tile-stats">
             <div class="icon"><i class="fa fa-envelope-square"></i></div>
-            <div class="count"><?php echo BinApply::count();?></div>
+            <div class="count"><?php echo ScApply::count();?></div>
             <h3>Total Apply</h3>
         </div>
     </div>
@@ -69,7 +69,7 @@ use Bincg\Models\BinApply AS BinApply;
             <div class="x_content">
                 <?php $list_contactus = Contactus::getByLimit(10);
                 /**
-                 * @var \Bincg\Models\BinContactus $contactus
+                 * @var \Score\Models\ScContactus $contactus
                  */
 
                 foreach ($list_contactus as $contactus){?>
@@ -97,7 +97,7 @@ use Bincg\Models\BinApply AS BinApply;
             <div class="x_content">
                 <?php $list_apply = Apply::getByLimit(10);
                 /**
-                 * @var \Bincg\Models\BinApply $apply
+                 * @var \Score\Models\ScApply $apply
                  */
 
                 foreach ($list_apply as $apply){?>

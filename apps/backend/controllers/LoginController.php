@@ -1,13 +1,13 @@
 <?php
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinRole;
+use Score\Models\ScRole;
 use Phalcon\Mvc\View;
-use Bincg\Utils\PasswordGenerator;
-use Bincg\Models\BinUser;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\User;
-use Bincg\Utils\Validator;
+use Score\Utils\PasswordGenerator;
+use Score\Models\ScUser;
+use Score\Repositories\Activity;
+use Score\Repositories\User;
+use Score\Utils\Validator;
 
 class LoginController extends ControllerBase
 {
@@ -48,9 +48,9 @@ class LoginController extends ControllerBase
             }
 
             if ($validLogin) {
-                $user = BinUser::findFirstByEmail($email);
+                $user = ScUser::findFirstByEmail($email);
                 if ($user) {
-                    $role = BinRole::getFirstLoginById($user->getUserRoleId());
+                    $role = ScRole::getFirstLoginById($user->getUserRoleId());
                     $controllerClass = $this->dispatcher->getControllerClass();
                     if (($role)||(strpos($controllerClass, 'Frontend') !== false)){
                         $cur_pass = $user->getUserPassword();

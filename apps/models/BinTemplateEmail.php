@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinTemplateEmail extends BaseModel
+class ScTemplateEmail extends BaseModel
 {
 
     /**
@@ -172,14 +172,14 @@ class BinTemplateEmail extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_template_email';
+        return 'sc_template_email';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinTemplateEmail[]|BinTemplateEmail
+     * @return ScTemplateEmail[]|ScTemplateEmail
      */
     public static function find($parameters = null)
     {
@@ -190,7 +190,7 @@ class BinTemplateEmail extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinTemplateEmail
+     * @return ScTemplateEmail
      */
     public static function findFirst($parameters = null)
     {
@@ -198,7 +198,7 @@ class BinTemplateEmail extends BaseModel
     }
     public static function findFirstById($id)
     {
-        return BinTemplateEmail::findFirst(array(
+        return ScTemplateEmail::findFirst(array(
             "email_id =:ID:",
             'bind' => array('ID' => $id)
         ));

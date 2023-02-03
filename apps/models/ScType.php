@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinType extends BaseModel
+class ScType extends BaseModel
 {
 
     /**
@@ -291,14 +291,14 @@ class BinType extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_type';
+        return 'sc_type';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinType[]|BinType
+     * @return ScType[]|ScType
      */
     public static function find($parameters = null)
     {
@@ -309,7 +309,7 @@ class BinType extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinType
+     * @return ScType
      */
     public static function findFirst($parameters = null)
     {
@@ -318,7 +318,7 @@ class BinType extends BaseModel
 
     public static function findFirstById($typeId)
     {
-        return BinType::findFirst(array(
+        return ScType::findFirst(array(
             "type_id =:ID:",
             'bind' => array('ID' => $typeId)
         ));

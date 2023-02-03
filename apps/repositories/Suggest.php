@@ -1,9 +1,9 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
 use Phalcon\Mvc\User\Component;
-use Bincg\Models\BinSuggest;
+use Score\Models\ScSuggest;
 
 class Suggest extends Component
 {
@@ -24,7 +24,7 @@ class Suggest extends Component
             $sugArray = unserialize(file_get_contents($cachedConfigFileName));
         }
         else {
-            $list_suggest = BinSuggest::find("1 ORDER BY sug_count DESC");
+            $list_suggest = ScSuggest::find("1 ORDER BY sug_count DESC");
             foreach($list_suggest as $suggest) {
                 $item = array();
                 $item[self::SUG_NAME] = $suggest->getSugName();
@@ -48,7 +48,7 @@ class Suggest extends Component
     }
     public static function update($name,$lang = 'en'){
         $name = str_replace("&quot;","",$name);
-        $suggest = BinSuggest::findFirst(array(
+        $suggest = ScSuggest::findFirst(array(
             'conditions' => 'sug_name = :NAME: AND sug_lang_code =:CODE:',
             'bind'       => array('NAME' => $name, 'CODE' => $lang)
         ));
@@ -56,7 +56,7 @@ class Suggest extends Component
             $suggest->setSugCount($suggest->getSugCount() +1);
             $suggest->update();
         }else{
-            $suggest = new BinSuggest();
+            $suggest = new ScSuggest();
             $suggest->setSugName($name);
             $suggest->setSugLangCode($lang);
             $suggest->save();

@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinLanguage;
-use Bincg\Models\BinTemplateEmailLang;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\EmailTemplate;
-use Bincg\Repositories\EmailTemplateLang;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Models\ScLanguage;
+use Score\Models\ScTemplateEmailLang;
+use Score\Repositories\Activity;
+use Score\Repositories\EmailTemplate;
+use Score\Repositories\EmailTemplateLang;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Models\BinTemplateEmail;
+use Score\Models\ScTemplateEmail;
 class EmailtemplateController extends ControllerBase
 {
     public function indexAction()
@@ -17,7 +17,7 @@ class EmailtemplateController extends ControllerBase
         $current_page = $this->request->getQuery('page');
         $validator = new Validator();
         $keyword = $this->request->get('txtSearch',array('string', 'trim'));
-        $sql = "SELECT * FROM Bincg\Models\BinTemplateEmail WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScTemplateEmail WHERE 1";
         $arrParameter = array();
         if(!empty($keyword)){
             if($validator->validInt($keyword)) {
@@ -71,7 +71,7 @@ class EmailtemplateController extends ControllerBase
                 }
             }
             if (count($messages) == 0) {
-                $new_emailtemplate = new BinTemplateEmail();
+                $new_emailtemplate = new ScTemplateEmail();
                 $new_emailtemplate->setEmailType($data['email_type']);
                 $new_emailtemplate->setEmailSubject($data['email_subject']);
                 $new_emailtemplate->setEmailContent($data['email_content']);
@@ -105,7 +105,7 @@ class EmailtemplateController extends ControllerBase
         {
             return $this->response->redirect('notfound');
         }
-        $emailtemplate_model = BinTemplateEmail::findFirstById($id_emailtemplate);
+        $emailtemplate_model = ScTemplateEmail::findFirstById($id_emailtemplate);
         if(empty($emailtemplate_model))
         {
             return $this->response->redirect('notfound');
@@ -121,7 +121,7 @@ class EmailtemplateController extends ControllerBase
         ) ;
         $save_mode = '';
         $lang_default = $this->globalVariable->defaultLanguage;
-        $languages = BinLanguage::getLanguages();
+        $languages = ScLanguage::getLanguages();
         $lang_current = $lang_default;
         foreach ($languages as $lang){
             $arr_language[$lang->getLanguageCode()] =$lang->getLanguageName();
@@ -187,7 +187,7 @@ class EmailtemplateController extends ControllerBase
                     default:
                         $emailtemplate_lang = EmailTemplateLang::findFirstByIdAndLang($id_emailtemplate, $save_mode);
                         if (!$emailtemplate_lang) {
-                            $emailtemplate_lang = new BinTemplateEmailLang();
+                            $emailtemplate_lang = new ScTemplateEmailLang();
                             $emailtemplate_lang->setEmailId($id_emailtemplate);
                             $emailtemplate_lang->setEmailLangCode($save_mode);
                         }
@@ -209,7 +209,7 @@ class EmailtemplateController extends ControllerBase
                         'typeMessage' => "success",
                     );
                     $message = '';
-                    $data_log = json_encode(array('Binf_email_template' => array($id_emailtemplate => array($data_old, $data_new))));
+                    $data_log = json_encode(array('Scf_email_template' => array($id_emailtemplate => array($data_old, $data_new))));
                     $activity = new Activity();
                     $activity->logActivity($this->controllerName, $this->actionName, $this->auth['id'], $message, $data_log);
                 }else{
@@ -225,7 +225,7 @@ class EmailtemplateController extends ControllerBase
             'email_content' => ($save_mode === $this->globalVariable->defaultLanguage)?$data_post['email_content']:$emailtemplate_model->getEmailContent(),
         );
         $arr_translate[$lang_default] = $item;
-        $arr_emailtemplate_lang = BinTemplateEmailLang::findById($id_emailtemplate);
+        $arr_emailtemplate_lang = ScTemplateEmailLang::findById($id_emailtemplate);
         foreach ($arr_emailtemplate_lang as $emailtemplate_lang){
             $item = array(
                 'email_subject'=>($save_mode === $emailtemplate_lang->getEmailLangCode())?$data_post['email_subject']:$emailtemplate_lang->getEmailSubject(),
@@ -263,7 +263,7 @@ class EmailtemplateController extends ControllerBase
             $emailtemplate_log = array();
             foreach ($emailtemplate_checked as $emailtemplate_id)
             {
-                $emailtemplate_item = BinTemplateEmail::findFirstById($emailtemplate_id);
+                $emailtemplate_item = ScTemplateEmail::findFirstById($emailtemplate_id);
                 if($emailtemplate_item)
                 {
                     $msg_result = array();

@@ -1,11 +1,11 @@
 <?php
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinRole;
-use Bincg\Models\BinUser;
-use Bincg\Utils\Validator;
-use Bincg\Repositories\Role;
-use Bincg\Repositories\Activity;
+use Score\Models\ScRole;
+use Score\Models\ScUser;
+use Score\Utils\Validator;
+use Score\Repositories\Role;
+use Score\Repositories\Activity;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 class RoleController extends ControllerBase {
 
@@ -63,7 +63,7 @@ class RoleController extends ControllerBase {
             }
             else {
                 $name_exist = Role::getByName($name, 0);
-                if ($name_exist || in_array($name,BinRole::getGuestUser())) $msg_info['name'] = 'Name "'. $name .'" is exists.';
+                if ($name_exist || in_array($name,ScRole::getGuestUser())) $msg_info['name'] = 'Name "'. $name .'" is exists.';
             }
             if ($order == '') {
                 $msg_info['order'] = 'Order field is required.';
@@ -72,7 +72,7 @@ class RoleController extends ControllerBase {
                 $msg_info['order'] = 'Enter a valid order.';
             }
             if (count($msg_info) == 0) {
-                $new_role = new BinRole();
+                $new_role = new ScRole();
                 $new_role->setRoleName($name);
                 $new_role->setRoleOrder($order);
                 $new_role->setRoleActive($active);
@@ -204,9 +204,9 @@ class RoleController extends ControllerBase {
             $data_log = array();
             $count = 0;
             foreach ($role_checks as $role_id) {
-                $role_item = BinRole::getFirstById($role_id);
+                $role_item = ScRole::getFirstById($role_id);
                 if($role_item) {
-                    $user = BinUser::findFirstByRole($role_id);
+                    $user = ScUser::findFirstByRole($role_id);
                     if($user)
                     {
                         $message = 'Can\'t delete the Role Name = '.$role_item->getRoleName().'. Because It\'s exist in User.<br>';
@@ -240,7 +240,7 @@ class RoleController extends ControllerBase {
 
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinRole WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScRole WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $arrParameter = array();
         $validator = new Validator();
@@ -266,7 +266,7 @@ class RoleController extends ControllerBase {
         $arr_dir = array();
         $directory_backend =__DIR__."/../../backend/controllers/*.php";
         foreach (glob($directory_backend) as $controller) {
-            $className = 'Bincg\Backend\Controllers\\' . basename($controller, '.php');
+            $className = 'Score\Backend\Controllers\\' . basename($controller, '.php');
             $className2 = basename($controller, 'Controller.php');
             if(!strpos($className2,'.php')) {
                 $parent_name = lcfirst($className2);
@@ -286,7 +286,7 @@ class RoleController extends ControllerBase {
     // get Actions
     private function getActions() {
         $resources = $this->getArrDirectory();
-        $result = BinRole::getActions();
+        $result = ScRole::getActions();
         foreach($resources as $key => $values){
             if(empty($result[$key])) $result[$key] = array();
             if(!empty($_POST[$key])) {

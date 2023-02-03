@@ -1,10 +1,10 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\Career;
-use Bincg\Repositories\Page;
+use Score\Repositories\Article;
+use Score\Repositories\Banner;
+use Score\Repositories\Career;
+use Score\Repositories\Page;
 
 class IndexController extends ControllerBase
 {
@@ -18,14 +18,11 @@ class IndexController extends ControllerBase
         $repoArticle = new Article();
         $service_articles = $repoArticle->getByTypeAndOrder($this->globalVariable->typeServicesId,$this->lang_code);
         $new_articles = $repoArticle->getByArrTypeAndInsertTimeIsHomeY($this->globalVariable->typeNewsId,$this->lang_code,4);
-        $repoCareer = new Career();
-        $career_articles = $repoCareer->getAllByInsertTime($this->lang_code,3);
         $this->view->setVars([
             'banners'           => $banners,
             'service_articles'  => $service_articles,
             'new_articles'      => $new_articles,
-            'career_articles'   => $career_articles,
-            'checkCareer'       => true,
+            'checkCareer'       => false,
         ]);
     }
 }

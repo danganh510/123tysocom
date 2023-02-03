@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinCareer extends BaseModel
+class ScCareer extends BaseModel
 {
 
     /**
@@ -664,14 +664,14 @@ class BinCareer extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_career';
+        return 'sc_career';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCareer[]|BinCareer
+     * @return ScCareer[]|ScCareer
      */
     public static function find($parameters = null)
     {
@@ -682,7 +682,7 @@ class BinCareer extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCareer
+     * @return ScCareer
      */
     public static function findFirst($parameters = null)
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinOfficeImage extends BaseModel
+class ScOfficeImage extends BaseModel
 {
 
     /**
@@ -172,14 +172,14 @@ class BinOfficeImage extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_office_image';
+        return 'sc_office_image';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinOfficeImage[]|BinOfficeImage
+     * @return ScOfficeImage[]|ScOfficeImage
      */
     public static function find($parameters = null)
     {
@@ -190,7 +190,7 @@ class BinOfficeImage extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinOfficeImage
+     * @return ScOfficeImage
      */
     public static function findFirst($parameters = null)
     {
@@ -199,13 +199,13 @@ class BinOfficeImage extends BaseModel
 
     public static function findFirstById($id)
     {
-        return BinOfficeImage::findFirst(array(
+        return ScOfficeImage::findFirst(array(
             'image_id = :ID:',
             'bind' => array('ID' => $id)
         ));
     }
     public static function findFirstByOfficeId($office_id){
-        return BinOfficeImage::findFirst(array(
+        return ScOfficeImage::findFirst(array(
             'image_office_id = :office_id:',
             'bind' => array('office_id' => $office_id)
         ));

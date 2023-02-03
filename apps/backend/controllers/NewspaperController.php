@@ -1,11 +1,11 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinNewspaper;
-use Bincg\Repositories\Newspaper;
-use Bincg\Repositories\NewspaperArticle;
-use Bincg\Utils\Validator;
+use Score\Models\ScNewspaper;
+use Score\Repositories\Newspaper;
+use Score\Repositories\NewspaperArticle;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class NewspaperController extends ControllerBase
@@ -15,7 +15,7 @@ class NewspaperController extends ControllerBase
         $current_page = $this->request->getQuery('page', 'int');
         $validator = new Validator();
         $keyword = $this->request->get('txtSearch','trim');
-        $sql = "SELECT * FROM Bincg\Models\BinNewspaper WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScNewspaper WHERE 1";
         $arrParameter = array();
 
         if(!empty($keyword)){
@@ -107,7 +107,7 @@ class NewspaperController extends ControllerBase
             if(count($messages) == 0)
             {
                 $msg_result = array();
-                $new_content_newspaper = new BinNewspaper();
+                $new_content_newspaper = new ScNewspaper();
                 foreach ($data as $key => $value){
                     $new_content_newspaper->$key = $value;
                 }

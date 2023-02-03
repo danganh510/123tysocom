@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinUser extends BaseModel
+class ScUser extends BaseModel
 {
 
     /**
@@ -232,14 +232,14 @@ class BinUser extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_user';
+        return 'sc_user';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinUser[]|BinUser
+     * @return ScUser[]|ScUser
      */
     public static function find($parameters = null)
     {
@@ -250,7 +250,7 @@ class BinUser extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinUser
+     * @return ScUser
      */
     public static function findFirst($parameters = null)
     {

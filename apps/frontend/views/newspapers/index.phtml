@@ -4,7 +4,7 @@
  * @var $lang_code;
  * @var $lang_url_slashed;
  * @var $parent_keyword;
- * @var \Bincg\Models\BinNewspaper[] $newspapers
+ * @var \Score\Models\ScNewspaper[] $newspapers
  */
 ?>
 <?php if(!$isMobile){ ?>
@@ -79,7 +79,7 @@
             </strong>
         </a>
         <?php
-            $repoNewspaperArticle = new \Bincg\Repositories\NewspaperArticle();
+            $repoNewspaperArticle = new \Score\Repositories\NewspaperArticle();
             $newspaperArticleByIds = $repoNewspaperArticle->getByNewspaperIdAndInsertTime($newspaper->getNewspaperId(),$lang_code,$isMobile ? 3 : 6);
             if(count($newspaperArticleByIds)>0){ ?>
                 <div class="row">

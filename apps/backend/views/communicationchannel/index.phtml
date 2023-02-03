@@ -85,7 +85,7 @@ if($this->dispatcher->getParam("slcType") != "") {
                             </thead>
 
                             <tbody class="tb_body">
-                            <?php /** @var \Bincg\Models\BinCommunicationChannel $item */?>
+                            <?php /** @var \Score\Models\ScCommunicationChannel $item */?>
                             <?php foreach ($list_communication_channel->items as $item) { ?>
                                 <tr >
                                     <td><label class="container_checkbox"><input class="check" name="item[]" value="<?php echo $item->getCommunicationChannelId() ?>" type="checkbox"><span class="checkmark_checkbox"></span></label></td>

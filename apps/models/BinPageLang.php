@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinPageLang extends BaseModel
+class ScPageLang extends BaseModel
 {
 
     /**
@@ -262,14 +262,14 @@ class BinPageLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_page_lang';
+        return 'sc_page_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinPageLang[]|BinPageLang
+     * @return ScPageLang[]|ScPageLang
      */
     public static function find($parameters = null)
     {
@@ -280,7 +280,7 @@ class BinPageLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinPageLang
+     * @return ScPageLang
      */
     public static function findFirst($parameters = null)
     {
@@ -288,7 +288,7 @@ class BinPageLang extends BaseModel
     }
     public static function findById($id)
     {
-        return BinPageLang::find(array(
+        return ScPageLang::find(array(
             "page_id =:ID:",
             'bind' => array('ID' => $id)
         ));

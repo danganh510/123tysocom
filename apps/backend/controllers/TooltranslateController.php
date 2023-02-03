@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Google\GoogleTranslate;
+use Score\Google\GoogleTranslate;
 
 class TooltranslateController extends ControllerBase
 {

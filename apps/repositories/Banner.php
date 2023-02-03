@@ -1,9 +1,9 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinBanner;
-use Bincg\Models\BinType;
+use Score\Models\ScBanner;
+use Score\Models\ScType;
 use Phalcon\Mvc\User\Component;
 
 class Banner extends Component
@@ -45,7 +45,7 @@ class Banner extends Component
 
     public function getArticle ($str = "", $type = 0, $inputslc)
     {
-        $sql = "SELECT article_keyword, article_type_id, article_name FROM Bincg\Models\BinArticle 
+        $sql = "SELECT article_keyword, article_type_id, article_name FROM Score\Models\ScArticle 
                 WHERE article_type_id = :typeId: AND article_active = 'Y'
                 Order By article_order ASC";
         $data = $this->modelsManager->executeQuery($sql,
@@ -99,7 +99,7 @@ class Banner extends Component
     public function getArticleGroup($controller_search)
     {
         $result = '';
-        $types = BinType::find('type_active = "Y"');
+        $types = ScType::find('type_active = "Y"');
         $arTypeBanner = array(
            2,3,4
         );
@@ -120,8 +120,8 @@ class Banner extends Component
     public function getBannerByController($controller_name,$lang='en'){
         $result = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT b.*, bl.* FROM \Bincg\Models\BinBanner b
-                LEFT JOIN \Bincg\Models\BinBannerLang bl ON bl.banner_lang_code = '$lang' AND bl.banner_id = b.banner_id 
+            $sql = "SELECT b.*, bl.* FROM \Score\Models\ScBanner b
+                LEFT JOIN \Score\Models\ScBannerLang bl ON bl.banner_lang_code = '$lang' AND bl.banner_id = b.banner_id 
                 WHERE b.banner_active = 'Y' AND b.banner_controller = '$controller_name' 
                 ORDER BY b.banner_order ASC 
                 ";
@@ -129,7 +129,7 @@ class Banner extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinBanner(),
+                        new ScBanner(),
                         [
                             "banner_id" => $item->b->getBannerId(),
                             "banner_controller" => $item->b->getBannerController(),
@@ -147,7 +147,7 @@ class Banner extends Component
                 }
             }
         }else{
-            $lists = BinBanner::query()
+            $lists = ScBanner::query()
                 ->where("banner_active = 'Y'")
                 ->andWhere("banner_controller = '$controller_name'")
                 ->orderBy("banner_order ASC")
@@ -159,8 +159,8 @@ class Banner extends Component
     public function getBannerByKeyWord($banner_article_keyword,$lang='en'){
         $result = array();
         if ($lang && $lang != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT b.*, bl.* FROM \Bincg\Models\BinBanner b
-                LEFT JOIN \Bincg\Models\BinBannerLang bl ON bl.banner_lang_code = '$lang' AND bl.banner_id = b.banner_id 
+            $sql = "SELECT b.*, bl.* FROM \Score\Models\ScBanner b
+                LEFT JOIN \Score\Models\ScBannerLang bl ON bl.banner_lang_code = '$lang' AND bl.banner_id = b.banner_id 
                 WHERE b.banner_active = 'Y' AND b.banner_article_keyword = '$banner_article_keyword' 
                 ORDER BY b.banner_order ASC 
                 ";
@@ -168,7 +168,7 @@ class Banner extends Component
             if($lists && sizeof($lists)>0){
                 foreach ($lists as $item){
                     $result[] = \Phalcon\Mvc\Model::cloneResult(
-                        new BinBanner(),
+                        new ScBanner(),
                         [
                             "banner_id" => $item->b->getBannerId(),
                             "banner_controller" => $item->b->getBannerController(),
@@ -186,7 +186,7 @@ class Banner extends Component
                 }
             }
         }else{
-            $lists = BinBanner::query()
+            $lists = ScBanner::query()
                 ->where("banner_active = 'Y'")
                 ->andWhere("banner_article_keyword = '$banner_article_keyword'")
                 ->orderBy("banner_order ASC")
@@ -198,9 +198,9 @@ class Banner extends Component
 
     public function getAllActiveBannerTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinBanner as b
+        $sql = "SELECT * FROM Score\Models\ScBanner as b
                 WHERE b.banner_active = 'Y' AND b.banner_id NOT IN 
-                 (SELECT bl.banner_id FROM Bincg\Models\BinBannerLang as bl WHERE bl.banner_lang_code =
+                 (SELECT bl.banner_id FROM Score\Models\ScBannerLang as bl WHERE bl.banner_lang_code =
                 :lang_code:)
                 ORDER BY b.banner_order ASC ";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {

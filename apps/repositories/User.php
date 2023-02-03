@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Repositories;
-use Bincg\Models\BinUser;
-use Bincg\Models\BinRole;
+namespace Score\Repositories;
+use Score\Models\ScUser;
+use Score\Models\ScRole;
 use Phalcon\Mvc\User\Component;
 
 class User extends Component {
     /**
-     * @var BinUser $user
-     * @var BinRole $role
+     * @var ScUser $user
+     * @var ScRole $role
      */
     public function initSession($user,$role){
         if ($user) {            
@@ -39,13 +39,13 @@ class User extends Component {
     }
 
     public static function getByLimit($limit){
-        return BinUser::find(array(
+        return ScUser::find(array(
             "order"      => "user_insert_time DESC",
             "limit"      => $limit,
         ));
     }
     public static function getFirstUserByUserId($user_id) {
-        return BinUser::findFirst(array(
+        return ScUser::findFirst(array(
             'user_id = :user_id:',
             'bind' => array('user_id' => $user_id)
         ));

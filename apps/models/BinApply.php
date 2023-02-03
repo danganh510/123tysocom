@@ -1,10 +1,10 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 use Phalcon\Db\RawValue;
 
-class BinApply extends \Phalcon\Mvc\Model
+class ScApply extends \Phalcon\Mvc\Model
 {
 
     /**
@@ -356,7 +356,7 @@ class BinApply extends \Phalcon\Mvc\Model
      */
     public function getSource()
     {
-        return 'bin_apply';
+        return 'sc_apply';
     }
     public function beforeValidation()
     {
@@ -368,7 +368,7 @@ class BinApply extends \Phalcon\Mvc\Model
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinApply[]|BinApply
+     * @return ScApply[]|ScApply
      */
     public static function find($parameters = null)
     {
@@ -379,14 +379,14 @@ class BinApply extends \Phalcon\Mvc\Model
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinApply
+     * @return ScApply
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
     }
     public static function findFirstById ($id) {
-        return BinApply::findFirst(array(
+        return ScApply::findFirst(array(
             'apply_id = :id:',
             'bind' => array('id' => $id)
         ));

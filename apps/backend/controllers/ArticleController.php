@@ -1,18 +1,18 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinArticle;
-use Bincg\Models\BinArticleLang;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Article;
-use Bincg\Repositories\ArticleLang;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Type;
-use Bincg\Repositories\AzureSearch;
-use Bincg\Repositories\SearchAzure;
-use Bincg\Utils\Validator;
+use Score\Models\ScArticle;
+use Score\Models\ScArticleLang;
+use Score\Models\ScLanguage;
+use Score\Repositories\Activity;
+use Score\Repositories\Article;
+use Score\Repositories\ArticleLang;
+use Score\Repositories\Language;
+use Score\Repositories\Type;
+use Score\Repositories\AzureSearch;
+use Score\Repositories\SearchAzure;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 
 class ArticleController extends ControllerBase
@@ -135,7 +135,7 @@ class ArticleController extends ControllerBase
                 $messages["order"] = "Order is not valid ";
             }
             if (count($messages) == 0) {
-                $new_type = new BinArticle();
+                $new_type = new ScArticle();
                 $new_type->setArticleTypeId(implode(',', $data['type_id']));
                 $new_type->setArticleName($data["name"]);
                 $new_type->setArticleEmailSupport($data['email_support']);
@@ -266,7 +266,7 @@ class ArticleController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if ($save_mode != BinLanguage::GENERAL) {
+            if ($save_mode != ScLanguage::GENERAL) {
                 $data['article_name'] = $this->request->get("txtName", array('string', 'trim'));
                 $data['article_title'] = $this->request->get("txtTitle", array('string', 'trim'));
                 $data['article_icon'] = $this->request->getPost('txtIcon', array('string', 'trim'));
@@ -333,8 +333,8 @@ class ArticleController extends ControllerBase
                 $messageLog = '';
                 $activity = new Activity();
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
-                        $arr_article_lang = BinArticleLang::findById($article_id);
+                    case ScLanguage::GENERAL:
+                        $arr_article_lang = ScArticleLang::findById($article_id);
                         $data_old = array(
                             'article_type_id' => $article_model->getArticleTypeId(),
                             'article_keyword' => $article_model->getArticleKeyword(),
@@ -369,7 +369,7 @@ class ArticleController extends ControllerBase
                         $article_model->setArticleFullStyle($data['article_full_style']);
                         $article_model->setArticleUpdateTime($this->globalVariable->curTime);
                         $result = $article_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'article_type_id' => $article_model->getArticleTypeId(),
                             'article_keyword' => $article_model->getArticleKeyword(),
@@ -402,7 +402,7 @@ class ArticleController extends ControllerBase
                                 }
                                 foreach ($arr_article_lang as $article_lang) {
                                     $articleMerge = \Phalcon\Mvc\Model::cloneResult(
-                                        new BinArticle(), array_merge($article_model->toArray(), $article_lang->toArray())
+                                        new ScArticle(), array_merge($article_model->toArray(), $article_lang->toArray())
                                     );
                                     $updateAzureLang = $this->updateDocsLang($articleMerge, $article_lang->getArticleLangCode());
                                     if (isset($updateAzureLang['status']) && $updateAzureLang['status'] == 'success') {
@@ -484,7 +484,7 @@ class ArticleController extends ControllerBase
                     default:
                         $content_article_lang = ArticleLang::findFirstByIdAndLang($article_id, $save_mode);
                         if (!$content_article_lang) {
-                            $content_article_lang = new BinArticleLang();
+                            $content_article_lang = new ScArticleLang();
                             $content_article_lang->setArticleId($article_id);
                             $content_article_lang->setArticleLangCode($save_mode);
                         }
@@ -503,7 +503,7 @@ class ArticleController extends ControllerBase
                         if (defined('AZURE_MODE') && AZURE_MODE) {
                             if ($result && $article_model->getArticleActive() == 'Y') {
                                 $articleMerge = \Phalcon\Mvc\Model::cloneResult(
-                                    new BinArticle(), array_merge($article_model->toArray(), $content_article_lang->toArray()));
+                                    new ScArticle(), array_merge($article_model->toArray(), $content_article_lang->toArray()));
                                 $updateAzureLang = $this->updateDocsLang($articleMerge, $save_mode);
                                 if (isset($updateAzureLang['status']) && $updateAzureLang['status'] == 'success') {
                                     $messagesAzure = ucfirst($info . " Update Article Azure Lang success<br>");
@@ -563,7 +563,7 @@ class ArticleController extends ControllerBase
             'article_content' => ($save_mode === $this->globalVariable->defaultLanguage) ? $data['article_content'] : $article_model->getArticleContent(),
         );
         $arr_translate[$lang_default] = $item;
-        $arr_article_lang = BinArticleLang::findById($article_id);
+        $arr_article_lang = ScArticleLang::findById($article_id);
         foreach ($arr_article_lang as $article_lang) {
             $item = array(
                 'article_id' => $article_lang->getArticleId(),
@@ -594,21 +594,21 @@ class ArticleController extends ControllerBase
         }
         $formData = array(
             'article_id' => $article_model->getArticleId(),
-            'article_type_id' => ($save_mode === BinLanguage::GENERAL) ? implode(',', $data['article_type_id']) : $article_model->getArticleTypeId(),
-            'article_keyword' => ($save_mode === BinLanguage::GENERAL) ? $data['article_keyword'] : $article_model->getArticleKeyword(),
-            'article_email_support' => ($save_mode === BinLanguage::GENERAL) ? $data['article_email_support'] : $article_model->getArticleEmailSupport(),
-            'article_icon_large' => ($save_mode === BinLanguage::GENERAL) ? $data['article_icon_large'] : $article_model->getArticleIconLarge(),
-            'article_icon_large_mobile' => ($save_mode === BinLanguage::GENERAL) ? $data['article_icon_large_mobile'] : $article_model->getArticleIconLargeMobile(),
-            'article_logo' => ($save_mode === BinLanguage::GENERAL) ? $data['article_logo'] : $article_model->getArticleLogo(),
-            'article_logo_active' => ($save_mode === BinLanguage::GENERAL) ? $data['article_logo_active'] : $article_model->getArticleLogoActive(),
-            'article_insert_time' => ($save_mode === BinLanguage::GENERAL) ? $data['article_insert_time'] : $this->my->formatDateTime($article_model->getArticleInsertTime(), false),
-            'article_order' => ($save_mode === BinLanguage::GENERAL) ? $data['article_order'] : $article_model->getArticleOrder(),
-            'article_active' => ($save_mode === BinLanguage::GENERAL) ? $data['article_active'] : $article_model->getArticleActive(),
-            'article_is_home' => ($save_mode === BinLanguage::GENERAL) ? $data['article_is_home'] : $article_model->getArticleIsHome(),
-            'article_is_header' => ($save_mode === BinLanguage::GENERAL) ? $data['article_is_header'] : $article_model->getArticleIsHeader(),
-            'article_is_horizontal' => ($save_mode === BinLanguage::GENERAL) ? $data['article_is_horizontal'] : $article_model->getArticleIsHorizontal(),
-            'article_is_footer' => ($save_mode === BinLanguage::GENERAL) ? $data['article_is_footer'] : $article_model->getArticleIsFooter(),
-            'article_full_style' => ($save_mode === BinLanguage::GENERAL) ? $data['article_full_style'] : $article_model->getArticleFullStyle(),
+            'article_type_id' => ($save_mode === ScLanguage::GENERAL) ? implode(',', $data['article_type_id']) : $article_model->getArticleTypeId(),
+            'article_keyword' => ($save_mode === ScLanguage::GENERAL) ? $data['article_keyword'] : $article_model->getArticleKeyword(),
+            'article_email_support' => ($save_mode === ScLanguage::GENERAL) ? $data['article_email_support'] : $article_model->getArticleEmailSupport(),
+            'article_icon_large' => ($save_mode === ScLanguage::GENERAL) ? $data['article_icon_large'] : $article_model->getArticleIconLarge(),
+            'article_icon_large_mobile' => ($save_mode === ScLanguage::GENERAL) ? $data['article_icon_large_mobile'] : $article_model->getArticleIconLargeMobile(),
+            'article_logo' => ($save_mode === ScLanguage::GENERAL) ? $data['article_logo'] : $article_model->getArticleLogo(),
+            'article_logo_active' => ($save_mode === ScLanguage::GENERAL) ? $data['article_logo_active'] : $article_model->getArticleLogoActive(),
+            'article_insert_time' => ($save_mode === ScLanguage::GENERAL) ? $data['article_insert_time'] : $this->my->formatDateTime($article_model->getArticleInsertTime(), false),
+            'article_order' => ($save_mode === ScLanguage::GENERAL) ? $data['article_order'] : $article_model->getArticleOrder(),
+            'article_active' => ($save_mode === ScLanguage::GENERAL) ? $data['article_active'] : $article_model->getArticleActive(),
+            'article_is_home' => ($save_mode === ScLanguage::GENERAL) ? $data['article_is_home'] : $article_model->getArticleIsHome(),
+            'article_is_header' => ($save_mode === ScLanguage::GENERAL) ? $data['article_is_header'] : $article_model->getArticleIsHeader(),
+            'article_is_horizontal' => ($save_mode === ScLanguage::GENERAL) ? $data['article_is_horizontal'] : $article_model->getArticleIsHorizontal(),
+            'article_is_footer' => ($save_mode === ScLanguage::GENERAL) ? $data['article_is_footer'] : $article_model->getArticleIsFooter(),
+            'article_full_style' => ($save_mode === ScLanguage::GENERAL) ? $data['article_full_style'] : $article_model->getArticleFullStyle(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_default' => $lang_default,
@@ -630,17 +630,17 @@ class ArticleController extends ControllerBase
         $activity = new Activity();
         $arrLog = array();
         $list_article = $this->request->getPost('item');
-        $Binnet_article = array();
+        $Scnet_article = array();
         $message = '';
         $msg_delete = array('success' => '');
         if ($list_article) {
             foreach ($list_article as $article_id) {
                 $article = Article::getByID($article_id);
-                $arr_article_lang = BinArticleLang::findById($article_id);
+                $arr_article_lang = ScArticleLang::findById($article_id);
                 if ($article) {
                     $old_article_data = $article->toArray();
                     $new_article_data = array();
-                    $Binnet_article[$article_id] = array($old_article_data, $new_article_data);
+                    $Scnet_article[$article_id] = array($old_article_data, $new_article_data);
                     $article->delete();
                     ArticleLang::deleteById($article_id);
                     //Delete Docs Azure Search
@@ -672,12 +672,12 @@ class ArticleController extends ControllerBase
             $dataLogAzure = json_encode($arrLog);
             $activity->logActivity($this->controllerName, $action, $this->auth['id'], $messageLog, $dataLogAzure);
         }
-        if (count($Binnet_article) > 0) {
+        if (count($Scnet_article) > 0) {
             // delete success
-            $message .= 'Delete ' . count($Binnet_article) . ' article success.';
+            $message .= 'Delete ' . count($Scnet_article) . ' article success.';
             $msg_delete['success'] = $message;
             // store activity success
-            $data_log = json_encode(array('content_article' => $Binnet_article));
+            $data_log = json_encode(array('content_article' => $Scnet_article));
             $activity->logActivity($this->controllerName, $this->actionName, $this->auth['id'], $message, $data_log);
         }
         $this->session->set('msg_delete', $msg_delete);
@@ -687,7 +687,7 @@ class ArticleController extends ControllerBase
 
     private function getParameter()
     {
-        $sql = "SELECT * FROM Bincg\Models\BinArticle WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScArticle WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $type = $this->request->get("slType");
         $arrParameter = array();
@@ -721,12 +721,12 @@ class ArticleController extends ControllerBase
 
     private function getParameterExport()
     {
-        $sql = "SELECT * FROM Bincg\Models\BinArticle WHERE article_active = 'Y'";
+        $sql = "SELECT * FROM Score\Models\ScArticle WHERE article_active = 'Y'";
         $keyword = trim($this->request->get("txtSearch"));
         $type = $this->request->get("slType");
 
         $arrParameter = array();
-        $validator = new \Bincg\Utils\Validator();
+        $validator = new \Score\Utils\Validator();
         if (!empty($keyword)) {
             if ($validator->validInt($keyword)) {
                 $sql .= " AND (article_id = :number:)";
@@ -760,7 +760,7 @@ class ArticleController extends ControllerBase
         $data = $this->getParameterExport();
         $list_article = $this->modelsManager->executeQuery($data['sql'], $data['para']);
         $current_page = $this->request->get('page');
-        $validator = new \Bincg\Utils\Validator();
+        $validator = new \Score\Utils\Validator();
 
         foreach ($list_article as $article) {
             $content = $article->getArticleContent();

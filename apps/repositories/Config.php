@@ -1,38 +1,38 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinConfig;
+use Score\Models\ScConfig;
 use Phalcon\Mvc\User\Component;
-use Bincg\Models\BinLanguage;
+use Score\Models\ScLanguage;
 
 class Config extends Component
 {
     const FOLDER ="/../messages/";
     const FILE_CACHED_CONFIG = "cached_config.txt";
     public static function findByID($key){
-        return BinConfig::findFirst(array(
+        return ScConfig::findFirst(array(
                 "config_key =:key:",
                 'bind' => array('key' => $key))
         );
     }
     public static function findByLanguage($key,$language){
-        return BinConfig::findFirst(array("config_key =:key:  AND config_language=:language:",
+        return ScConfig::findFirst(array("config_key =:key:  AND config_language=:language:",
             'bind' => array('key' => $key,'language'=>$language)));
     }
 
     /**
      * @param $key
-     * @return BinConfig|BinConfig[]
+     * @return ScConfig|ScConfig[]
      */
     public static function getByID($key){
-        return BinConfig::find(array(
+        return ScConfig::find(array(
                 "config_key =:key:",
                 'bind' => array('key' => $key))
         );
     }
     public static function deletedByKey($key){
-        $list_config = BinConfig::find(array("config_key =:key:",
+        $list_config = ScConfig::find(array("config_key =:key:",
             'bind' =>  array('key' => $key)));
         foreach ($list_config as $config){
             $config->delete();
@@ -69,18 +69,18 @@ class Config extends Component
         }
     }
     public static function getAllByLanguage($language){
-        return BinConfig::find(array("config_language = :language:",
+        return ScConfig::find(array("config_language = :language:",
                 'bind' => array('language'=>$language))
         );
     }
     public static function deleteCache(){
-        $list_lang = BinLanguage::find();
+        $list_lang = ScLanguage::find();
         foreach ($list_lang as $lang){
             self::deleteCacheLanguage($lang->getLanguageCode());
         }
     }
     public static function deleteByLanguage($language){
-        $list_config = BinConfig::find(array("config_language=:language:",
+        $list_config = ScConfig::find(array("config_language=:language:",
             'bind' => array('language'=>$language)));
         foreach ($list_config as $item){
             $item->delete();
@@ -95,7 +95,7 @@ class Config extends Component
     }
     public static function checkKeyword($key_new)
     {
-        return BinConfig::findFirst(array (
+        return ScConfig::findFirst(array (
                 'config_key = :keyID: ',
                 'bind' => array('keyID' => $key_new),
             ));
@@ -103,9 +103,9 @@ class Config extends Component
 
     public function getAllConfigByCodeTranslate ($limit = null,$lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinConfig as c
+        $sql = "SELECT * FROM Score\Models\ScConfig as c
                 WHERE c.config_language = :lang_default: AND c.config_content !='' AND  c.config_key NOT IN 
-                (SELECT cl.config_key FROM Bincg\Models\BinConfig as cl WHERE cl.config_language = :lang_code: AND  cl.config_content !='' )";
+                (SELECT cl.config_key FROM Score\Models\ScConfig as cl WHERE cl.config_language = :lang_code: AND  cl.config_content !='' )";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
             $sql .= ' LIMIT '.$limit;
         }

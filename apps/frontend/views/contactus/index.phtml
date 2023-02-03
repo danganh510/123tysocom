@@ -4,8 +4,8 @@
  * @var $lang_code ;
  * @var $lang_url_slashed ;
  * @var $parent_keyword ;
- * @var \Bincg\Models\BinArticle $service
- * @var \Bincg\Models\BinUser $userData
+ * @var \Score\Models\ScArticle $service
+ * @var \Score\Models\ScUser $userData
  */
 $borderRed = 'has-error';
 ?>
@@ -127,7 +127,7 @@ $borderRed = 'has-error';
                     </div>
                     <div data-bind="visible: typeOfCommunicationChannel() != ''">
                         <div class="form-group  <?php echo isset($message['communicationChannelOther']) ? $borderRed : ''; ?>"
-                             data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>'">
+                             data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_OTHER ?>'">
                             <input type="text" maxlength="255" name="txtCommunicationChannelOther"
                                    id="txtCommunicationChannelOther" class="form-control <?php echo isset($message['communicationChannelOther']) ? $borderRed : ''; ?>"
                                    placeholder="<?php echo defined('txt_other_channel') ? txt_other_channel : '' ?>"
@@ -137,13 +137,13 @@ $borderRed = 'has-error';
                             </span>
                         </div>
                         <div class="form-group <?php echo isset($message['communicationChannelId']) || isset($message['communicationChannelNumber']) ? $borderRed : ''; ?>">
-                            <div data-bind="visible: typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                            <div data-bind="visible: typeOfCommunicationChannel() != '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>'">
                                 <input type="text" maxlength="255" name="txtCommunicationChannelID" id="txtCommunicationChannelID"
                                        class="form-control"
                                        placeholder="<?php echo defined('lbl_ID') ? lbl_ID : '' ?>"
                                        value="<?php echo isset($formData['contact_communication_channel_id']) ? $formData['contact_communication_channel_id'] : '' ?>">
                             </div>
-                            <div data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>'">
+                            <div data-bind="visible: typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>'">
                                 <input maxlength="20" id="txtCommunicationChannelNumber"
                                        name="txtCommunicationChannelNumber" type="text" class="form-control"
                                        placeholder="<?php echo defined('txt_description_type_phone_number') ? txt_description_type_phone_number : ''; ?>">
@@ -236,7 +236,7 @@ $borderRed = 'has-error';
         <img class="full mb-4 d-md-none lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
              data-src="<?php echo $this->url->getStatic('frontend/'); ?>images/bg-contact-2-xs.jpg" title="<?php echo htmlentities(defined('txt_our_office') ? txt_our_office : ''); ?>" alt="<?php echo htmlentities(defined('txt_our_office') ? txt_our_office : ''); ?>"/>
         <div class="row">
-            <?php /** @var \Bincg\Models\BinOffice $office */
+            <?php /** @var \Score\Models\ScOffice $office */
             foreach ($offices as $office) { ?>
                 <div class="col-lg-4">
                     <div class="group-address">
@@ -288,7 +288,7 @@ $borderRed = 'has-error';
     </div>
     <div class="map-wrapper">
         <div id="map"></div>
-        <?php /** @var \Bincg\Models\BinOffice $office */
+        <?php /** @var \Score\Models\ScOffice $office */
         foreach ($offices as $office) { ?>
             <div class="popup-map-content" id="myModal<?php echo $office->getOfficeId() ?>" role="dialog">
                 <div class="close-popup-map-content"><img class="lazyload" alt="<?php echo htmlentities(defined('txt_close') ? txt_close : '') ?>"
@@ -296,7 +296,7 @@ $borderRed = 'has-error';
                                                           src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
                                                           data-src="<?php echo $this->url->get('frontend/'); ?>images/close-popup.png">
                 </div>
-                <?php $country_name = \Bincg\Repositories\CountryGeneral::getNameByCode($office->getOfficeCountryCode()) ?>
+                <?php $country_name = \Score\Repositories\CountryGeneral::getNameByCode($office->getOfficeCountryCode()) ?>
                 <h3><img class="lazyload" src="<?php echo $this->url->getStatic('frontend/'); ?>images/sx.svg"
                          data-src="<?php echo $this->globalVariable->urlFlag . strtolower($office->getOfficeCountryCode()) . '.png'; ?>"
                          alt="<?php echo htmlentities($country_name) ?>"
@@ -420,7 +420,7 @@ $borderRed = 'has-error';
             communicationChannelNumber.intlTelInput('setNumber', '<?php echo isset($formData['contact_communication_channel_telapi_number']) ? $formData['contact_communication_channel_telapi_number'] : (isset($userData['user_telapi_international_format']) ? $userData['user_telapi_international_format'] : ''); ?>');
             var isValidCommunicationChannelNumber = true;
             communicationChannelNumber.blur(function () {
-                if (formVM.typeOfCommunicationChannel() != '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                if (formVM.typeOfCommunicationChannel() != '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>') {
                     return;
                 }
                 var phone_number = communicationChannelNumber.intlTelInput('getNumber');
@@ -525,7 +525,7 @@ $borderRed = 'has-error';
                     $('textarea[name=txtComment]').parent().removeClass("has-error");
                 }
 
-                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_PHONE ?>') {
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_PHONE ?>') {
                     if ($('input[name=txtCommunicationChannelNumber]').val() == '') {
                         valid = false;
                         $('.msg-phone-communication').text('<?php echo defined('txt_enter_phone_number') ? txt_enter_phone_number : '';?>');
@@ -540,7 +540,7 @@ $borderRed = 'has-error';
                         $('input[name=txtCommunicationChannelNumber]').parent().removeClass("has-error");
                     }
                 }
-                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_TEXT ?>') {
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_TEXT ?>') {
                     if ($('input[name=txtCommunicationChannelID]').val() == '') {
                         valid = false;
                         $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
@@ -550,7 +550,7 @@ $borderRed = 'has-error';
                         $('input[name=txtCommunicationChannelID]').parent().removeClass("has-error");
                     }
                 }
-                if (formVM.typeOfCommunicationChannel() == '<?php echo \Bincg\Models\BinCommunicationChannel::TYPE_OTHER ?>') {
+                if (formVM.typeOfCommunicationChannel() == '<?php echo \Score\Models\ScCommunicationChannel::TYPE_OTHER ?>') {
                     if ($('input[name=txtCommunicationChannelID]').val() == '') {
                         valid = false;
                         $('.msg-communication-id').text('<?php echo defined('txt_please_enter_id') ? txt_please_enter_id : '';?>');
@@ -642,7 +642,7 @@ $borderRed = 'has-error';
             }
 
             var formVM = new AppViewModel();
-            ko.applyBindings(formVM);
+            ko.applyScdings(formVM);
 
 
             var communicationSlc = communicationChannel;

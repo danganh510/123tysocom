@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinBanner extends BaseModel
+class ScBanner extends BaseModel
 {
 
     /**
@@ -353,14 +353,14 @@ class BinBanner extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_banner';
+        return 'sc_banner';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinBanner[]|BinBanner
+     * @return ScBanner[]|ScBanner
      */
     public static function find($parameters = null)
     {
@@ -371,7 +371,7 @@ class BinBanner extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinBanner
+     * @return ScBanner
      */
     public static function findFirst($parameters = null)
     {
@@ -382,11 +382,11 @@ class BinBanner extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinBanner
+     * @return ScBanner
      */
     public static function findFirstById($id)
     {
-        return BinBanner::findFirst(array(
+        return ScBanner::findFirst(array(
             "banner_id =:ID:",
             'bind' => array('ID' => $id)
         ));

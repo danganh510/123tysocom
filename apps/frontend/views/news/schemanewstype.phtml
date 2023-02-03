@@ -1,12 +1,12 @@
 <?php
 /**
- * @var \Bincg\Models\BinArticle[] $articles
- * @var \Bincg\Models\BinArticle $article
- * @var \Bincg\Models\BinType[] $types
- * @var \Bincg\Models\BinType $type_child
+ * @var \Score\Models\ScArticle[] $articles
+ * @var \Score\Models\ScArticle $article
+ * @var \Score\Models\ScType[] $types
+ * @var \Score\Models\ScType $type_child
  */
 $typeId = $type_child->getTypeId();
-$repoArticle = new \Bincg\Repositories\Article();
+$repoArticle = new \Score\Repositories\Article();
 $articles = $repoArticle->getByTypeAndOrder($typeId,$lang_code);
 if(count($articles) > 0) { ?>
     <script type="application/ld+json">

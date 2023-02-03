@@ -1,13 +1,13 @@
 <?php
-namespace Bincg\Frontend\Controllers;
-use Bincg\Models\BinApply;
-use Bincg\Models\BinCommunicationChannel;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Career;
-use Bincg\Repositories\CommunicationChannel;
-use Bincg\Repositories\EmailTemplate;
-use Bincg\Utils\NumVerify;
-use Bincg\Utils\Validator;
+namespace Score\Frontend\Controllers;
+use Score\Models\ScApply;
+use Score\Models\ScCommunicationChannel;
+use Score\Repositories\Activity;
+use Score\Repositories\Career;
+use Score\Repositories\CommunicationChannel;
+use Score\Repositories\EmailTemplate;
+use Score\Utils\NumVerify;
+use Score\Utils\Validator;
 
 define('MyS3UploadFolder', 'applycv');
 class ApplycvController extends ControllerBase
@@ -55,7 +55,7 @@ class ApplycvController extends ControllerBase
         if (empty($data['apply_career_id'])) {
             $message['career'] = 'txt_enter_content';
         }
-        if (!empty($data['apply_communication_channel_type']) && $data['apply_communication_channel_type'] == BinCommunicationChannel::TYPE_PHONE) {
+        if (!empty($data['apply_communication_channel_type']) && $data['apply_communication_channel_type'] == ScCommunicationChannel::TYPE_PHONE) {
             if (empty($data['apply_communication_channel_number'])) {
                 $message['communicationChannelNumber'] = defined('txt_enter_phone_number') ? txt_enter_phone_number : '';
             } elseif (!$apply_tel_communication->valid){
@@ -63,13 +63,13 @@ class ApplycvController extends ControllerBase
             }
         }
 
-        if (!empty($data['apply_communication_channel_type']) && $data['apply_communication_channel_type'] == BinCommunicationChannel::TYPE_TEXT) {
+        if (!empty($data['apply_communication_channel_type']) && $data['apply_communication_channel_type'] == ScCommunicationChannel::TYPE_TEXT) {
             if (empty($data['apply_communication_channel_id'])) {
                 $message['communicationChannelId'] = defined('txt_please_select_topics') ? txt_please_select_topics : '';
             }
         }
 
-        if (!empty($data['apply_communication_channel_type']) && $data['apply_communication_channel_type'] == BinCommunicationChannel::TYPE_OTHER) {
+        if (!empty($data['apply_communication_channel_type']) && $data['apply_communication_channel_type'] == ScCommunicationChannel::TYPE_OTHER) {
             if (empty($data['apply_communication_channel_id'])) {
                 $message['communicationChannelId'] = defined('txt_please_select_topics') ? txt_please_select_topics : '';
             }
@@ -131,9 +131,9 @@ class ApplycvController extends ControllerBase
                     );
                 }
             }
-            $new_apply = new BinApply();
+            $new_apply = new ScApply();
             /**
-             * @var BinApply $new_apply
+             * @var ScApply $new_apply
              */
             $new_apply->setApplyName($data['apply_name']);
             $new_apply->setApplyEmail($data['apply_email']);
@@ -148,8 +148,8 @@ class ApplycvController extends ControllerBase
             $new_apply->setApplyCareerId($data['apply_career_id']);
             $new_apply->setApplyInsertTime($this->globalVariable->curTime);
             $new_apply->setApplyCommunicationChannelId($data['apply_communication_channel']);
-            $new_apply->setApplyCommunicationChannelName(($data['apply_communication_channel_type'] == BinCommunicationChannel::TYPE_OTHER) ? $data['apply_communication_channel_other'] : CommunicationChannel::getCommunicationNameByID($data['apply_communication_channel']));
-            $new_apply->setApplyCommunicationChannelNumber(($data['apply_communication_channel_type'] == BinCommunicationChannel::TYPE_PHONE) ? $apply_tel_communication_format : $data['apply_communication_channel_id']);
+            $new_apply->setApplyCommunicationChannelName(($data['apply_communication_channel_type'] == ScCommunicationChannel::TYPE_OTHER) ? $data['apply_communication_channel_other'] : CommunicationChannel::getCommunicationNameByID($data['apply_communication_channel']));
+            $new_apply->setApplyCommunicationChannelNumber(($data['apply_communication_channel_type'] == ScCommunicationChannel::TYPE_PHONE) ? $apply_tel_communication_format : $data['apply_communication_channel_id']);
             if ($new_apply->save() === true) {
                 $message = array('status' => 'success', 'msg' => 'txt_contact_us_success');
                 $old_data = array();
@@ -167,7 +167,7 @@ class ApplycvController extends ControllerBase
         die(json_encode($message));
     }
     /**
-     * @param BinApply $apply
+     * @param ScApply $apply
      * @param $user_agent
      */
     private function sendApplCVEmail($apply, $user_agent) {

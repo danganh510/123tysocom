@@ -1,17 +1,17 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinApply;
-use Bincg\Models\BinContactus;
-use Bincg\Models\BinTemplateEmail;
-use Bincg\Models\BinUser;
+use Score\Models\ScApply;
+use Score\Models\ScContactus;
+use Score\Models\ScTemplateEmail;
+use Score\Models\ScUser;
 use Phalcon\Mvc\User\Component;
 
 /**
  * Class EmailTemplate
  * @property \GlobalVariable globalVariable
- * @package Bincg\Repositories
+ * @package Score\Repositories
  */
 class EmailTemplate extends Component {
     const EMAIL = 'EMAIL';
@@ -20,7 +20,7 @@ class EmailTemplate extends Component {
     const logoReceiptUrl = 'frontend/images/logo.png';
     public static function checkKeyword($emailtemplate_type, $emailtemplate_id)
     {
-        return BinTemplateEmail::findFirst(
+        return ScTemplateEmail::findFirst(
             array (
                 'email_type = :type: AND email_id != :emailtemplateid:',
                 'bind' => array('type' => $emailtemplate_type, 'emailtemplateid' => $emailtemplate_id),
@@ -35,21 +35,21 @@ class EmailTemplate extends Component {
     public function findByTypeAndLanguage($emailType,$languageCode='en') {
         $email = false;
         if ($languageCode && $languageCode != $this->globalVariable->defaultLanguage) {
-            $sql = "SELECT te.*, tel.* FROM \Bincg\Models\BinTemplateEmail te
-                INNER JOIN \Bincg\Models\BinTemplateEmailLang tel
+            $sql = "SELECT te.*, tel.* FROM \Score\Models\ScTemplateEmail te
+                INNER JOIN \Score\Models\ScTemplateEmailLang tel
                 ON te.email_id = tel.email_id
                 WHERE tel.email_lang_code = :lang:
                 AND te.email_type = :type:";
             $item = $this->modelsManager->executeQuery($sql, array('lang' => $languageCode, 'type' => $emailType ))->getFirst();
             if ($item && sizeof($item) > 0) {
                 $email = \Phalcon\Mvc\Model::cloneResult(
-                    new BinTemplateEmail(),
+                    new ScTemplateEmail(),
                     array_merge($item->te->toArray(), $item->tel->toArray())
                 );
             }
         }
         else {
-            $email = BinTemplateEmail::findFirst(array(
+            $email = ScTemplateEmail::findFirst(array(
                 'email_type = :type:',
                 'bind' => array('type' => $emailType),
             ));
@@ -63,11 +63,11 @@ class EmailTemplate extends Component {
         if (self::isTypePdf($type)) {
             $headerMsg = '';
             $footerMsg = '';
-            /*$header = BinTemplateEmail::findFirst(array(
+            /*$header = ScTemplateEmail::findFirst(array(
                 'email_type = :email_type: AND email_status = "Y"',
                 'bind' => array('email_type' => 'PDF_HEADER')
             ));
-            $footer = BinTemplateEmail::findFirst(array(
+            $footer = ScTemplateEmail::findFirst(array(
                 'email_type = :email_type: AND email_status = "Y"',
                 'bind' => array('email_type' => 'PDF_FOOTER')
             ));*/
@@ -109,7 +109,7 @@ class EmailTemplate extends Component {
     }
 
     /**
-     * @param \Bincg\Models\BinUser $user
+     * @param \Score\Models\ScUser $user
      * @param $pass
      * @param $languageCode
      * @return array
@@ -123,7 +123,7 @@ class EmailTemplate extends Component {
             $role = 'User';
         }
         if (!$templateEmail) return array('success' => false, 'content' => '');
-        $user = BinUser::findFirstById($user->getUserId());
+        $user = ScUser::findFirstById($user->getUserId());
         $subject = $templateEmail->getEmailSubject();
         $content = $templateEmail->getEmailContent();
         $content = str_replace(array("|||USER_NAME|||", "|||USER_EMAIL|||", "|||USER_PASSWORD|||", "|||USER_ROLE|||"), array($user->getUserName(), $user->getUserEmail(), $pass, $role), $content);
@@ -138,7 +138,7 @@ class EmailTemplate extends Component {
         $templateEmail = $this->findByTypeAndLanguage('EMAIL_RESET_PASSWORD',$languageCode);
 
         if (!$templateEmail) return array('success' => false, 'content' => '');
-        $user = BinUser::findFirstById($user->getUserId());
+        $user = ScUser::findFirstById($user->getUserId());
         $subject = $templateEmail->getEmailSubject();
         $content = $templateEmail->getEmailContent();
         $content = str_replace(array("|||USER_NAME|||", "|||USER_EMAIL|||", "|||USER_PASSWORD|||"), array($user->getUserName(), $user->getUserEmail(), $pass), $content);
@@ -151,7 +151,7 @@ class EmailTemplate extends Component {
     {
         $templateEmail = self::findByTypeAndLanguage('EMAIL_CONTACT_US',$lang_code);
         if (!$templateEmail) return array('success' => false, 'content' => '');
-        $contactus = BinContactus::findFirstById($contactus->getContactId());
+        $contactus = ScContactus::findFirstById($contactus->getContactId());
         //subject
         $subject = $templateEmail->getEmailSubject();
         //content
@@ -161,14 +161,14 @@ class EmailTemplate extends Component {
         return array('success' => true, 'subject' => $subject, 'content' => $content);
     }
     /**
-     * @param BinApply $apply
+     * @param ScApply $apply
      * @return array
      */
     public function getEmailApplyCV($apply)
     {
         $templateEmail = self::findByTypeAndLanguage('EMAIL_APPLY_CV');
         if (!$templateEmail) return array('success' => false, 'content' => '');
-        $apply = BinApply::findFirstById($apply->getApplyId());
+        $apply = ScApply::findFirstById($apply->getApplyId());
         //content
         $content = $templateEmail->getEmailContent();
         $content = str_replace(array("|||APPLY_NAME|||", "|||APPLY_EMAIL|||", "|||APPLY_TEL|||", "|||APPLY_CAREER|||", "|||APPLY_FILE|||", "|||APPLY_CHANNEL_TYPE|||", "|||APPLY_CHANNEL_DETAIL|||"), array($apply->getApplyName(), $apply->getApplyEmail(), $apply->getApplyTel(), Career::getNameByID($apply->getApplyCareerId()), $apply->getApplyCv(), $apply->getApplyCommunicationChannelName(), $apply->getApplyCommunicationChannelNumber()), $content);
@@ -178,9 +178,9 @@ class EmailTemplate extends Component {
 
     public function getAllActiveEmailTemplateTranslate ($limit = null, $lang_code){
         $result = array();
-        $sql = "SELECT * FROM Bincg\Models\BinTemplateEmail as e
+        $sql = "SELECT * FROM Score\Models\ScTemplateEmail as e
                 WHERE e.email_status = 'Y' AND e.email_id NOT IN 
-                 (SELECT el.email_id FROM Bincg\Models\BinTemplateEmailLang as el WHERE el.email_lang_code =
+                 (SELECT el.email_id FROM Score\Models\ScTemplateEmailLang as el WHERE el.email_lang_code =
                 :lang_code:)";
         if (isset($limit) && is_numeric($limit) && $limit > 0) {
             $sql .= ' LIMIT '.$limit;

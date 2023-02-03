@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinArticleLang extends BaseModel
+class ScArticleLang extends BaseModel
 {
 
     /**
@@ -333,14 +333,14 @@ class BinArticleLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_article_lang';
+        return 'sc_article_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinArticleLang[]|BinArticleLang
+     * @return ScArticleLang[]|ScArticleLang
      */
     public static function find($parameters = null)
     {
@@ -351,7 +351,7 @@ class BinArticleLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinArticleLang
+     * @return ScArticleLang
      */
     public static function findFirst($parameters = null)
     {
@@ -359,7 +359,7 @@ class BinArticleLang extends BaseModel
     }
     public static function findById($article_id)
     {
-        return BinArticleLang::find(array(
+        return ScArticleLang::find(array(
             "article_id =:ID:",
             'bind' => array('ID' => $article_id)
         ));

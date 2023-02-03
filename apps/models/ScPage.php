@@ -1,9 +1,9 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
 
-class BinPage extends BaseModel
+class ScPage extends BaseModel
 {
 
     /**
@@ -293,14 +293,14 @@ class BinPage extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_page';
+        return 'sc_page';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinPage[]|BinPage
+     * @return ScPage[]|ScPage
      */
     public static function find($parameters = null)
     {
@@ -311,14 +311,14 @@ class BinPage extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinPage
+     * @return ScPage
      */
     public static function findFirst($parameters = null)
     {
         return parent::findFirst($parameters);
     }
     public static function findFirstById($id){
-        return BinPage::findFirst(array(
+        return ScPage::findFirst(array(
             'page_id = :id:',
             'bind' => array('id' => $id)
         ));

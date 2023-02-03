@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinNewspaperArticle extends BaseModel
+class ScNewspaperArticle extends BaseModel
 {
 
     /**
@@ -292,14 +292,14 @@ class BinNewspaperArticle extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_newspaper_article';
+        return 'sc_newspaper_article';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinNewspaperArticle[]|BinNewspaperArticle
+     * @return ScNewspaperArticle[]|ScNewspaperArticle
      */
     public static function find($parameters = null)
     {
@@ -310,7 +310,7 @@ class BinNewspaperArticle extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinNewspaperArticle
+     * @return ScNewspaperArticle
      */
     public static function findFirst($parameters = null)
     {

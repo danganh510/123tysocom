@@ -1,13 +1,13 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\AzureSearch;
-use Bincg\Repositories\Banner;
-use Bincg\Repositories\SearchAzure;
-use Bincg\Repositories\Suggest;
-use Bincg\Repositories\Type;
-use Bincg\Repositories\Page;
-use Bincg\Utils\Validator;
+use Score\Repositories\AzureSearch;
+use Score\Repositories\Banner;
+use Score\Repositories\SearchAzure;
+use Score\Repositories\Suggest;
+use Score\Repositories\Type;
+use Score\Repositories\Page;
+use Score\Utils\Validator;
 
 class SearchController extends ControllerBase
 {

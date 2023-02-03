@@ -1,16 +1,16 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinCareerOffice;
-use Bincg\Models\BinOffice;
+use Score\Models\ScCareerOffice;
+use Score\Models\ScOffice;
 use Phalcon\Mvc\User\Component;
 
 class CareerOffice extends Component {
 
     public static function getOfficesByCareer($career_id)
     {
-        $list_office = BinCareerOffice::find(array(
+        $list_office = ScCareerOffice::find(array(
             'co_career_id =:career_id:',
             'bind'=>['career_id' => $career_id])
         );
@@ -28,7 +28,7 @@ class CareerOffice extends Component {
         $name_offices = array();
         foreach ($office_ids as $office_id)
         {
-            $office = BinOffice::findFirstById($office_id);
+            $office = ScOffice::findFirstById($office_id);
             if($office) {
                 $name_offices[] = $office->getOfficeName();
             }
@@ -37,7 +37,7 @@ class CareerOffice extends Component {
     }
     public static function deleteByCareer($career_id)
     {
-        $list_office = BinCareerOffice::find(array(
+        $list_office = ScCareerOffice::find(array(
                 'co_career_id =:career_id:',
                 'bind'=>['career_id' => $career_id])
         );

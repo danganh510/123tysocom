@@ -72,7 +72,7 @@
                             <select class="form-control <?php echo (isset($messages["language"])) ? $messages["status"] : ""; ?> " name="slcLanguage" id="slcLanguage">
                                 <option value=''>Select Language. . . </option>
                                 <?php
-                                echo \Bincg\Repositories\Language::getCombo($formData["location_lang_code"]);
+                                echo \Score\Repositories\Language::getCombo($formData["location_lang_code"]);
                                 ?>
                             </select>
                             <span class="text-danger msg-language"><?php echo isset($messages["language"]) ? $messages["language"] : "";?></span>

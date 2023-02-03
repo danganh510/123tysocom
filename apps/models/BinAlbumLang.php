@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinAlbumLang extends BaseModel
+class ScAlbumLang extends BaseModel
 {
 
     /**
@@ -142,14 +142,14 @@ class BinAlbumLang extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_album_lang';
+        return 'sc_album_lang';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinAlbumLang[]|BinAlbumLang
+     * @return ScAlbumLang[]|ScAlbumLang
      */
     public static function find($parameters = null)
     {
@@ -160,7 +160,7 @@ class BinAlbumLang extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinAlbumLang
+     * @return ScAlbumLang
      */
     public static function findFirst($parameters = null)
     {
@@ -169,7 +169,7 @@ class BinAlbumLang extends BaseModel
 
     public static function findById($album_id)
     {
-        return BinAlbumLang::find(array(
+        return ScAlbumLang::find(array(
             "album_id =:ID:",
             'bind' => array('ID' => $album_id)
         ));

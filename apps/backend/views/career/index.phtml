@@ -87,7 +87,7 @@ if(strlen($this->dispatcher->getParam("slcOffice"))> 0){
                                     </td>
                                     <td class=" "><?php echo $item->getCareerId(); ?></td>
                                     <td class=" "><?php echo $item->getCareerName(); ?></td>
-                                    <td class=" "><?php echo  \Bincg\Repositories\CareerOffice::getNameOfficesByCareer($item->getCareerId()); ?></td>
+                                    <td class=" "><?php echo  \Score\Repositories\CareerOffice::getNameOfficesByCareer($item->getCareerId()); ?></td>
                                     <td class=" ">
                                         <?php echo $item->getCareerOrder();?>
                                     </td>

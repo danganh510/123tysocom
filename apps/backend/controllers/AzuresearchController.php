@@ -1,11 +1,11 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\SearchAzure;
-use Bincg\Repositories\AzureSearch;
-use Bincg\Repositories\Language;
+use Score\Repositories\Activity;
+use Score\Repositories\SearchAzure;
+use Score\Repositories\AzureSearch;
+use Score\Repositories\Language;
 
 class AzuresearchController extends ControllerBase
 {

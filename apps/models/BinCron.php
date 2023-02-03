@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinCron extends BaseModel
+class ScCron extends BaseModel
 {
 
     /**
@@ -224,14 +224,14 @@ class BinCron extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_cron';
+        return 'sc_cron';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCron[]|BinCron
+     * @return ScCron[]|ScCron
      */
     public static function find($parameters = null)
     {
@@ -242,7 +242,7 @@ class BinCron extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinCron
+     * @return ScCron
      */
     public static function findFirst($parameters = null)
     {
@@ -278,7 +278,7 @@ class BinCron extends BaseModel
     public function  getStringLanguageCode()
     {
         $result="";
-        $list_cron_detail = BinCronDetail::find(array(
+        $list_cron_detail = ScCronDetail::find(array(
             "detail_cron_id = :detail_cron_id: and detail_active = 'N'",
             'bind' => array(
                 'detail_cron_id' => $this->cron_id

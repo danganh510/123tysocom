@@ -1,16 +1,16 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
-use Bincg\Models\BinLanguage;
-use Bincg\Models\BinOffice;
-use Bincg\Models\BinOfficeImage;
-use Bincg\Models\BinOfficeLang;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\CountryGeneral;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Office;
-use Bincg\Repositories\OfficeLang;
-use Bincg\Utils\Validator;
+namespace Score\Backend\Controllers;
+use Score\Models\ScLanguage;
+use Score\Models\ScOffice;
+use Score\Models\ScOfficeImage;
+use Score\Models\ScOfficeLang;
+use Score\Repositories\Activity;
+use Score\Repositories\CountryGeneral;
+use Score\Repositories\Language;
+use Score\Repositories\Office;
+use Score\Repositories\OfficeLang;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
 class OfficeController extends ControllerBase
 {
@@ -96,7 +96,7 @@ class OfficeController extends ControllerBase
 
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_office = new BinOffice();
+                $new_office = new ScOffice();
                 $new_office->setOfficeName($data["name"]);
                 $new_office->setOfficeImage($data["image"]);
                 $new_office->setOfficeCountryCode($data["countryCode"]);
@@ -147,7 +147,7 @@ class OfficeController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $office_model = BinOffice::findFirstById($office_id);
+        $office_model = ScOffice::findFirstById($office_id);
         if(empty($office_model))
         {
             $this->response->redirect('notfound');
@@ -184,7 +184,7 @@ class OfficeController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if($save_mode != BinLanguage::GENERAL) {
+            if($save_mode != ScLanguage::GENERAL) {
                 $data_post['office_name'] = $this->request->getPost('txtName', array('string', 'trim'));
                 $data_post['office_address'] = $this->request->getPost('txtAddress', array('string', 'trim'));
                 $data_post['office_working_time'] = $this->request->getPost('txtWorkingTime', array('string', 'trim'));
@@ -225,7 +225,7 @@ class OfficeController extends ControllerBase
             }
             if(empty($messages)) {
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
+                    case ScLanguage::GENERAL:
                         $data_old = array(
                             'office_image' => $office_model->getOfficeImage(),
                             'office_country_code' => $office_model->getOfficeCountryCode(),
@@ -247,7 +247,7 @@ class OfficeController extends ControllerBase
                         $office_model->setOfficeOrder($data_post['office_order']);
                         $office_model->setOfficeActive($data_post['office_active']);
                         $result = $office_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'office_image' => $office_model->getOfficeImage(),
                             'office_country_code' => $office_model->getOfficeCountryCode(),
@@ -280,7 +280,7 @@ class OfficeController extends ControllerBase
                     default:
                         $office_lang_model = OfficeLang::findFirstByIdAndLang($office_id, $save_mode);
                         if (empty($office_lang_model)) {
-                            $office_lang_model = new BinOfficeLang();
+                            $office_lang_model = new ScOfficeLang();
                             $office_lang_model->setOfficeId($office_id);
                             $office_lang_model->setOfficeLangCode($save_mode);
                         }
@@ -323,7 +323,7 @@ class OfficeController extends ControllerBase
         );
         $arr_translate[$this->globalVariable->defaultLanguage] = $item;
 
-        $arr_office_lang = BinOfficeLang::findById($office_model->getOfficeId());
+        $arr_office_lang = ScOfficeLang::findById($office_model->getOfficeId());
 
         foreach ($arr_office_lang as $office_lang){
             $item = array(
@@ -345,18 +345,18 @@ class OfficeController extends ControllerBase
         }
         $formData = array(
             'office_id'=>$office_model->getOfficeId(),
-            'office_name' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_name']:$office_model->getOfficeName(),
-            'office_image' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_image']:$office_model->getOfficeImage(),
-            'office_country_code' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_country_code']:$office_model->getOfficeCountryCode(),
-            'office_positionX' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_positionX']:$office_model->getOfficePositionX(),
-            'office_positionY' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_positionY']:$office_model->getOfficePositionY(),
-            'office_address' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_address']:$office_model->getOfficeAddress(),
-            'office_email' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_email']:$office_model->getOfficeEmail(),
-            'office_phone' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_phone']:$office_model->getOfficePhone(),
-            'office_fax' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_fax']:$office_model->getOfficeFax(),
-            'office_working_time' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_working_time']:$office_model->getOfficeWorkingTime(),
-            'office_order' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_order']:$office_model->getOfficeOrder(),
-            'office_active' => ($save_mode ===BinLanguage::GENERAL)?$data_post['office_active']:$office_model->getOfficeActive(),
+            'office_name' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_name']:$office_model->getOfficeName(),
+            'office_image' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_image']:$office_model->getOfficeImage(),
+            'office_country_code' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_country_code']:$office_model->getOfficeCountryCode(),
+            'office_positionX' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_positionX']:$office_model->getOfficePositionX(),
+            'office_positionY' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_positionY']:$office_model->getOfficePositionY(),
+            'office_address' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_address']:$office_model->getOfficeAddress(),
+            'office_email' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_email']:$office_model->getOfficeEmail(),
+            'office_phone' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_phone']:$office_model->getOfficePhone(),
+            'office_fax' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_fax']:$office_model->getOfficeFax(),
+            'office_working_time' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_working_time']:$office_model->getOfficeWorkingTime(),
+            'office_order' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_order']:$office_model->getOfficeOrder(),
+            'office_active' => ($save_mode ===ScLanguage::GENERAL)?$data_post['office_active']:$office_model->getOfficeActive(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_current' => $lang_current
@@ -376,7 +376,7 @@ class OfficeController extends ControllerBase
             foreach ($list_office as $office_id) {
                 $office_model = Office::getByID($office_id);
                 if($office_model) {
-                    $officeImage = BinOfficeImage::findFirstByOfficeId($office_id);
+                    $officeImage = ScOfficeImage::findFirstByOfficeId($office_id);
                     if ($officeImage){
                         $message = 'Can\'t delete Office ID = '.$office_id.'. Because It\'s exists in Office Image.<br>';
                         $msg_delete['error'] .= $message;
@@ -415,7 +415,7 @@ class OfficeController extends ControllerBase
         return $this->response->redirect('/dashboard/list-office');
     }
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinOffice WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScOffice WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $country = $this->request->get('slcCountry');
         $arrParameter = array();

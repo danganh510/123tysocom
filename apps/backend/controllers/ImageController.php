@@ -1,17 +1,17 @@
 <?php
 
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinImage;
-use Bincg\Models\BinImageLang;
-use Bincg\Models\BinLanguage;
-use Bincg\Repositories\ImageLang;
-use Bincg\Repositories\Album;
-use Bincg\Repositories\Image;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Activity;
+use Score\Models\ScImage;
+use Score\Models\ScImageLang;
+use Score\Models\ScLanguage;
+use Score\Repositories\ImageLang;
+use Score\Repositories\Album;
+use Score\Repositories\Image;
+use Score\Repositories\Language;
+use Score\Repositories\Activity;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Utils\Validator;
+use Score\Utils\Validator;
 
 class ImageController extends ControllerBase
 {
@@ -102,7 +102,7 @@ class ImageController extends ControllerBase
                 $messages["order"] = "Order is not valid ";
             }
             if (count($messages) == 0) {
-                $new_type = new BinImage();
+                $new_type = new ScImage();
                 $new_type->setImageAlbumId($album_id);
                 $new_type->setImageIcon($data["icon"]);
                 $new_type->setImageDescription($data["description"]);
@@ -188,7 +188,7 @@ class ImageController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if ($save_mode != BinLanguage::GENERAL) {
+            if ($save_mode != ScLanguage::GENERAL) {
                 $data_post['image_description'] = $this->request->get("txtDesc", array('string', 'trim'));
                 if (empty($data_post['image_description'])) {
                     $messages[$save_mode]['description'] = 'Description field is required.';
@@ -205,7 +205,7 @@ class ImageController extends ControllerBase
                 $messagesAzure = '';
                 $activity = new Activity();
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
+                    case ScLanguage::GENERAL:
                         $data_old = array(
                             'image_icon' => $image_model->getImageIcon(),
                             'image_order' => $image_model->getImageOrder(),
@@ -215,7 +215,7 @@ class ImageController extends ControllerBase
                         $image_model->setImageIcon($data_post['image_icon']);
                         $image_model->setImageOrder($data_post['image_order']);
                         $result = $image_model->update();
-                        $info = BinLanguage::GENERAL;
+                        $info = ScLanguage::GENERAL;
                         $data_new = array(
                             'image_insert_time' => $image_model->getImageInsertTime(),
                             'image_icon' => $image_model->getImageIcon(),
@@ -236,7 +236,7 @@ class ImageController extends ControllerBase
                     default:
                         $image_lang_model = ImageLang::findFirstByIdAndLang($image_id, $save_mode);
                         if (!$image_lang_model) {
-                            $image_lang_model = new BinImageLang();
+                            $image_lang_model = new ScImageLang();
                             $image_lang_model->setImageId($image_id);
                             $image_lang_model->setImageLangCode($save_mode);
                         }
@@ -276,7 +276,7 @@ class ImageController extends ControllerBase
             'image_description' => ($save_mode === $this->globalVariable->defaultLanguage) ? $data_post['image_description'] : $image_model->getImageDescription(),
         );
         $arr_translate[$lang_default] = $item;
-        $arr_image_lang = BinImageLang::findById($image_id);
+        $arr_image_lang = ScImageLang::findById($image_id);
         foreach ($arr_image_lang as $image_lang) {
             $item = array(
                 'image_id' => $image_lang->getImageId(),
@@ -294,9 +294,9 @@ class ImageController extends ControllerBase
         }
         $formData = array(
             'image_id' => $image_model->getImageId(),
-            'image_icon' => ($save_mode === BinLanguage::GENERAL) ? $data_post['image_icon'] : $image_model->getImageIcon(),
-            'image_insert_time' => ($save_mode === BinLanguage::GENERAL) ? $data_post['image_insert_time'] : $this->my->formatDateTime($image_model->getImageInsertTime(), false),
-            'image_order' => ($save_mode === BinLanguage::GENERAL) ? $data_post['image_order'] : $image_model->getImageOrder(),
+            'image_icon' => ($save_mode === ScLanguage::GENERAL) ? $data_post['image_icon'] : $image_model->getImageIcon(),
+            'image_insert_time' => ($save_mode === ScLanguage::GENERAL) ? $data_post['image_insert_time'] : $this->my->formatDateTime($image_model->getImageInsertTime(), false),
+            'image_order' => ($save_mode === ScLanguage::GENERAL) ? $data_post['image_order'] : $image_model->getImageOrder(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_default' => $lang_default,
@@ -352,7 +352,7 @@ class ImageController extends ControllerBase
 
     private function getParameter($id)
     {
-        $sql = "SELECT * FROM Bincg\Models\BinImage WHERE image_album_id =:albumID: ";
+        $sql = "SELECT * FROM Score\Models\ScImage WHERE image_album_id =:albumID: ";
         $keyword = trim($this->request->get("txtSearch"));
         $arrParameter = array('albumID' => $id);
         $validator = new Validator();

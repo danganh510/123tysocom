@@ -1,5 +1,5 @@
 <?php
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 use Phalcon\Mvc\User\Component;
 
 class AzureSearch extends Component

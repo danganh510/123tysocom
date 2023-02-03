@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Frontend\Controllers;
-use Bincg\Models\BinSubscribe;
-use Bincg\Utils\IpApi;
+namespace Score\Frontend\Controllers;
+use Score\Models\ScSubscribe;
+use Score\Utils\IpApi;
 class NewsletterController extends ControllerBase
 {
     public function indexAction()
@@ -51,7 +51,7 @@ class NewsletterController extends ControllerBase
                         "msg"   => $result_msg
                     ));
                 }else{
-                    $subsc = new BinSubscribe();
+                    $subsc = new ScSubscribe();
                     $subsc->setSubscribeEmail($email);
                     $subsc->setSubscribeIp($this->getIp());
                     $subsc->setSubscribeInsertTime($this->globalVariable->curTime);
@@ -70,7 +70,7 @@ class NewsletterController extends ControllerBase
     }
     private function checkExistEmail($email){
         $msg = '';
-        $exist_email = BinSubscribe::findFirst(array(
+        $exist_email = ScSubscribe::findFirst(array(
             "subscribe_email = :email: ",
             "bind" => array("email" => $email)
         ));

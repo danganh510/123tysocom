@@ -1,14 +1,14 @@
 <?php
 
-namespace Bincg\Repositories;
+namespace Score\Repositories;
 
-use Bincg\Models\BinLanguage;
+use Score\Models\ScLanguage;
 use Phalcon\Mvc\User\Component;
 
 class Language extends Component {
     public static function checkCode($language_code, $language_id)
     {
-        return BinLanguage::findFirst(
+        return ScLanguage::findFirst(
             array (
                 'language_code = :CODE: AND language_id != :languageid:',
                 'bind' => array('CODE' => $language_code, 'languageid' => $language_id),
@@ -16,7 +16,7 @@ class Language extends Component {
     }
    public static function findAllLanguageCodes() {
         $ar_lang = array();
-        $list_language = BinLanguage::find('language_active ="Y"');
+        $list_language = ScLanguage::find('language_active ="Y"');
         if (sizeof($list_language)>0){
             foreach ($list_language as $item){
                 $ar_lang[] = $item->getLanguageCode();
@@ -25,7 +25,7 @@ class Language extends Component {
         return $ar_lang;
     }
     public static function getLanguageByCode($language_code){
-        return BinLanguage::findFirst(
+        return ScLanguage::findFirst(
             array (
                 'language_code = :CODE: AND language_active="Y"',
                 'bind' => array('CODE' => $language_code),
@@ -40,7 +40,7 @@ class Language extends Component {
         return $arr_language;
     }
     public static function getLanguages(){
-        return BinLanguage::find(array("language_active = 'Y'",
+        return ScLanguage::find(array("language_active = 'Y'",
             "order" => "language_order"));
     }
     public static function getCombo($lang_code){
@@ -57,8 +57,8 @@ class Language extends Component {
         return $string;
     }
     public function getActiveLanguagesByLocation($countryCode) {
-        $sql = 'SELECT la.* FROM \Bincg\Models\BinLanguage la 
-                INNER JOIN \Bincg\Models\BinLocation lo ON lo.location_lang_code = la.language_code
+        $sql = 'SELECT la.* FROM \Score\Models\ScLanguage la 
+                INNER JOIN \Score\Models\ScLocation lo ON lo.location_lang_code = la.language_code
                 WHERE lo.location_active="Y" AND la.language_active="Y" AND lo.location_country_code = "'.$countryCode.'"
                 ORDER BY lo.location_order ASC';
 
@@ -67,7 +67,7 @@ class Language extends Component {
 
     public static function getNameByCode($language_code)
     {
-        $occ_language = BinLanguage::findFirst(array('language_code = :CODE: AND language_active="Y"', 'bind' => array('CODE' => $language_code),));
+        $occ_language = ScLanguage::findFirst(array('language_code = :CODE: AND language_active="Y"', 'bind' => array('CODE' => $language_code),));
         return $occ_language ? $occ_language->getLanguageName() : '';
     }
 }

@@ -1,17 +1,17 @@
 <?php
-namespace Bincg\Backend\Controllers;
+namespace Score\Backend\Controllers;
 
-use Bincg\Models\BinArticle;
-use Bincg\Models\BinType;
-use Bincg\Models\BinTypeLang;
-use Bincg\Repositories\Activity;
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Language;
-use Bincg\Repositories\Type;
-use Bincg\Repositories\TypeLang;
-use Bincg\Utils\Validator;
+use Score\Models\ScArticle;
+use Score\Models\ScType;
+use Score\Models\ScTypeLang;
+use Score\Repositories\Activity;
+use Score\Repositories\Article;
+use Score\Repositories\Language;
+use Score\Repositories\Type;
+use Score\Repositories\TypeLang;
+use Score\Utils\Validator;
 use Phalcon\Paginator\Adapter\Model as PaginatorModel;
-use Bincg\Models\BinLanguage;
+use Score\Models\ScLanguage;
 class TypeController extends ControllerBase
 {
     public function indexAction()
@@ -93,7 +93,7 @@ class TypeController extends ControllerBase
             }
             if (count($messages) == 0) {
                 $msg_result = array();
-                $new_type = new BinType();
+                $new_type = new ScType();
                 $new_type->setTypeParentId($data["parent_id"]);
                 $new_type->setTypeName($data["name"]);
                 $new_type->setTypeTitle($data["title"]);
@@ -141,7 +141,7 @@ class TypeController extends ControllerBase
             $this->response->redirect('notfound');
             return ;
         }
-        $type_model = BinType::findFirstById($id_type);
+        $type_model = ScType::findFirstById($id_type);
         if(empty($type_model))
         {
             $this->response->redirect('notfound');
@@ -174,7 +174,7 @@ class TypeController extends ControllerBase
             if (isset($arr_language[$save_mode])) {
                 $lang_current = $save_mode;
             }
-            if($save_mode != BinLanguage::GENERAL){
+            if($save_mode != ScLanguage::GENERAL){
                 $data['type_name'] = $this->request->get("txtName", array('string', 'trim'));
                 $data['type_title'] = $this->request->get("txtTitle", array('string', 'trim'));
                 $data['type_meta_keyword'] = $this->request->get("txtMetaKeyword", array('string', 'trim'));
@@ -210,7 +210,7 @@ class TypeController extends ControllerBase
             }
             if (empty($messages)) {
                 switch ($save_mode) {
-                    case BinLanguage::GENERAL:
+                    case ScLanguage::GENERAL:
                         $data_old = array(
                             'type_parent_id' => $type_model->getTypeParentId(),
                             'type_keyword' => $type_model->getTypeKeyword(),
@@ -254,7 +254,7 @@ class TypeController extends ControllerBase
                     default:
                         $type_lang = TypeLang::findFirstByIdLang($id_type, $save_mode);
                         if (!$type_lang) {
-                            $type_lang = new BinTypeLang();
+                            $type_lang = new ScTypeLang();
                             $type_lang->setTypeId($id_type);
                             $type_lang->setTypeLangCode($save_mode);
                         }
@@ -299,7 +299,7 @@ class TypeController extends ControllerBase
             'type_meta_description' => ($save_mode === $this->globalVariable->defaultLanguage)?$data['type_meta_description']:$type_model->getTypeMetaDescription(),
         );
         $arr_translate[$this->globalVariable->defaultLanguage] = $item;
-        $arr_type_lang = BinTypeLang::findById($id_type);
+        $arr_type_lang = ScTypeLang::findById($id_type);
         foreach ($arr_type_lang as $type_lang){
             $item = array(
                 'type_id'=> $type_lang->getTypeId(),
@@ -322,10 +322,10 @@ class TypeController extends ControllerBase
         }
         $formData = array(
             'type_id'=>$type_model->getTypeId(),
-            'type_parent_id' => ($save_mode === BinLanguage::GENERAL )?$data['type_parent_id']:$type_model->getTypeParentId(),
-            'type_keyword' => ($save_mode === BinLanguage::GENERAL)?$data['type_keyword']:$type_model->getTypeKeyword(),
-            'type_order' => ($save_mode === BinLanguage::GENERAL)?$data['type_order']:$type_model->getTypeOrder(),
-            'type_active' => ($save_mode === BinLanguage::GENERAL)?$data['type_active']:$type_model->getTypeActive(),
+            'type_parent_id' => ($save_mode === ScLanguage::GENERAL )?$data['type_parent_id']:$type_model->getTypeParentId(),
+            'type_keyword' => ($save_mode === ScLanguage::GENERAL)?$data['type_keyword']:$type_model->getTypeKeyword(),
+            'type_order' => ($save_mode === ScLanguage::GENERAL)?$data['type_order']:$type_model->getTypeOrder(),
+            'type_active' => ($save_mode === ScLanguage::GENERAL)?$data['type_active']:$type_model->getTypeActive(),
             'arr_translate' => $arr_translate,
             'arr_language' => $arr_language,
             'lang_current' => $lang_current
@@ -342,11 +342,11 @@ class TypeController extends ControllerBase
     public function deleteAction()
     {
         $list_type = $this->request->get('item');
-        $Binnet_type = array();
+        $Scnet_type = array();
         $msg_delete = array('error' => '', 'success' => '');
         if($list_type) {
             foreach ($list_type as $type_id) {
-                $type = BinType::findFirstById($type_id);
+                $type = ScType::findFirstById($type_id);
 
                 if( $type ) {
                     $childItem = Type::getFirstChild($type->getTypeId());
@@ -363,7 +363,7 @@ class TypeController extends ControllerBase
                     if(empty($table_names)){
                         $old_type_data = $type->toArray();
                         $new_type_data = array();
-                        $Binnet_type[$type_id] = array($old_type_data, $new_type_data);
+                        $Scnet_type[$type_id] = array($old_type_data, $new_type_data);
                         $type->delete();
                         TypeLang::deleteById($type_id);
                     }
@@ -373,12 +373,12 @@ class TypeController extends ControllerBase
                 }
             }
         }
-        if (count($Binnet_type) > 0 ) {
+        if (count($Scnet_type) > 0 ) {
             // delete success
-            $message = 'Delete '. count($Binnet_type) .' type success.';
+            $message = 'Delete '. count($Scnet_type) .' type success.';
             $msg_delete['success'] = $message;
             // store activity success
-            $data_log = json_encode(array('content_type' => $Binnet_type));
+            $data_log = json_encode(array('content_type' => $Scnet_type));
             $activity = new Activity();
             $activity->logActivity($this->controllerName, $this->actionName, $this->auth['id'], $message, $data_log);
         }
@@ -387,7 +387,7 @@ class TypeController extends ControllerBase
     }
 
     private function getParameter(){
-        $sql = "SELECT * FROM Bincg\Models\BinType WHERE 1";
+        $sql = "SELECT * FROM Score\Models\ScType WHERE 1";
         $keyword = trim($this->request->get("txtSearch"));
         $type = $this->request->get("slType");
         $arrParameter = array();

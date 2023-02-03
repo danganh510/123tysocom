@@ -21,7 +21,7 @@
 </script>
 <div class="page-title">
     <div class="title_left">
-        <h3 class="type-title">Album Image <?php echo \Bincg\Repositories\Album::getNameByID($album_id) ;?></h3>
+        <h3 class="type-title">Album Image <?php echo \Score\Repositories\Album::getNameByID($album_id) ;?></h3>
     </div>
 </div>
 <div class="clearfix"></div>
@@ -43,7 +43,7 @@
                 <form name="album-form" id="album-form" data-parsley-validate class="form-horizontal form-label-left"
                       method="post">
                     <input type="hidden" name="save" id="save"
-                           value="<?php echo \Bincg\Models\BinLanguage::GENERAL; ?>"/>
+                           value="<?php echo \Score\Models\ScLanguage::GENERAL; ?>"/>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Order <span
                                     class="text-danger">*</span>

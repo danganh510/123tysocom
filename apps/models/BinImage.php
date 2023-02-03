@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinImage extends BaseModel
+class ScImage extends BaseModel
 {
 
     /**
@@ -202,14 +202,14 @@ class BinImage extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_image';
+        return 'sc_image';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinImage[]|BinImage
+     * @return ScImage[]|ScImage
      */
     public static function find($parameters = null)
     {
@@ -220,7 +220,7 @@ class BinImage extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinImage
+     * @return ScImage
      */
     public static function findFirst($parameters = null)
     {

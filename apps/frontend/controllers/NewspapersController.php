@@ -1,9 +1,9 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Models\BinNewspaper;
-use Bincg\Repositories\NewspaperArticle;
-use Bincg\Repositories\Page;
+use Score\Models\ScNewspaper;
+use Score\Repositories\NewspaperArticle;
+use Score\Repositories\Page;
 
 class NewspapersController extends ControllerBase
 {
@@ -15,7 +15,7 @@ class NewspapersController extends ControllerBase
         $page->generateStylePage($parent_keyword);
         $this->view->setVars([
             'parent_keyword' => $parent_keyword,
-            'newspapers'     => BinNewspaper::findAllNewspaper()
+            'newspapers'     => ScNewspaper::findAllNewspaper()
         ]);
     }
     public function detailAction()
@@ -24,14 +24,14 @@ class NewspapersController extends ControllerBase
         $page = new Page();
         $page->generateParentBread($parent_keyword,'Newspapers',$this->lang_code);
         $ar_key = $this->dispatcher->getParam("ar-key");
-        $newspaper = BinNewspaper::findFirstNewspaperByKey($ar_key);
+        $newspaper = ScNewspaper::findFirstNewspaperByKey($ar_key);
         if(!$newspaper){
             $this->my->sendErrorEmailAndRedirectToNotFoundPage($this->lang_code, $this->location_code);
             return;
         }
         $repoNewspaperArticle = new NewspaperArticle();
         $newspaperArticles = $repoNewspaperArticle->getByNewspaperIdAndInsertTime($newspaper->getNewspaperId(),$this->lang_code);
-        $relatedNewspapers = BinNewspaper::findRelatedByNewspaperKey($ar_key);
+        $relatedNewspapers = ScNewspaper::findRelatedByNewspaperKey($ar_key);
         $this->tag->setTitle($newspaper->getNewspaperTitle());
         $this->view->setVars([
             'parent_keyword'    => $parent_keyword,

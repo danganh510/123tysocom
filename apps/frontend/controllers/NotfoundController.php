@@ -1,8 +1,8 @@
 <?php
-namespace Bincg\Frontend\Controllers;
+namespace Score\Frontend\Controllers;
 
-use Bincg\Repositories\Page;
-use Bincg\Repositories\SendError;
+use Score\Repositories\Page;
+use Score\Repositories\SendError;
 
 class NotfoundController extends ControllerBase
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinArticle extends BaseModel
+class ScArticle extends BaseModel
 {
 
     /**
@@ -784,14 +784,14 @@ class BinArticle extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_article';
+        return 'sc_article';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinArticle[]|BinArticle
+     * @return ScArticle[]|ScArticle
      */
     public static function find($parameters = null)
     {
@@ -802,7 +802,7 @@ class BinArticle extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinArticle
+     * @return ScArticle
      */
     public static function findFirst($parameters = null)
     {

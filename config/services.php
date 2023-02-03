@@ -45,18 +45,17 @@ $di = new FactoryDefault();
 $loader = new Loader();
 $loader->registerNamespaces(array(
     'General\Models' => __DIR__ . '/../apps/models/general/',
-    'Bincg\Models' => __DIR__ . '/../apps/models/',
-    'Bincg\Repositories' => __DIR__ . '/../apps/repositories/',
-    'Bincg\Library' => __DIR__ . '/../apps/library/',
-    'Bincg\Utils' => __DIR__ . '/../apps/library/Utils/',
-    'Bincg\Google' => __DIR__ . '/../apps/library/google-cloud-translate/'
+    'Score\Models' => __DIR__ . '/../apps/models/',
+    'Score\Repositories' => __DIR__ . '/../apps/repositories/',
+    'Score\Library' => __DIR__ . '/../apps/library/',
+    'Score\Utils' => __DIR__ . '/../apps/library/Utils/',
+    'Score\Google' => __DIR__ . '/../apps/library/google-cloud-translate/'
 ));
 
 $loader->registerDirs(
     array(
         __DIR__ . '/../apps/library/',
-        __DIR__ . '/../apps/library/SMTP/
-'
+        __DIR__ . '/../apps/library/SMTP/'
     )
 );
 $loader->register();
@@ -181,11 +180,9 @@ $di['dbSlave'] = function () use ($config) {
 /**
  * Registering a router
  */
-$locationCodesRegex = \Bincg\Repositories\Location::findAllLocationCountryCodes();
-array_push($locationCodesRegex,'gx');
-$locationCodesRegex = implode('|',$locationCodesRegex);
-$languageCodesRegex = implode('|', \Bincg\Repositories\Language::findAllLanguageCodes());
-$di['router'] = function ()use ($locationCodesRegex, $languageCodesRegex) {
+
+$languageCodesRegex = implode('|', \Score\Repositories\Language::findAllLanguageCodes());
+$di['router'] = function ()use ( $languageCodesRegex) {
     $router = new Router(false);
     $router->removeExtraSlashes(true);
     $router->setDefaultModule("frontend");
@@ -201,146 +198,7 @@ $di['router'] = function ()use ($locationCodesRegex, $languageCodesRegex) {
         "controller" => "index",
         "action"     => "index"
     ));
-    $router->add("/{location:$locationCodesRegex}", array(
-        "module" => "frontend",
-        "controller" => "index",
-        "action"     => "index",
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}", array(
-        "module" => "frontend",
-        "controller" => "index",
-        "action"     => "index"
-    ));
-    //Set a router not found
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/notfound", array(
-        "module" => "frontend",
-        "controller" => "notfound",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/info/{info-ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "info",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/about-us", array(
-        "module" => "frontend",
-        "controller" => "aboutus",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/about-us/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "aboutus",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/newspapers", array(
-        "module" => "frontend",
-        "controller" => "newspapers",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/newspapers/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "newspapers",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/newspapers/getdata", array(
-        "module" => "frontend",
-        "controller" => "newspapers",
-        "action"     => "getdata"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/contact-us", array(
-        "module" => "frontend",
-        "controller" => "contactus",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/corporate-social-responsibility", array(
-        "module" => "frontend",
-        "controller" => "corporatesocialresponsibility",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/corporate-social-responsibility/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "corporatesocialresponsibility",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/services", array(
-        "module" => "frontend",
-        "controller" => "services",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/services/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "services",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/news", array(
-        "module" => "frontend",
-        "controller" => "news",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/news/{type-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "news",
-        "action"     => "type"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/newsroom", array(
-        "module" => "frontend",
-        "controller" => "newsroom",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/newsroom/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "newsroom",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/careers", array(
-        "module" => "frontend",
-        "controller" => "careers",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/careers/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "careers",
-        "action"     => "detail"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/careers/search", array(
-        "module" => "frontend",
-        "controller" => "careers",
-        "action"     => "search"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/newsletter", array(
-        "module" => "frontend",
-        "controller" => "newsletter",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/apply-cv", array(
-        "module" => "frontend",
-        "controller" => "applycv",
-        "action"     => "applycv"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/search", array(
-        "module" => "frontend",
-        "controller" => "search",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/suggest", array(
-        "controller" => "search",
-        "action"     => "suggest"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/cron/update-sitemap", array(
-        "module"	=> "frontend",
-        "controller" => "generatesitemap",
-        "action"     => "index"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/cron", array(
-        "module"	=> "frontend",
-        "controller" => "cronv3",
-        "action"     => "cron"
-    ));
-    $router->add("/{location:$locationCodesRegex}/{language:$languageCodesRegex}/crondetail", array(
-        "module"	=> "frontend",
-        "controller" => "cronv3",
-        "action"     => "crondetail"
-    ));
+  
     //Set a router not found
     $router->add("/notfound", array(
         "module" => "frontend",

@@ -1,8 +1,8 @@
 <?php
 
-use Bincg\Frontend\Controllers\ControllerBase;
-use Bincg\Repositories\Article;
-use Bincg\Repositories\Type;
+use Score\Frontend\Controllers\ControllerBase;
+use Score\Repositories\Article;
+use Score\Repositories\Type;
 
 class InformationController extends ControllerBase
 {

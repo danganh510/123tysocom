@@ -1,8 +1,8 @@
 <?php
 
-namespace Bincg\Models;
+namespace Score\Models;
 
-class BinSuggest extends BaseModel
+class ScSuggest extends BaseModel
 {
 
     /**
@@ -134,14 +134,14 @@ class BinSuggest extends BaseModel
      */
     public function getSource()
     {
-        return 'bin_suggest';
+        return 'sc_suggest';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinSuggest[]|\Phalcon\Mvc\Model\ResultsetInterface
+     * @return ScSuggest[]|\Phalcon\Mvc\Model\ResultsetInterface
      */
     public static function find($parameters = null)
     {
@@ -152,7 +152,7 @@ class BinSuggest extends BaseModel
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return BinSuggest|\Phalcon\Mvc\Model
+     * @return ScSuggest|\Phalcon\Mvc\Model
      */
     public static function findFirst($parameters = null)
     {

@@ -33,7 +33,7 @@
             $this->view->partial('news/schemanews');
         }
         if(in_array($this->router->getActionName(), array('type'))) {
-            $repoType = new \Bincg\Repositories\Type();
+            $repoType = new \Score\Repositories\Type();
             $type_keyword = $this->dispatcher->getParam("type-key");
             if($type_keyword){
                 $type_child = $repoType->getTypeByKeyword($type_keyword,$lang_code);
