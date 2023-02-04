@@ -1,0 +1,154 @@
+.content-item {
+  border: 1px solid $gray-dark;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 70%;
+  margin-bottom: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  a {
+    text-decoration: none;
+  }
+  .content-title {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: $gray-dark;
+    gap: 0.5rem;
+    h3 {
+      margin-bottom: 0;
+      font-size: 16px;
+      color: white;
+      font-weight: 600;
+    }
+  }
+  .content-country {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 1.5rem;
+    object-fit: cover;
+  }
+  & > h4 {
+    background-color: $gray-dark;
+    padding: 0.5rem 1rem 0.5rem 3rem;
+    color: white;
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  h4 {
+    margin-bottom: 0;
+  }
+  .full-time {
+    grid-area: status;
+    display: flex;
+    gap: 3px;
+  }
+  .team-left {
+    grid-area: teamA;
+    gap: 10px;
+    display: flex;
+    justify-content: end;
+  }
+  .team-right {
+    grid-area: teamB;
+    gap: 10px;
+    display: flex;
+  }
+  .team-club-name {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .team-left img,
+  .team-right img {
+    height: 2rem;
+    width: 2rem;
+  }
+  .result {
+    grid-area: result;
+    text-align: center;
+  }
+  .content-line {
+    display: grid;
+    align-items: center;
+    padding: 1rem;
+    color: white;
+    grid-template-columns: 50px 1fr minmax(60px, auto) 1fr 50px;
+    grid-template-areas: "status teamA result teamB teamB";
+  }
+  .content-line:nth-child(odd) {
+    background-color: $gray-light;
+  }
+  .content-line:nth-child(even) {
+    background-color: $gray-item;
+  }
+  .team-club {
+    display: flex;
+    align-items: center;
+  }
+  .red-card,
+  .yellow-card {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .red-card-item,
+  .yellow-card-item {
+    width: 0.75rem;
+    height: 1rem;
+    display: inline-block;
+  }
+  .red-card-item {
+    background-color: $red-color;
+  }
+  .yellow-card-item {
+    background-color: yellow;
+  }
+}
+@include maxW(767px) {
+  .content-item {
+    width: 100%;
+    font-size: 14px;
+    .content-title {
+      padding: 0.5rem 0.75rem;
+      h3 {
+        font-size: 14px;
+      }
+    }
+    .content-country {
+      width: 1rem;
+      height: 1rem;
+    }
+    & > h4 {
+      font-size: 14px;
+      padding-left: 2.25rem;
+    }
+    .content-line {
+      font-size: 12px;
+      gap: 4px;
+    }
+    .team-club-name {
+      font-size: 12px;
+    }
+    .team-left img,
+    .team-right img {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+@include maxW(525px) {
+  .content-item {
+    .team-club-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .red-card,
+    .yellow-card {
+      display: none;
+    }
+  }
+}

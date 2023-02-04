@@ -33,7 +33,7 @@ class ControllerBase extends Controller
 	public function initialize()
     {
 		//current user
-        $this->auth = $this->session->get('auth');
+      //  $this->auth = $this->session->get('auth');
         $detect = new Device();
         $this->view->isMobile = $this->isMobile = $detect->isMobile() || $detect->isTablet();
         $this->view->isMobileOnly = $this->isMobileOnly = $detect->isMobile();
@@ -45,9 +45,19 @@ class ControllerBase extends Controller
         if(strpos($redirectUrl,'fbclid')!==false) {
             $redirectUrl = '';
         }
-        $redirectUrlArrayDetect = array('cron/update-sitemap?ctoken='.$this->globalVariable->cronToken);
         //Homepage - detect ip
-     
+        if (!$this->session->has('ssIpInfo') || !isset($_SERVER['HTTP_REFERER']) || $_SERVER['HTTP_REFERER'] == '') {
+            $ipInfo = $this->my->ssIpInfo();
+            if ($ipInfo != null) {
+                if ( $languageCode == null && $redirectUrl == '') {
+                    $languageCode = $defaultLanguageCode;
+                    $this->view->disable();
+                    $this->response->redirect( '/' . $languageCode);
+                    return;
+                }
+            }
+        }
+
         if($this->session->has('ssIpInfo')) {
             $ip_info = unserialize($this->session->get('ssIpInfo'));
             $countryCode = $ip_info->countryCode;
@@ -55,7 +65,7 @@ class ControllerBase extends Controller
         } else {
             $this->view->ipCountryCode = $this->ipCountryCode = '';
         }
-      
+       
       
         $this->view->lang_code = $this->lang_code = $languageCode;
         $this->view->lang_url = $languageCode;
@@ -68,22 +78,8 @@ class ControllerBase extends Controller
             $current_url = '';
         }
         $this->view->current_url = $current_url;
-
-        $lang_country_code = ScLanguage::getCountryByCode($this->lang_code);
-        $lang_country_code = (!empty($lang_country_code))?$lang_country_code:$this->globalVariable->defaultCountry;
-        $str_time_language =  $this->lang_code.'_'.strtoupper($lang_country_code).'.UTF-8';//vi_VN.UTF8
-        setlocale (LC_TIME, $str_time_language);
         Config::getCache($this->lang_code);
-        $repoType = new Type();
-        $repoArticle = new Article();
-        $menu_services = $repoArticle->getByTypeAndOrder($this->globalVariable->typeServicesId,$this->lang_code);
-        $menu_abouts = $repoArticle->getByTypeAndOrder($this->globalVariable->typeAboutUsId,$this->lang_code);
-        $menu_corporate_social_responsibility = $repoArticle->getByTypeAndOrder($this->globalVariable->typeCorporateSocialResponsibilityId,$this->lang_code);
-        $news_subtypes = $repoType->getTypeByParent($this->globalVariable->typeNewsId,$this->lang_code);
-        $this->view->menu_services = $menu_services;
-        $this->view->menu_abouts = $menu_abouts;
-        $this->view->menu_corporate_social_responsibility = $menu_corporate_social_responsibility;
-        $this->view->news_subtypes = $news_subtypes;
+ 
      
     }
 }

@@ -1,0 +1,85 @@
+main {
+  padding: 2rem 0;
+  min-height: 100vh;
+  h2 {
+    font-weight: 600;
+  }
+  .form {
+    display: flex;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    align-items: center;
+    width: 70%;
+    margin: 0 auto;
+  }
+  .form-item {
+    background-color: $gray-light;
+    border-radius: 4px;
+    padding: 0.5rem;
+    color: white;
+  }
+  .form-search {
+    display: flex;
+    flex-grow: 1;
+    background-color: $gray-light;
+    border-radius: 4px;
+    input {
+      font-size: 14px;
+      padding-inline: 10px 35px;
+      width: 100%;
+      height: 32px;
+      border-radius: 5px;
+      flex-grow: 1;
+      background-color: transparent;
+      color: white;
+      &::-webkit-input-placeholder {
+        color: rgba(white, 0.8);
+      }
+      &::-moz-input-placeholder {
+        color: rgba(white, 0.8);
+      }
+    }
+  }
+  .form-calendar-input {
+    background-color: transparent;
+    color: white;
+    &::-webkit-input-placeholder {
+      color: rgba(white, 0.8);
+    }
+    &::-moz-input-placeholder {
+      color: rgba(white, 0.8);
+    }
+  }
+  .form-live {
+    font-size: 14px;
+  }
+}
+@include maxW(767px) {
+  main {
+    padding: 1rem;
+    h2 {
+      font-size: 20px;
+    }
+    .form {
+      width: 100%;
+      padding: 1.5rem 0;
+    }
+  }
+}
+@include maxW(625px) {
+  main {
+    padding: 1rem 0;
+    .form {
+      flex-direction: column;
+    }
+    .form-item {
+      width: 100%;
+    }
+    .form-search {
+      width: 100%;
+    }
+    .form-calendar-input {
+      width: 100%;
+    }
+  }
+}

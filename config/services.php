@@ -158,16 +158,7 @@ $di['db'] = function () use ($config) {
         'charset'=> $config->database->charset
     ));
 };
-$di['db_general'] = function () use ($config) {
-    return new DbAdapter(array(
-        "host" => $config->database_general->host,
-        "username" => $config->database_general->username,
-        "password" => $config->database_general->password,
-        "dbname" => $config->database_general->name,
-        "schema" => $config->database_general->name,
-        'charset' => $config->database_general->charset
-    ));
-};
+
 $di['dbSlave'] = function () use ($config) {
     return new DbAdapter(array(
         "host" => $config->dbSlave->host,
@@ -182,6 +173,7 @@ $di['dbSlave'] = function () use ($config) {
  */
 
 $languageCodesRegex = implode('|', \Score\Repositories\Language::findAllLanguageCodes());
+
 $di['router'] = function ()use ( $languageCodesRegex) {
     $router = new Router(false);
     $router->removeExtraSlashes(true);
@@ -198,6 +190,11 @@ $di['router'] = function ()use ( $languageCodesRegex) {
         "controller" => "index",
         "action"     => "index"
     ));
+    $router->add("/{language:$languageCodesRegex}", array(
+        "module" => "frontend",
+        "controller" => "index",
+        "action"     => "index"
+    ));
   
     //Set a router not found
     $router->add("/notfound", array(
@@ -205,21 +202,7 @@ $di['router'] = function ()use ( $languageCodesRegex) {
         "controller" => "notfound",
         "action"     => "index"
     ));
-    $router->add("/info/{info-ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "info",
-        "action"     => "detail"
-    ));
-    $router->add("/about-us", array(
-        "module" => "frontend",
-        "controller" => "aboutus",
-        "action"     => "index"
-    ));
-    $router->add("/about-us/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "aboutus",
-        "action"     => "detail"
-    ));
+
     $router->add("/newspapers", array(
         "module" => "frontend",
         "controller" => "newspapers",
@@ -235,100 +218,7 @@ $di['router'] = function ()use ( $languageCodesRegex) {
         "controller" => "newspapers",
         "action"     => "getdata"
     ));
-    $router->add("/contact-us", array(
-        "module" => "frontend",
-        "controller" => "contactus",
-        "action"     => "index"
-    ));
-    $router->add("/corporate-social-responsibility", array(
-        "module" => "frontend",
-        "controller" => "corporatesocialresponsibility",
-        "action"     => "index"
-    ));
-    $router->add("/corporate-social-responsibility/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "corporatesocialresponsibility",
-        "action"     => "detail"
-    ));
-    $router->add("/services", array(
-        "module" => "frontend",
-        "controller" => "services",
-        "action"     => "index"
-    ));
-    $router->add("/services/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "services",
-        "action"     => "detail"
-    ));
-    $router->add("/news", array(
-        "module" => "frontend",
-        "controller" => "news",
-        "action"     => "index"
-    ));
-    $router->add("/news/{type-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "news",
-        "action"     => "type"
-    ));
-    $router->add("/newsroom", array(
-        "module" => "frontend",
-        "controller" => "newsroom",
-        "action"     => "index"
-    ));
-    $router->add("/newsroom/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "newsroom",
-        "action"     => "detail"
-    ));
-    $router->add("/careers", array(
-        "module" => "frontend",
-        "controller" => "careers",
-        "action"     => "index"
-    ));
-    $router->add("/careers/{ar-key:([a-zA-Z0-9_-]+)}", array(
-        "module" => "frontend",
-        "controller" => "careers",
-        "action"     => "detail"
-    ));
-    $router->add("/careers/search", array(
-        "module" => "frontend",
-        "controller" => "careers",
-        "action"     => "search"
-    ));
-    $router->add("/newsletter", array(
-        "module" => "frontend",
-        "controller" => "newsletter",
-        "action"     => "index"
-    ));
-    $router->add("/apply-cv", array(
-        "module" => "frontend",
-        "controller" => "applycv",
-        "action"     => "applycv"
-    ));
-    $router->add("/search", array(
-        "module" => "frontend",
-        "controller" => "search",
-        "action"     => "index",
-    ));
-    $router->add("/suggest", array(
-        "controller" => "search",
-        "action"     => "suggest",
-    ));
-    $router->add("/cron/update-sitemap", array(
-        "module"	=> "frontend",
-        "controller" => "generatesitemap",
-        "action"     => "index"
-    ));
-    $router->add("/cron", array(
-        "module"	=> "frontend",
-        "controller" => "cronv3",
-        "action"     => "cron"
-    ));
-    $router->add("/crondetail", array(
-        "module"	=> "frontend",
-        "controller" => "cronv3",
-        "action"     => "crondetail"
-    ));
+
     $router->add('/dashboard', array(
         "module" => "backend",
         "controller" => "index",

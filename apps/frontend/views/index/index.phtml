@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $lang_url;
  * @var $lang_code;
@@ -9,196 +10,139 @@
 $repoType = new \Score\Repositories\Type();
 ?>
 <main>
-      <div class="container">
+    <div class="container">
         <h2 class="text-center">
-          Tỷ số, lịch thi đấu và kết quả bóng đá trực tiếp
+            Tỷ số, lịch thi đấu và kết quả bóng đá trực tiếp
         </h2>
         <div class="form">
-          <div class="form-live form-item">
-            <input
-              type="checkbox"
-              id="live"
-              class="checkbox-input"
-              name="live"
-            />
-            <label for="live" class="checkbox-label"></label>
-            <span>Trực tiếp</span>
-          </div>
-          <div class="form-search">
-            <input type="text" placeholder="Tìm kiếm các trận đấu" />
-          </div>
-          <div class="form-calendar form-item">
-            <input
-              type="text"
-              class="form-calendar-input"
-              placeholder="Chọn ngày"
-            />
-          </div>
+            <div class="form-live form-item">
+                <input type="checkbox" id="live" class="checkbox-input" name="live" />
+                <label for="live" class="checkbox-label"></label>
+                <span>Trực tiếp</span>
+            </div>
+            <div class="form-search">
+                <input type="text" placeholder="Tìm kiếm các trận đấu" />
+            </div>
+            <div class="form-calendar form-item">
+                <input type="text" class="form-calendar-input" placeholder="Chọn ngày" />
+            </div>
         </div>
-      </div>
-      <section class="content">
+    </div>
+    <section class="content">
         <div class="container">
-          <div class="content-item">
-            <a href="#" class="content-title">
-              <img
-                src="./image/flag-eng.png"
-                alt="country"
-                class="content-country"
-              />
-              <h3>Spain - Copa del Rey</h3>
-            </a>
-            <h4>Quarter-finals</h4>
-            <div class="content-table">
-              <a href="#" class="content-line">
-                <span class="full-time">FT</span>
-                <div class="team-club team-left">
-                  <h4 class="team-club-name">Groningen</h4>
-                  <img
-                    src="./image/left-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
+            <div class="content-item">
+                <a href="#" class="content-title">
+                    <img src="./image/flag-eng.png" alt="country" class="content-country" />
+                    <h3>Spain - Copa del Rey</h3>
+                </a>
+                <h4>Quarter-finals</h4>
+                <div class="content-table">
+                    <a href="#" class="content-line">
+                        <span class="full-time">FT</span>
+                        <div class="team-club team-left">
+                            <h4 class="team-club-name">Groningen</h4>
+                            <img src="./image/left-team.png" alt="Team" class="team-club-img" />
+                        </div>
+                        <div class="result">
+                            <span>0</span>
+                            <span>-</span>
+                            <span>0</span>
+                        </div>
+                        <div class="team-club team-right">
+                            <img src="./image/right-team.png" alt="Team" class="team-club-img" />
+                            <h4 class="team-club-name">Groningen</h4>
+                        </div>
+                    </a>
+                    <a href="#" class="content-line">
+                        <span class="full-time">
+                            <span class="main-time">90'</span>
+                            <span class="bonus">+</span>
+                            <span class="bonus-time">4'</span>
+                        </span>
+                        <div class="team-club team-left">
+                            <h4 class="team-club-name">Groningen</h4>
+                            <img src="./image/left-team.png" alt="Team" class="team-club-img" />
+                        </div>
+                        <div class="result">
+                            <span>0</span>
+                            <span>-</span>
+                            <span>0</span>
+                        </div>
+                        <div class="team-club team-right">
+                            <img src="./image/right-team.png" alt="Team" class="team-club-img" />
+                            <h4 class="team-club-name">Groningen</h4>
+                        </div>
+                    </a>
+                    <a href="#" class="content-line">
+                        <span class="full-time"> 23:00 </span>
+                        <div class="team-club team-left">
+                            <h4 class="team-club-name">Groningen</h4>
+                            <img src="./image/left-team.png" alt="Team" class="team-club-img" />
+                        </div>
+                        <div class="result">
+                            <span>0</span>
+                            <span>-</span>
+                            <span>0</span>
+                        </div>
+                        <div class="team-club team-right">
+                            <img src="./image/right-team.png" alt="Team" class="team-club-img" />
+                            <h4 class="team-club-name">Groningen</h4>
+                        </div>
+                    </a>
                 </div>
-                <div class="result">
-                  <span>0</span>
-                  <span>-</span>
-                  <span>0</span>
-                </div>
-                <div class="team-club team-right">
-                  <img
-                    src="./image/right-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                  <h4 class="team-club-name">Groningen</h4>
-                </div>
-              </a>
-              <a href="#" class="content-line">
-                <span class="full-time">
-                  <span class="main-time">90'</span>
-                  <span class="bonus">+</span>
-                  <span class="bonus-time">4'</span>
-                </span>
-                <div class="team-club team-left">
-                  <h4 class="team-club-name">Groningen</h4>
-                  <img
-                    src="./image/left-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                </div>
-                <div class="result">
-                  <span>0</span>
-                  <span>-</span>
-                  <span>0</span>
-                </div>
-                <div class="team-club team-right">
-                  <img
-                    src="./image/right-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                  <h4 class="team-club-name">Groningen</h4>
-                </div>
-              </a>
-              <a href="#" class="content-line">
-                <span class="full-time"> 23:00 </span>
-                <div class="team-club team-left">
-                  <h4 class="team-club-name">Groningen</h4>
-                  <img
-                    src="./image/left-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                </div>
-                <div class="result">
-                  <span>0</span>
-                  <span>-</span>
-                  <span>0</span>
-                </div>
-                <div class="team-club team-right">
-                  <img
-                    src="./image/right-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                  <h4 class="team-club-name">Groningen</h4>
-                </div>
-              </a>
             </div>
-          </div>
-          <div class="content-item">
-            <a href="#" class="content-title">
-              <img
-                src="./image/flag-eng.png"
-                alt="country"
-                class="content-country"
-              />
-              <h3>Spain - Copa del Rey</h3>
-            </a>
-            <div class="content-table">
-              <a href="#" class="content-line">
-                <span class="full-time">FT</span>
-                <div class="team-club team-left">
-                  <div class="yellow-card">
-                    <span class="yellow-card-item"></span>
-                    <span class="quality">(1)</span>
-                  </div>
-                  <h4 class="team-club-name">Groningen</h4>
-                  <img
-                    src="./image/left-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
+            <div class="content-item">
+                <a href="#" class="content-title">
+                    <img src="./image/flag-eng.png" alt="country" class="content-country" />
+                    <h3>Spain - Copa del Rey</h3>
+                </a>
+                <div class="content-table">
+                    <a href="#" class="content-line">
+                        <span class="full-time">FT</span>
+                        <div class="team-club team-left">
+                            <div class="yellow-card">
+                                <span class="yellow-card-item"></span>
+                                <span class="quality">(1)</span>
+                            </div>
+                            <h4 class="team-club-name">Groningen</h4>
+                            <img src="./image/left-team.png" alt="Team" class="team-club-img" />
+                        </div>
+                        <div class="result">
+                            <span>0</span>
+                            <span>-</span>
+                            <span>0</span>
+                        </div>
+                        <div class="team-club team-right">
+                            <img src="./image/right-team.png" alt="Team" class="team-club-img" />
+                            <h4 class="team-club-name">Groningen</h4>
+                            <div class="red-card">
+                                <span class="red-card-item"></span>
+                                <span class="quality">(2)</span>
+                            </div>
+                            <div class="yellow-card">
+                                <span class="yellow-card-item"></span>
+                                <span class="quality">(1)</span>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="content-line">
+                        <span class="full-time"> 23:00 </span>
+                        <div class="team-club team-left">
+                            <h4 class="team-club-name">Groningen</h4>
+                            <img src="./image/left-team.png" alt="Team" class="team-club-img" />
+                        </div>
+                        <div class="result">
+                            <span>0</span>
+                            <span>-</span>
+                            <span>0</span>
+                        </div>
+                        <div class="team-club team-right">
+                            <img src="./image/right-team.png" alt="Team" class="team-club-img" />
+                            <h4 class="team-club-name">Groningen</h4>
+                        </div>
+                    </a>
                 </div>
-                <div class="result">
-                  <span>0</span>
-                  <span>-</span>
-                  <span>0</span>
-                </div>
-                <div class="team-club team-right">
-                  <img
-                    src="./image/right-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                  <h4 class="team-club-name">Groningen</h4>
-                  <div class="red-card">
-                    <span class="red-card-item"></span>
-                    <span class="quality">(2)</span>
-                  </div>
-                  <div class="yellow-card">
-                    <span class="yellow-card-item"></span>
-                    <span class="quality">(1)</span>
-                  </div>
-                </div>
-              </a>
-              <a href="#" class="content-line">
-                <span class="full-time"> 23:00 </span>
-                <div class="team-club team-left">
-                  <h4 class="team-club-name">Groningen</h4>
-                  <img
-                    src="./image/left-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                </div>
-                <div class="result">
-                  <span>0</span>
-                  <span>-</span>
-                  <span>0</span>
-                </div>
-                <div class="team-club team-right">
-                  <img
-                    src="./image/right-team.png"
-                    alt="Team"
-                    class="team-club-img"
-                  />
-                  <h4 class="team-club-name">Groningen</h4>
-                </div>
-              </a>
             </div>
-          </div>
         </div>
-      </section>
-    </main>
+    </section>
+</main>
