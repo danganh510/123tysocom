@@ -772,17 +772,16 @@ $di->set('modelsManager', function() {
 /**
  * Register PHPMailer manager
  */
-$di->set('myMailer', function() {
-    require_once(__DIR__ . "/../apps/library/SMTP/class.phpmailer.php");
-    $mail = new \PHPMailer();
-    $mail->IsSMTP();//telling the class to use SMTP
-    $mail->SMTPAuth   = true;
-    $mail->SMTPSecure = "tls";
-    $mail->Host       = "email-smtp.us-west-2.amazonaws.com";
-    $mail->Username   = "AKIAZPULICYWJ7UI6GUZ";
-    $mail->Password   = "BNr0S+jBNdlDm0RtmJIIN8L1dFia0Y5r1R9Sk6Xg2a9r";
-    $mail->CharSet    = 'utf-8';
-    return $mail;
-});
+// $di->set('myMailer', function() {
+//     require_once(__DIR__ . "/../apps/library/SMTP/class.phpmailer.php");
+//     $mail = new \PHPMailer();
+//     $mail->IsSMTP();//telling the class to use SMTP
+//     $mail->SMTPAuth   = true;
+//     $mail->SMTPSecure = "tls";
+//     $mail->Host       = "email-smtp.us-west-2.amazonaws.com";
+//     $mail->Username   = "AKIAZPULICYWJ7UI6GUZ";
+//     $mail->Password   = "BNr0S+jBNdlDm0RtmJIIN8L1dFia0Y5r1R9Sk6Xg2a9r";
+//     $mail->CharSet    = 'utf-8';
+//     return $mail;
+// });
 // Load Stripe API
-require_once (__DIR__.'/../apps/library/google-cloud-translate/vendor/autoload.php');

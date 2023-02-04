@@ -39,7 +39,6 @@ class ControllerBase extends Controller
         $this->view->isMobileOnly = $this->isMobileOnly = $detect->isMobile();
         //Location & Language
         $languageCode = $this->dispatcher->getParam('language');
-        $defaultLocationCode = $this->globalVariable->defaultLocation;
         $defaultLanguageCode = $this->globalVariable->defaultLanguage;
         $redirectUrl = substr($this->request->getURI(), strlen($this->url->getBaseUri()));
         if(strpos($redirectUrl,'fbclid')!==false) {
