@@ -15,6 +15,9 @@ class My extends Phalcon\Mvc\User\Component
         array_push($jsSources, $src);
         $this->view->jsSources = $jsSources;
     }
+    public function getAPi($method, $params, $url) {
+        
+    }
 
     public function localTime($time)
     {
@@ -41,15 +44,7 @@ class My extends Phalcon\Mvc\User\Component
     {
         return date('Y-m-d', $time);
     }
-    //convert local site time to UTC0
-    public function UTCTime($time)
-    {
-        return $time - $this->globalVariable->timeZone;
-    }
-    function formatTimeArDetail($time)
-    {
-        return strftime('%b %d, %Y | %H:%M', $time). " (".$this->globalVariable->gtmStr.")";
-    }
+    
 	//send email
     public function sendEmail($fromEmail, $toEmail, $subject, $message, $fromFullName, $toFullName, $reply_to_email, $reply_to_name)
     {
@@ -99,70 +94,7 @@ class My extends Phalcon\Mvc\User\Component
         $mail->ClearAttachments();
         return $result;
     }
-    public function renderPagination($url, $page, $totalPages, $limit = 0, $attributes = array())
-    {
-        if ($page < 1) $page = 1;
-        if ($totalPages < 1) $totalPages = 1;
-
-        $disablePrevious = $page <= 1;
-        $disableNext = $page >= $totalPages;
-        $showLeftDot = ($limit != 0) && ($page - $limit > 2);
-        $showRightDot = ($limit != 0) && ($page + $limit < $totalPages - 1);
-        $showFirstPage = ($limit != 0) && ($page - $limit >= 2);
-        $showLastPage = ($limit != 0) && ($page + $limit <= $totalPages - 1);
-
-        $attributeString = '';
-        foreach ($attributes as $key => $value) {
-            $key = strtolower(trim((string)$key));
-            if ($key != 'class') {
-                $attributeString .= $key . '="' . $value . ' ';
-            }
-        }
-
-        $html = '<ul class="pagination end ' . (isset($attributes['class']) ? $attributes['class'] : '') . '" ' . $attributeString . '>';
-
-        if ($disablePrevious) {
-            $html .= '<li class="disabled"><span class="item">&laquo;</span></li>';
-            $html .= '<li class="disabled"><span class="item">Previous</span></li>';
-        } else {
-            $html .= '<li><a class="item" href="' . $url . (1) . '" >&laquo;</a></li>';
-            $html .= '<li><a class="item" href="' . $url . ($page - 1) . '" >Previous</a></li>';
-        }
-
-        if ($limit == 0) {
-            for ($i = 1; $i <= $totalPages; $i++) {
-                if ($page == $i) {
-                    $html .= '<li class="active"><span class="item">' . $i . '</span></li>';
-                } else {
-                    $html .= '<li><a class="item" href="' . $url . $i . '" >' . $i . '</a></li>';
-                }
-            }
-        } else {
-            if ($showFirstPage) $html .= '<li><a class="item" href="' . $url . (1) . '" >1</a></li>';
-            if ($showLeftDot) $html .= '<li><a class="item">&hellip;</a></li>';
-            for ($i = $page - $limit; $i <= $page + $limit; $i++) {
-                if ($i < 1 || $i > $totalPages) continue;
-                if ($page == $i) {
-                    $html .= '<li class="active"><span class="item">' . $i . '</span></li>';
-                } else {
-                    $html .= '<li><a class="item" href="' . $url . $i . '" >' . $i . '</a></li>';
-                }
-            }
-            if ($showRightDot) $html .= '<li><a class="item">&hellip;</a></li>';
-            if ($showLastPage) $html .= '<li><a class="item" href="' . $url . $totalPages . '" >' . $totalPages . '</a></li>';
-        }
-
-        if ($disableNext) {
-            $html .= '<li class="disabled"><span class="item">Next</span></li>';
-            $html .= '<li class="disabled"><span class="item">&raquo;</span></li>';
-        } else {
-            $html .= '<li><a class="item" href="' . $url . ($page + 1) . '" >Next</a></li>';
-            $html .= '<li><a class="item" href="' . $url . ($totalPages) . '" >&raquo;</a></li>';
-        }
-
-        $html .= '</ul>';
-        return $html;
-    }
+   
     public function sendError($message,$title)
     {
         if (defined('EMAIL_TEST_MODE') && EMAIL_TEST_MODE && defined('EMAIL_TEST_EMAIL')) {
@@ -228,85 +160,7 @@ class My extends Phalcon\Mvc\User\Component
     {
         return $this->formatID(4, $this->localTime($insertTime), $id);
     }
-    public function formatID($idType, $insertTime, $id, $suffix='')
-    {
-        $insertYear = date('Y', $insertTime);
-        $y = substr($insertYear, strlen($insertYear)-1);
-        return sprintf("%s%s%04d%s",$idType,$y,$id,$suffix);
-    }
-    public function formatApplyID($insertTime, $id)
-    {
-        return $this->formatID(5, $this->localTime($insertTime), $id);
-    }
-    public function replaceQuotes($string) {
-        return html_entity_decode(str_replace(array('"','&#34;','&quot;'),"'",preg_replace( "/\r|\n/", "", strip_tags($string))),ENT_QUOTES);
-    }
 
-    function getComboBox($array, $value = '')
-    {
-        $string="";
-        foreach ($array as $key => $item){
-            $selected ="";
-            if($key == $value){
-                $selected ="selected='selected'";
-            }
-            $string.="<option ".$selected."  value='".$key."'>".$item."</option>";
-        }
-        return $string;
-    }
-    public function frontendPagination($url, $page, $totalPages, $limit = 0, $attributes = array())
-    {
-        if ($page < 1) $page = 1;
-        if ($totalPages < 1) $totalPages = 1;
 
-        $disablePrevious = $page <= 1;
-        $disableNext = $page >= $totalPages;
-        $showLeftDot = ($limit != 0) && ($page - $limit > 2);
-        $showRightDot = ($limit != 0) && ($page + $limit < $totalPages - 1);
-        $showFirstPage = ($limit != 0) && ($page - $limit >= 2);
-        $showLastPage = ($limit != 0) && ($page + $limit <= $totalPages - 1);
-        $attributeString = '';
-        foreach ($attributes as $key => $value) {
-            $key = strtolower(trim((string)$key));
-            if ($key != 'class') {
-                $attributeString .= $key . '="' . $value . ' ';
-            }
-        }
-
-        $html = '<ul class="list-inline text-center ' . (isset($attributes['class']) ? $attributes['class'] : '') . '" ' . $attributeString . '>';
-
-        if (!$disablePrevious) {
-            $html .= '<li><a href="' . $url . ($page - 1) . '" target="_self"><strong>'.'&lt;'.'</strong></a></li>';
-        }
-        if ($limit == 0) {
-            for ($i = 1; $i <= $totalPages; $i++) {
-                if ($page == $i) {
-                    $html .= '<li class="active"><a href="" target="_self"><strong>' . $i . '</strong></a></li>';
-                } else {
-                    $html .= '<li><a target="_self" href="' . $url . $i . '" ><strong>' . $i . '</strong></a></li>';
-                }
-            }
-        } else {
-            if ($showFirstPage) $html .= '<li><a  href="' . $url . (1) . '" ><strong>1</strong></a></li>';
-            if ($showLeftDot) $html .= '<li><a>&hellip;</a></li>';
-            for ($i = $page - $limit; $i <= $page + $limit; $i++) {
-                if ($i < 1 || $i > $totalPages) continue;
-                if ($page == $i) {
-                    $html .= '<li class="active"><a href="" target="_self"><strong>' . $i . '</strong></a></li>';
-                } else {
-                    $html .= '<li><a href="' . $url . $i . '" ><strong>' . $i . '</strong></a></li>';
-                }
-            }
-            if ($showRightDot) $html .= '<li><a>&hellip;</a></li>';
-            if ($showLastPage) $html .= '<li><a href="' . $url . $totalPages . '" ><strong>' . $totalPages . '</strong></a></li>';
-        }
-
-        if (!$disableNext) {
-            $html .= '<li><a target="_self" href="' . $url . ($page + 1) . '" ><strong>'.'&gt;'.'</strong></a></li>';
-        }
-
-        $html .= '</ul>';
-        return $html;
-    }
 }
 

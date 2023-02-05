@@ -15,13 +15,14 @@ class IndexController extends ControllerBase
         $page->generateStylePage('index');
         $repoBanner = new Banner();
         $banners = $repoBanner->getBannerByController($this->router->getControllerName(), $this->lang_code);
-        $repoArticle = new Article();
-        $service_articles = $repoArticle->getByTypeAndOrder($this->globalVariable->typeServicesId,$this->lang_code);
-        $new_articles = $repoArticle->getByArrTypeAndInsertTimeIsHomeY($this->globalVariable->typeNewsId,$this->lang_code,4);
+    
+        $listMatch = file_get_contents("http://crawler-score.abc/get-list-match?time=live");
+        $listMatch = json_decode($listMatch,true);
+ 
+
         $this->view->setVars([
             'banners'           => $banners,
-            'service_articles'  => $service_articles,
-            'new_articles'      => $new_articles,
+            'listMatch'  => $listMatch,
             'checkCareer'       => false,
         ]);
     }
