@@ -16,7 +16,7 @@ class IndexController extends ControllerBase
         $repoBanner = new Banner();
         $banners = $repoBanner->getBannerByController($this->router->getControllerName(), $this->lang_code);
     
-        $listMatch = file_get_contents("http://crawler-score.abc/get-list-match?time=live");
+        $listMatch = file_get_contents("http://18.143.100.236:81/get-list-match?time=live");
         $listMatch = json_decode($listMatch,true);
  
 

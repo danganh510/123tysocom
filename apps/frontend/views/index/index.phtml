@@ -31,15 +31,16 @@ $repoType = new \Score\Repositories\Type();
     <section class="content">
         <div class="container">
 
-        <?php foreach ($listMatch as $match):
+        <?php foreach ($listMatch as $tournament):
        
             ?>
             <div class="content-item">
                 <a href="#" class="content-title">
                     <img src="./image/flag-eng.png" alt="country" class="content-country" />
-                    <h3><?= $match['tournament']['name'] ?></h3>
+                    <h3><?= $tournament['tournament']['name'] ?></h3>
                 </a>
                 <div class="content-table">
+                    <?php foreach ($tournament['match'] as $match) ?>
                     <a href="#" class="content-line">
                         <span class="full-time">FT</span>
                         <div class="team-club team-left">
@@ -68,20 +69,20 @@ $repoType = new \Score\Repositories\Type();
                             </div>
                         </div>
                     </a>
-                    <a href="#" class="content-line">
-                        <span class="full-time"> 23:00 </span>
+            
+                        <span class="full-time"> <?= $match['matchInfo']['time'] ?> </span>
                         <div class="team-club team-left">
-                            <h4 class="team-club-name">Groningen</h4>
+                            <h4 class="team-club-name"> <?= $match['homeTeam']['name'] ?></h4>
                             <img src="./image/left-team.png" alt="Team" class="team-club-img" />
                         </div>
                         <div class="result">
-                            <span>0</span>
+                            <span> <?= $match['homeTeam']['score']['score'] ?></span>
                             <span>-</span>
-                            <span>0</span>
+                            <span><?= $match['awayTeam']['score']['score'] ?></span>
                         </div>
                         <div class="team-club team-right">
                             <img src="./image/right-team.png" alt="Team" class="team-club-img" />
-                            <h4 class="team-club-name">Groningen</h4>
+                            <h4 class="team-club-name"><?= $match['awayTeam']['name'] ?></h4>
                         </div>
                     </a>
                 </div>
