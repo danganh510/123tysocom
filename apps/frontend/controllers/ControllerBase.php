@@ -81,4 +81,13 @@ class ControllerBase extends Controller
  
      
     }
+    public function load_view_as_variable($viewPath, $params = array())
+    {
+        ob_start();
+        $this->view->partial($viewPath, $params);
+        $view = ob_get_contents();
+        ob_end_clean();
+
+        return $view;
+    }
 }
